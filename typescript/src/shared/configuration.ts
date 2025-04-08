@@ -1,14 +1,12 @@
-import type {Tool} from './tools';
+import {AvailableNamespaces, Tool} from '../types/tools';
 
 // Actions restrict the subset of API calls that can be made. They should
 // be used in conjunction with Restricted API Keys. Setting a permission to false
 // prevents the related "tool" from being considered.
-export type Object = 'products';
-
-export type Permission = 'create' | 'update' | 'read';
+type Permission = 'create' | 'update' | 'read';
 
 export type Actions = {
-  [K in Object]?: {
+  [K in AvailableNamespaces]?: {
     [K in Permission]?: boolean;
   };
 } & {

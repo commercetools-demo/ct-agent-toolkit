@@ -1,5 +1,4 @@
-import {listProducts} from '../../shared/functions';
-import {z} from 'zod';
+import {listProducts} from '../functions';
 
 const mockGet = jest.fn();
 const mockExecute = jest.fn();
