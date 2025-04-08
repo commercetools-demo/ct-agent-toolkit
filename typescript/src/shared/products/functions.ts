@@ -14,15 +14,16 @@ export const listProducts = async (
       .get({
         queryArgs: {
           limit: params.limit || 10,
-          // Add other query parameters as needed
-          // expand: ['masterData.current.categories[*]'] // Example expansion
+          ...(params.offset && {offset: params.offset}),
+          ...(params.sort && {sort: params.sort}),
+          ...(params.where && {where: params.where}),
+          ...(params.expand && {expand: params.expand}),
         },
       })
       .execute();
 
     return products.body;
   } catch (error: any) {
-    console.error(error);
     return 'Failed to list products' + error.message;
   }
 };
