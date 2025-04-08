@@ -19,24 +19,26 @@ Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, an
 Add the following to your `claude_desktop_config.json`. See [here](https://modelcontextprotocol.io/quickstart/user) for more details.
 
 ```
+
 {
-  "mcpServers": {
-    "commercetools": {
-      "command": "npx",
-      "args": [
-          "-y",
-          "@",
-          "--tools=all",
-          "--clientId=CLIENT_ID",
-          "--clientSecret=CLIENT_SECRET",
-          "--authUrl=AUTH_URL",
-          "--projectKey=PROJECT_KEY",
-          "--apiUrl=API_URL"
-      ]
-    }
-  }
+"mcpServers": {
+"commercetools": {
+"command": "npx",
+"args": [
+"-y",
+"@",
+"--tools=all",
+"--clientId=CLIENT_ID",
+"--clientSecret=CLIENT_SECRET",
+"--authUrl=AUTH_URL",
+"--projectKey=PROJECT_KEY",
+"--apiUrl=API_URL"
+]
 }
-```
+}
+}
+
+````
 
 ## Available tools
 
@@ -65,7 +67,7 @@ mcp call list_products --params '{"limit": 2}' npx ts-node /<absolute-path>/ct-a
 --authUrl="AUTH_URL" \
 --apiUrl="API_URL"
 
-```
+````
 
 **_Do not commit the linked package in package.json to the repo_**
 
