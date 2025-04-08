@@ -78,7 +78,7 @@ echo "Building package"
 pnpm run build
 
 echo "Publishing release"
-npm --ignore-scripts publish --non-interactive --access public
+npm --ignore-scripts --no-workspaces publish --non-interactive --access public
 
 echo "Pushing git commit and tag"
 git push
