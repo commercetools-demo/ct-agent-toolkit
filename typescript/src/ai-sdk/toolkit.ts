@@ -1,6 +1,7 @@
 import CommercetoolsAPI from '../shared/api';
 import tools from '../shared/tools';
-import {isToolAllowed, type Configuration} from '../shared/configuration';
+import {isToolAllowed} from '../shared/configuration';
+import type {Configuration} from '../types/configuration';
 import type {
   CoreTool,
   LanguageModelV1StreamPart,
