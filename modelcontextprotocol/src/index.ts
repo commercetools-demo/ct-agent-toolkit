@@ -28,7 +28,7 @@ const ACCEPTED_ARGS = [
   'projectKey',
   'apiUrl',
 ];
-const ACCEPTED_TOOLS = ['products.read'];
+const ACCEPTED_TOOLS = ['products.read', 'products.create'];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
   const options: Options = {};
