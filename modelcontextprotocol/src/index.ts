@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-import {CommercetoolsAgentToolkit} from '@commercetools-demo/ct-agent-toolkit/modelcontextprotocol';
+import {
+  CommercetoolsAgentToolkit,
+  Configuration,
+  AvailableNamespaces,
+} from '@commercetools-demo/ct-agent-toolkit/modelcontextprotocol';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {green, red, yellow} from 'colors';
-
-type ToolkitConfig = {
-  actions: {
-    [product: string]: {[action: string]: boolean};
-  };
-};
 
 type Options = {
   tools?: string[];
@@ -114,27 +112,32 @@ export async function main() {
 
   // Create the CommercetoolsAgentToolkit instance
   const selectedTools = options.tools!;
-  const configuration: ToolkitConfig = {actions: {}};
+  const configuration: Configuration = {actions: {}};
 
   if (selectedTools.includes('all')) {
     ACCEPTED_TOOLS.forEach((tool) => {
-      const [product, action] = tool.split('.');
-      configuration.actions[product] = {
-        ...configuration.actions[product],
+      if (!configuration.actions) {
+        configuration.actions = {};
+      }
+      const [namespace, action] = tool.split('.');
+
+      configuration.actions[namespace as AvailableNamespaces] = {
+        ...configuration.actions[namespace as AvailableNamespaces],
         [action]: true,
       };
     });
   } else {
     selectedTools.forEach((tool: any) => {
-      const [product, action] = tool.split('.');
-      configuration.actions[product] = {
-        ...(configuration.actions[product] || {}),
+      if (!configuration.actions) {
+        configuration.actions = {};
+      }
+      const [namespace, action] = tool.split('.');
+      configuration.actions[namespace as AvailableNamespaces] = {
+        ...(configuration.actions[namespace as AvailableNamespaces] || {}),
         [action]: true,
       };
     });
   }
-
-  console.log('env', env);
 
   const server = new CommercetoolsAgentToolkit({
     clientId: env.clientId!,

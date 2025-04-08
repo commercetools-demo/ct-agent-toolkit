@@ -1,6 +1,7 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
-import {Configuration, isToolAllowed} from '../shared/configuration';
+import {isToolAllowed} from '../shared/configuration';
+import type {Configuration} from '../types/configuration';
 import CommercetoolsAPI from '../shared/api';
 import tools from '../shared/tools';
 
