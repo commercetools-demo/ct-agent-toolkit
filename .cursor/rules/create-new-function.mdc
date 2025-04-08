@@ -38,8 +38,14 @@ The following steps are defining implementation of an example `products.create`.
 6. Create and expose tools
   - Modified `typescript/src/shared/(namespace)/tools.ts` and add new tool using parameters and prompt created
 
-7. Test Implementation
+7. Add new tool to ACCEPTED_TOOLS
+   - add too to `modelcontextprotocol/src/index.ts`'s ACCEPTED_TOOLS
+
+
+8. Test Implementation
    - Created `createProduct.test.ts` in test directory
    - Implemented mock ApiRoot for testing
    - Added test cases for successful creation
    - Added test cases for error handling
+   - Create test cases for success and error of the new tools in `modelcontextprotocol/src/test`. These tests are only checking if `CommercetoolsAgentToolkit` and `StdioServerTransport` are being called with correct params
+
