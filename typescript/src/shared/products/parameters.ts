@@ -5,9 +5,9 @@ export const listProductsParameters = z.object({
     .number()
     .int()
     .min(1)
-    .max(100)
+    .max(500)
     .optional()
     .describe(
-      'A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.'
+      'A limit on the number of objects to be returned. Limit can range between 1 and 500, and the default is 10.'
     ),
 });

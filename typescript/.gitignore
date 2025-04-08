@@ -90,8 +90,8 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
-ai-sdk/
-modelcontextprotocol/
+ai-sdk/*
+modelcontextprotocol/*
 
 
 # Gatsby files
