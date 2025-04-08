@@ -1,0 +1,45 @@
+---
+description: Creating a New tool Function in @commercetools-demo/ct-agent-toolkit
+globs: 
+alwaysApply: false
+---
+# Creating a New namespace tool Function in @commercetools-demo/ct-agent-toolkit
+
+This document outlines the steps taken to implement a new function in @commercetools-demo/ct-agent-toolkit to connect to commercetools API.
+
+The following steps are defining implementation of an example `products.create`. So the `(namespace)` here refers to `product`.
+
+## Implementation Steps
+
+1. Gather info regarding the (namespace)
+  - Search commercetools docs at https://docs.commercetools.com/api and find the (namespace)
+  - In this example `https://docs.commercetools.com/api/projects/products` and ProductDraft 
+
+2. Define Parameter Schema
+   - Using the namespace fetched in previous step , Created `createProductParameters` in `typescript/src/shared/(namespace)/parameters.ts`
+   - Used Zod for type validation
+   - Included all required and optional fields from ProductDraft
+   - Created a separate `productVariantDraft` schema for reusability
+
+3. Create Main Function
+   - Added `createProduct` function in `typescript/src/shared/(namespace)/functions.ts`
+   - Function takes ApiRoot, context, and parameters
+   - Implements error handling with descriptive messages
+   - Returns the created product body
+
+4. Update API Integration
+   - Modified `typescript/src/shared/api.ts` to include the new createProduct function
+   - Added new method case 'create_product' in run method
+   - Properly handles JSON stringification of response
+
+5. Create Prompt
+  - Create a prompt describing the function and its' params in `typescript/src/shared/(namespace)/prompts.ts`
+
+6. Create and expose tools
+  - Modified `typescript/src/shared/(namespace)/tools.ts` and add new tool using parameters and prompt created
+
+7. Test Implementation
+   - Created `createProduct.test.ts` in test directory
+   - Implemented mock ApiRoot for testing
+   - Added test cases for successful creation
+   - Added test cases for error handling
