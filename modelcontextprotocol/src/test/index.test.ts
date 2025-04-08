@@ -19,7 +19,6 @@ describe('Dummy Test Suite', () => {
   });
 });
 
-
 describe('parseArgs function', () => {
   describe('success cases', () => {
     it('should parse all arguments correctly', () => {
@@ -116,7 +115,9 @@ describe('parseArgs function', () => {
         '--projectKey=test_project',
         '--apiUrl=https://api.commercetools.com',
       ];
-      expect(() => parseArgs(args)).toThrow('The --tools arguments must be provided.');
+      expect(() => parseArgs(args)).toThrow(
+        'The --tools arguments must be provided.'
+      );
     });
 
     it('should throw an error if an invalid tool is provided', () => {
