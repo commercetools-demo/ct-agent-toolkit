@@ -1,6 +1,6 @@
 {
   "name": "@commercetools-demo/mcp",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "https://github.com/commercetools-demo/ct-agent-toolkit/",
   "description": "A command line tool for setting up commercetools MCP server",
   "bin": "dist/index.js",
