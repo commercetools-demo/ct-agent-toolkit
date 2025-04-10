@@ -9,7 +9,8 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 
-import {listProducts, createProduct} from './products/functions';
+import {listProducts, createProduct, updateProduct} from './products/functions';
+import {readProject} from './project/functions';
 
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
@@ -56,6 +57,24 @@ class CommercetoolsAPI {
     } else if (method === 'create_product') {
       const output = JSON.stringify(
         await createProduct(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'update_product') {
+      const output = JSON.stringify(
+        await updateProduct(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'read_project') {
+      const output = JSON.stringify(
+        await readProject(
           this.apiRoot,
           {projectKey: this.authMiddlewareOptions.projectKey},
           arg

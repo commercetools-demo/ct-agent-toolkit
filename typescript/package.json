@@ -1,6 +1,6 @@
 {
   "name": "@commercetools-demo/ct-agent-toolkit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "https://github.com/commercetools-demo/ct-agent-toolkit",
   "scripts": {
     "build": "tsup",
@@ -8,6 +8,7 @@
     "lint": "eslint \"./**/*.ts*\"",
     "prettier": "prettier './**/*.{js,ts,md,html,css}' --write",
     "prettier-check": "prettier './**/*.{js,ts,md,html,css}' --check",
+    "validate": "pnpm run lint --fix && pnpm run prettier && pnpm run test",
     "test": "jest"
   },
   "exports": {
@@ -62,7 +63,7 @@
   },
   "peerDependencies": {
     "@langchain/core": "^0.3.6",
-    "@modelcontextprotocol/sdk": "^1.4.1",
+    "@modelcontextprotocol/sdk": "^1.9.0",
     "ai": "^4.1.54",
     "openai": "^4.86.1"
   },

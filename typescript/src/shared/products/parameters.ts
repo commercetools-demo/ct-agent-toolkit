@@ -28,7 +28,7 @@ export const listProductsParameters = z.object({
     .array(z.string())
     .optional()
     .describe(
-      'Query predicates specified as strings. Example: ["masterData.current.name.en = "Product Name""]'
+      'Query predicates specified as strings. Example: ["masterData(current(name(en = "Product Name"))"]'
     ),
   expand: z
     .array(z.string())
@@ -120,4 +120,19 @@ export const createProductParameters = z.object({
       typeId: z.literal('state'),
     })
     .optional(),
+});
+
+export const updateProductParameters = z.object({
+  id: z.string().describe('The ID of the product to update'),
+  version: z.number().int().describe('The current version of the product'),
+  actions: z.array(
+    z
+      .object({
+        action: z.string().describe('The name of the update action to perform'),
+      })
+      .and(z.record(z.string(), z.any()).optional())
+      .describe(
+        'Array of update actions to perform on the product. Each action should have an "action" field and other fields specific to that action type.'
+      )
+  ),
 });
