@@ -48,4 +48,33 @@ The following steps are defining implementation of an example `products.create`.
    - Added test cases for successful creation
    - Added test cases for error handling
    - Create test cases for success and error of the new tools in `modelcontextprotocol/src/test`. These tests are only checking if `CommercetoolsAgentToolkit` and `StdioServerTransport` are being called with correct params
+   example
+   ```
+      it('should initialize the server with specific tools correctly', async () => {
+         process.argv = [
+            'node',
+            'index.js',
+            '--tools=products.create', // new function tool
+            '--clientId=test_client_id',
+            '--clientSecret=test_client_secret',
+            '--authUrl=https://auth.commercetools.com',
+            '--projectKey=test_project',
+            '--apiUrl=https://api.commercetools.com',
+         ];
+
+         await main();
+
+         expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+            clientId: 'test_client_id',
+            clientSecret: 'test_client_secret',
+            authUrl: 'https://auth.commercetools.com',
+            projectKey: 'test_project',
+            apiUrl: 'https://api.commercetools.com',
+            configuration: {actions: {products: {create: true}}}, // new function tool
+         });
+
+         expect(StdioServerTransport).toHaveBeenCalled();
+      });
+  ```
+
 
