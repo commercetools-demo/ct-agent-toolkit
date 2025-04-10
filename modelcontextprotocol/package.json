@@ -17,15 +17,16 @@
     "lint": "eslint \"./**/*.ts*\"",
     "prettier": "prettier './**/*.{js,ts,md,html,css}' --write",
     "prettier-check": "prettier './**/*.{js,ts,md,html,css}' --check",
-    "test": "jest"
+    "test": "jest",
+    "validate": "pnpm run lint --fix && pnpm run prettier && pnpm run test"
   },
   "packageManager": "pnpm@9.11.0",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "@commercetools-demo/ct-agent-toolkit": "latest",
-    "@modelcontextprotocol/sdk": "^1.4.1",
+    "@commercetools-demo/ct-agent-toolkit": "1.2.0",
+    "@modelcontextprotocol/sdk": "^1.9.0",
     "colors": "^1.4.0",
     "mcp": "^1.4.0"
   },

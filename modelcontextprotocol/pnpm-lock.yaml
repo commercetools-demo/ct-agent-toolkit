@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@commercetools-demo/ct-agent-toolkit':
-        specifier: latest
-        version: 1.0.1(@langchain/core@0.3.43(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.5.0)(ai@4.3.4(react@19.0.0)(zod@3.24.2))(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
+        specifier: 1.2.0
+        version: 1.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.4(react@19.0.0)(zod@3.24.2))(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
       '@modelcontextprotocol/sdk':
-        specifier: ^1.4.1
-        version: 1.5.0
+        specifier: ^1.9.0
+        version: 1.9.0
       colors:
         specifier: ^1.4.0
         version: 1.4.0
@@ -266,12 +266,12 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@commercetools-demo/ct-agent-toolkit@1.0.1':
-    resolution: {integrity: sha512-MqKMBOGjWCutXOroR73kGVS8Bdt3nYnKBhIe754v10JfYUQKsgRQ43r+yStQEOYN4aQ2DZTHFp9aslz9wCWRqw==}
+  '@commercetools-demo/ct-agent-toolkit@1.2.0':
+    resolution: {integrity: sha512-aIKSpCY7UKi3dg212Hj7vnWBCuw+fTSB2PKT4QhPSH9IbpP73aVUz+FmVJ4jSbql7+1rzQ5s0PMhemUiixrjEg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^0.3.6
-      '@modelcontextprotocol/sdk': ^1.4.1
+      '@modelcontextprotocol/sdk': ^1.9.0
       ai: ^4.1.54
       openai: ^4.86.1
 
@@ -463,8 +463,8 @@ packages:
     peerDependencies:
       jsep: ^0.4.0||^1.0.0
 
-  '@langchain/core@0.3.43':
-    resolution: {integrity: sha512-DwiSUwmZqcuOn7j8SFdeOH1nvaUqG7q8qn3LhobdQYEg5PmjLgd2yLr2KzuT/YWMBfjkOR+Di5K6HEdFmouTxg==}
+  '@langchain/core@0.3.44':
+    resolution: {integrity: sha512-3BsSFf7STvPPZyl2kMANgtVnCUvDdyP4k+koP+nY2Tczd5V+RFkuazIn/JOj/xxy/neZjr4PxFU4BFyF1aKXOA==}
     engines: {node: '>=18'}
 
   '@mdx-js/mdx@3.1.0':
@@ -505,12 +505,8 @@ packages:
   '@mintlify/validation@0.1.320':
     resolution: {integrity: sha512-SCqQ9GSppgzeCdUsJU9jyW4oKM45PN9dc+RFmx8G5yqBMlRpWZHfVgXRF4CQoEqPfQ5OPW9vBROSlOawFhNDog==}
 
-  '@modelcontextprotocol/sdk@1.5.0':
-    resolution: {integrity: sha512-IJ+5iVVs8FCumIHxWqpwgkwOzyhtHVKy45s6Ug7Dv0MfRpaYisH8QQ87rIWeWdOzlk8sfhitZ7HCyQZk7d6b8w==}
-    engines: {node: '>=18'}
-
-  '@modelcontextprotocol/sdk@1.7.0':
-    resolution: {integrity: sha512-IYPe/FLpvF3IZrd/f5p5ffmWhMc3aEMuM2wGJASDqC2Ge7qatVCdbfPx3n/5xFeb19xN0j/911M2AaFuircsWA==}
+  '@modelcontextprotocol/sdk@1.9.0':
+    resolution: {integrity: sha512-Jq2EUCQpe0iyO5FGpzVYDNFR6oR53AIrwph9yWl7uSc7IWUMsrmpmSaTGra5hQNunXpM+9oit85p924jWuHzUA==}
     engines: {node: '>=18'}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2966,8 +2962,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
 
-  pkce-challenge@4.1.0:
-    resolution: {integrity: sha512-ZBmhE1C9LcPoH9XZSdwiPtbPHZROwAnMy+kIFQVrnMCxY4Cudlz3gBOpzilgc0jOgRaiT3sIWfpMomW2ar2orQ==}
+  pkce-challenge@5.0.0:
+    resolution: {integrity: sha512-ueGLflrrnvwB3xuo/uGob5pd5FN7l0MsLf0Z87o/UQmRtwjvfylfc9MurIxRAWywCYTgrvpXBcqjV4OfCYGCIQ==}
     engines: {node: '>=16.20.0'}
 
   pkg-dir@4.2.0:
@@ -4057,12 +4053,12 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@commercetools-demo/ct-agent-toolkit@1.0.1(@langchain/core@0.3.43(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.5.0)(ai@4.3.4(react@19.0.0)(zod@3.24.2))(openai@4.93.0(ws@8.18.1)(zod@3.24.2))':
+  '@commercetools-demo/ct-agent-toolkit@1.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.4(react@19.0.0)(zod@3.24.2))(openai@4.93.0(ws@8.18.1)(zod@3.24.2))':
     dependencies:
       '@commercetools/platform-sdk': 8.8.0
       '@commercetools/ts-client': 3.2.2
-      '@langchain/core': 0.3.43(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
-      '@modelcontextprotocol/sdk': 1.5.0
+      '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
+      '@modelcontextprotocol/sdk': 1.9.0
       ai: 4.3.4(react@19.0.0)(zod@3.24.2)
       openai: 4.93.0(ws@8.18.1)(zod@3.24.2)
       zod: 3.24.2
@@ -4345,7 +4341,7 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@langchain/core@0.3.43(openai@4.93.0(ws@8.18.1)(zod@3.24.2))':
+  '@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
@@ -4447,7 +4443,7 @@ snapshots:
       '@mintlify/openapi-parser': 0.0.7
       '@mintlify/scraping': 4.0.152(@types/react@19.0.10)(react-dom@18.3.1(react@19.0.0))(react@19.0.0)(typescript@5.8.3)
       '@mintlify/validation': 0.1.320
-      '@modelcontextprotocol/sdk': 1.7.0
+      '@modelcontextprotocol/sdk': 1.9.0
       axios: 1.8.3
       dashify: 2.0.0
       dotenv: 16.4.7
@@ -4548,22 +4544,15 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@modelcontextprotocol/sdk@1.5.0':
-    dependencies:
-      content-type: 1.0.5
-      eventsource: 3.0.5
-      raw-body: 3.0.0
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.1(zod@3.24.2)
-
-  '@modelcontextprotocol/sdk@1.7.0':
+  '@modelcontextprotocol/sdk@1.9.0':
     dependencies:
       content-type: 1.0.5
       cors: 2.8.5
+      cross-spawn: 7.0.6
       eventsource: 3.0.5
       express: 5.0.1
       express-rate-limit: 7.5.0(express@5.0.1)
-      pkce-challenge: 4.1.0
+      pkce-challenge: 5.0.0
       raw-body: 3.0.0
       zod: 3.24.2
       zod-to-json-schema: 3.24.1(zod@3.24.2)
@@ -7864,7 +7853,7 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  pkce-challenge@4.1.0: {}
+  pkce-challenge@5.0.0: {}
 
   pkg-dir@4.2.0:
     dependencies:

@@ -6,7 +6,7 @@ import {
   AvailableNamespaces,
 } from '@commercetools-demo/ct-agent-toolkit/modelcontextprotocol';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
-import {green, red, yellow} from 'colors';
+import {red, yellow} from 'colors';
 
 type Options = {
   tools?: string[];
@@ -28,7 +28,12 @@ const ACCEPTED_ARGS = [
   'projectKey',
   'apiUrl',
 ];
-const ACCEPTED_TOOLS = ['products.read', 'products.create'];
+const ACCEPTED_TOOLS = [
+  'products.read',
+  'products.create',
+  'products.update',
+  'project.read',
+];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
   const options: Options = {};
@@ -150,8 +155,6 @@ export async function main() {
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  // We use console.error instead of console.log since console.log will output to stdio, which will confuse the MCP server
-  console.error(green('✅ Commercetools MCP Server running on stdio'));
 }
 
 if (require.main === module) {
