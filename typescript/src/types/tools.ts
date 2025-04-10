@@ -2,6 +2,7 @@ import {z} from 'zod';
 
 export enum AvailableNamespaces {
   Products = 'products',
+  Project = 'project',
 }
 
 export type Tool = {

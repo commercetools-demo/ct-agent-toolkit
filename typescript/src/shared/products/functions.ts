@@ -1,6 +1,14 @@
 import {z} from 'zod';
-import {listProductsParameters, createProductParameters} from './parameters';
-import {ApiRoot, ProductDraft} from '@commercetools/platform-sdk';
+import {
+  listProductsParameters,
+  createProductParameters,
+  updateProductParameters,
+} from './parameters';
+import {
+  ApiRoot,
+  ProductDraft,
+  ProductUpdateAction,
+} from '@commercetools/platform-sdk';
 
 export const listProducts = async (
   apiRoot: ApiRoot,
@@ -45,5 +53,29 @@ export const createProduct = async (
     return product.body;
   } catch (error: any) {
     throw new Error('Failed to create product: ' + error.message);
+  }
+};
+
+export const updateProduct = async (
+  apiRoot: ApiRoot,
+  context: {projectKey: string},
+  params: z.infer<typeof updateProductParameters>
+) => {
+  try {
+    const product = await apiRoot
+      .withProjectKey({projectKey: context.projectKey})
+      .products()
+      .withId({ID: params.id})
+      .post({
+        body: {
+          version: params.version,
+          actions: params.actions as ProductUpdateAction[],
+        },
+      })
+      .execute();
+
+    return product.body;
+  } catch (error: any) {
+    throw new Error('Failed to update product: ' + error.message);
   }
 };

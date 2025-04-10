@@ -1,6 +1,14 @@
-import {createProductPrompt, listProductsPrompt} from './prompts';
+import {
+  createProductPrompt,
+  listProductsPrompt,
+  updateProductPrompt,
+} from './prompts';
 
-import {createProductParameters, listProductsParameters} from './parameters';
+import {
+  createProductParameters,
+  listProductsParameters,
+  updateProductParameters,
+} from './parameters';
 import {Tool} from '../../types/tools';
 
 const tools: Tool[] = [
@@ -23,6 +31,17 @@ const tools: Tool[] = [
     actions: {
       products: {
         create: true,
+      },
+    },
+  },
+  {
+    method: 'update_product',
+    name: 'Update Product',
+    description: updateProductPrompt,
+    parameters: updateProductParameters,
+    actions: {
+      products: {
+        update: true,
       },
     },
   },
