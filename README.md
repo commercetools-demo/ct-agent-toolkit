@@ -8,71 +8,6 @@ library is not exhaustive of the entire commercetools API. It includes support f
 
 Included below are basic instructions, but refer to the [Python](/python) and [TypeScript](/typescript) packages for more information.
 
-## Python
-
-### Installation
-
-You don't need this source code unless you want to modify the package. If you just
-want to use the package run:
-
-```sh
-pip install commercetools-agent-toolkit
-```
-
-#### Requirements
-
-- Python 3.11+
-
-### Usage
-
-The library needs to be configured with your account's secret key which is
-available in your [Dashboard][api-keys].
-
-```python
-from commercetools_agent_toolkit.crewai.toolkit import AgentToolkit
-
-commercetools_agent_toolkit = CommercetoolsAgentToolkit(
-    secret_key="sk_test_...",
-    configuration={
-        "actions": {
-            "payment_links": {
-                "create": True,
-            },
-        }
-    },
-)
-```
-
-The toolkit works with LangChain and CrewAI and can be passed as a list of tools. For example:
-
-```python
-from crewai import Agent
-
-commercetools_agent = Agent(
-    role="commercetools Agent",
-    goal="Integrate with commercetools API",
-    backstory="You are an expert at integrating with commercetools API",
-    tools=[*commercetools_agent_toolkit.get_tools()]
-)
-```
-
-Examples for LangChain and CrewAI are included in [/examples](/python/examples).
-
-#### Context
-
-In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts](https://docs.stripe.com/connect/authentication).
-
-```python
-commercetools_agent_toolkit = CommercetoolsAgentToolkit(
-    secret_key="sk_test_...",
-    configuration={
-        "context": {
-            "account": "acct_123"
-        }
-    }
-)
-```
-
 ## TypeScript
 
 ### Installation
@@ -90,17 +25,29 @@ npm install @commercetools-demo/commercetools-agent-toolkit
 
 ### Usage
 
-The library needs to be configured with your account's secret key which is available in your [Dashboard][api-keys]. Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
+The library needs to be configured with your commercetools project API client credentials which is available in your [Merchant center](https://docs.commercetools.com/getting-started/create-api-client). Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
 
 ```typescript
 import { CommercetoolsAgentToolkit } from "@commercetools-demo/commercetools-agent-toolkit/langchain";
 
 const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  secretKey: process.env.API_SECRET_KEY!,
+  clientId: process.env.CLIENT_ID!,
+  clientSecret: process.env.CLIENT_SECRET!,
+  projectKey: process.env.PROJECT_KEY!,
+  authUrl: process.env.AUTH_URL!,
+  apiUrl: process.env.API_URL!,
   configuration: {
     actions: {
-      paymentLinks: {
+      products: {
+        read: true,
         create: true,
+        update: true,
+      },
+      project: {
+        read: true,
+      },
+      'product-search': {
+        read: true,
       },
     },
   },
@@ -134,49 +81,16 @@ In some cases you will want to provide values that serve as defaults when making
 
 ```typescript
 const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  secretKey: process.env.API_SECRET_KEY!,
+  clientId: process.env.CLIENT_ID!,
+  clientSecret: process.env.CLIENT_SECRET!,
+  projectKey: process.env.PROJECT_KEY!,
+  authUrl: process.env.AUTH_URL!,
+  apiUrl: process.env.API_URL!,
   configuration: {
     context: {
       account: "acct_123",
     },
   },
-});
-```
-
-#### Metered billing
-
-For Vercel's AI SDK, you can use middleware to submit billing events for usage. All that is required is the customer ID and the input/output meters to bill.
-
-```typescript
-import { CommercetoolsAgentToolkit } from "@commercetools-demo/commercetools-agent-toolkit/ai-sdk";
-import { openai } from "@ai-sdk/openai";
-import {
-  generateText,
-  experimental_wrapLanguageModel as wrapLanguageModel,
-} from "ai";
-
-const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  secretKey: process.env.API_SECRET_KEY!,
-  configuration: {
-    actions: {
-      paymentLinks: {
-        create: true,
-      },
-    },
-  },
-});
-
-const model = wrapLanguageModel({
-  model: openai("gpt-4o"),
-  middleware: commercetoolsAgentToolkit.middleware({
-    billing: {
-      customer: "cus_123",
-      meters: {
-        input: "input_tokens",
-        output: "output_tokens",
-      },
-    },
-  }),
 });
 ```
 
