@@ -12,6 +12,11 @@ import {
 import {listProducts, createProduct, updateProduct} from './products/functions';
 import {readProject} from './project/functions';
 import {searchProducts} from './product-search/functions';
+import {
+  readCategory,
+  createCategory,
+  updateCategory,
+} from './category/functions';
 
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
@@ -85,6 +90,33 @@ class CommercetoolsAPI {
     } else if (method === 'search_products') {
       const output = JSON.stringify(
         await searchProducts(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'read_category') {
+      const output = JSON.stringify(
+        await readCategory(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'create_category') {
+      const output = JSON.stringify(
+        await createCategory(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'update_category') {
+      const output = JSON.stringify(
+        await updateCategory(
           this.apiRoot,
           {projectKey: this.authMiddlewareOptions.projectKey},
           arg
