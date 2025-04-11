@@ -4,7 +4,7 @@
 
 To run the commercetools MCP server using npx, use the following command:
 
-```bash
+````bash
 # To set up all available tools
 npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
 
@@ -18,33 +18,35 @@ Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, an
 
 Add the following to your `claude_desktop_config.json`. See [here](https://modelcontextprotocol.io/quickstart/user) for more details.
 
-```
-
+```json
 {
-"mcpServers": {
-"commercetools": {
-"command": "npx",
-"args": [
-"-y",
-"@",
-"--tools=all",
-"--clientId=CLIENT_ID",
-"--clientSecret=CLIENT_SECRET",
-"--authUrl=AUTH_URL",
-"--projectKey=PROJECT_KEY",
-"--apiUrl=API_URL"
-]
+  "mcpServers": {
+    "commercetools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@commercetools-demo/mcp",
+        "--tools=all",
+        "--clientId=CLIENT_ID",
+        "--clientSecret=CLIENT_SECRET",
+        "--authUrl=AUTH_URL",
+        "--projectKey=PROJECT_KEY",
+        "--apiUrl=API_URL"
+      ]
+    }
+  }
 }
-}
-}
-
 ````
 
 ## Available tools
 
-| Tool            | Description              |
-| --------------- | ------------------------ |
-| `products.read` | Read product information |
+| Tool                  | Description                     |
+| --------------------- | ------------------------------- |
+| `products.read`       | Read product information        |
+| `products.create`     | Create product information      |
+| `products.update`     | Update product information      |
+| `project.read`        | Read project information        |
+| `product-search.read` | Read product search information |
 
 ## Debugging locally
 
@@ -67,7 +69,7 @@ mcp call list_products --params '{"limit": 2}' npx ts-node /<absolute-path>/ct-a
 --authUrl="AUTH_URL" \
 --apiUrl="API_URL"
 
-````
+```
 
 **_Do not commit the linked package in package.json to the repo_**
 
