@@ -2,17 +2,18 @@ import {searchProducts} from '../functions';
 
 describe('searchProducts', () => {
   let mockApiRoot: any;
-  let mockHttpClient: any;
-  let mockContext: any;
   let mockExecute: jest.Mock;
+  let mockContext: any;
 
   beforeEach(() => {
     mockExecute = jest.fn();
-    mockHttpClient = {
-      execute: mockExecute,
-    };
+    const mockPost = jest.fn().mockReturnValue({execute: mockExecute});
+    const mockSearch = jest.fn().mockReturnValue({post: mockPost});
+    const mockProducts = jest.fn().mockReturnValue({search: mockSearch});
+    const mockWithProjectKey = jest.fn().mockReturnValue({products: mockProducts});
+    
     mockApiRoot = {
-      _getHttpClient: jest.fn().mockReturnValue(mockHttpClient),
+      withProjectKey: mockWithProjectKey
     };
 
     mockContext = {
@@ -46,15 +47,10 @@ describe('searchProducts', () => {
 
     const result = await searchProducts(mockApiRoot, mockContext, params);
 
-    expect(mockApiRoot._getHttpClient).toHaveBeenCalled();
-    expect(mockExecute).toHaveBeenCalledWith({
-      uri: '/test-project/product-search',
-      method: 'POST',
-      body: {
-        query: params.query,
-      },
+    expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+      projectKey: 'test-project',
     });
-
+    expect(mockExecute).toHaveBeenCalled();
     expect(result).toEqual({
       count: 2,
       total: 2,
@@ -101,10 +97,13 @@ describe('searchProducts', () => {
 
     const result = await searchProducts(mockApiRoot, mockContext, params);
 
-    expect(mockApiRoot._getHttpClient).toHaveBeenCalled();
-    expect(mockExecute).toHaveBeenCalledWith({
-      uri: '/test-project/product-search',
-      method: 'POST',
+    expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+      projectKey: 'test-project',
+    });
+    
+    // Verify that the post body contains all expected parameters
+    const mockPostFn = mockApiRoot.withProjectKey().products().search().post;
+    expect(mockPostFn).toHaveBeenCalledWith({
       body: {
         query: params.query,
         sort: params.sort,
@@ -115,7 +114,8 @@ describe('searchProducts', () => {
         facets: params.facets,
       },
     });
-
+    
+    expect(mockExecute).toHaveBeenCalled();
     expect(result).toEqual({
       count: 2,
       total: 2,
