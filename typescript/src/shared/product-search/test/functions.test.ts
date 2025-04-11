@@ -10,10 +10,12 @@ describe('searchProducts', () => {
     const mockPost = jest.fn().mockReturnValue({execute: mockExecute});
     const mockSearch = jest.fn().mockReturnValue({post: mockPost});
     const mockProducts = jest.fn().mockReturnValue({search: mockSearch});
-    const mockWithProjectKey = jest.fn().mockReturnValue({products: mockProducts});
-    
+    const mockWithProjectKey = jest
+      .fn()
+      .mockReturnValue({products: mockProducts});
+
     mockApiRoot = {
-      withProjectKey: mockWithProjectKey
+      withProjectKey: mockWithProjectKey,
     };
 
     mockContext = {
@@ -100,7 +102,7 @@ describe('searchProducts', () => {
     expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
       projectKey: 'test-project',
     });
-    
+
     // Verify that the post body contains all expected parameters
     const mockPostFn = mockApiRoot.withProjectKey().products().search().post;
     expect(mockPostFn).toHaveBeenCalledWith({
@@ -114,7 +116,7 @@ describe('searchProducts', () => {
         facets: params.facets,
       },
     });
-    
+
     expect(mockExecute).toHaveBeenCalled();
     expect(result).toEqual({
       count: 2,
