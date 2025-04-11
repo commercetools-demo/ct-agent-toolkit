@@ -47,7 +47,7 @@ The following steps are defining implementation of an example `products.create`.
    - Implemented mock ApiRoot for testing
    - Added test cases for successful creation
    - Added test cases for error handling
-   - Create test cases for success and error of the new tools in `modelcontextprotocol/src/test`. These tests are only checking if `CommercetoolsAgentToolkit` and `StdioServerTransport` are being called with correct params
+   - Create test cases for success and error of the new tools in `modelcontextprotocol/src/test/main.test.ts`. These tests are only checking if `CommercetoolsAgentToolkit` and `StdioServerTransport` are being called with correct params
    example
    ```
       it('should initialize the server with specific tools correctly', async () => {
