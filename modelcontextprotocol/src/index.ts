@@ -34,6 +34,9 @@ const ACCEPTED_TOOLS = [
   'products.update',
   'project.read',
   'product-search.read',
+  'category.read',
+  'category.create',
+  'category.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {

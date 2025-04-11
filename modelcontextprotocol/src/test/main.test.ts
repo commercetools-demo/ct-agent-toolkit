@@ -35,6 +35,7 @@ describe('main function', () => {
           products: {read: true, create: true, update: true},
           project: {read: true},
           'product-search': {read: true},
+          category: {read: true, create: true, update: true},
         },
       },
     });
@@ -167,6 +168,84 @@ describe('main function', () => {
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
       configuration: {actions: {'product-search': {read: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (category.read)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=category.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {category: {read: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (category.create)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=category.create',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {category: {create: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (category.update)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=category.update',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {category: {update: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
