@@ -11,6 +11,7 @@ import {
 
 import {listProducts, createProduct, updateProduct} from './products/functions';
 import {readProject} from './project/functions';
+import {searchProducts} from './product-search/functions';
 
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
@@ -75,6 +76,15 @@ class CommercetoolsAPI {
     } else if (method === 'read_project') {
       const output = JSON.stringify(
         await readProject(
+          this.apiRoot,
+          {projectKey: this.authMiddlewareOptions.projectKey},
+          arg
+        )
+      );
+      return output;
+    } else if (method === 'search_products') {
+      const output = JSON.stringify(
+        await searchProducts(
           this.apiRoot,
           {projectKey: this.authMiddlewareOptions.projectKey},
           arg

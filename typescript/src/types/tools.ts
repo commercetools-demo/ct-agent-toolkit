@@ -3,6 +3,7 @@ import {z} from 'zod';
 export enum AvailableNamespaces {
   Products = 'products',
   Project = 'project',
+  ProductSearch = 'product-search',
 }
 
 export type Tool = {
