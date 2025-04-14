@@ -8,15 +8,7 @@ import {
   ApiRoot,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
-
-import {listProducts, createProduct, updateProduct} from './products/functions';
-import {readProject} from './project/functions';
-import {searchProducts} from './product-search/functions';
-import {
-  readCategory,
-  createCategory,
-  updateCategory,
-} from './category/functions';
+import {functionMapping} from './functions';
 
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
@@ -51,81 +43,21 @@ class CommercetoolsAPI {
   }
 
   async run(method: string, arg: any) {
-    if (method === 'list_products') {
-      const output = JSON.stringify(
-        await listProducts(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'create_product') {
-      const output = JSON.stringify(
-        await createProduct(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'update_product') {
-      const output = JSON.stringify(
-        await updateProduct(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'read_project') {
-      const output = JSON.stringify(
-        await readProject(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'search_products') {
-      const output = JSON.stringify(
-        await searchProducts(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'read_category') {
-      const output = JSON.stringify(
-        await readCategory(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'create_category') {
-      const output = JSON.stringify(
-        await createCategory(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else if (method === 'update_category') {
-      const output = JSON.stringify(
-        await updateCategory(
-          this.apiRoot,
-          {projectKey: this.authMiddlewareOptions.projectKey},
-          arg
-        )
-      );
-      return output;
-    } else {
+    const func = functionMapping[method];
+
+    if (!func) {
       throw new Error('Invalid method ' + method);
     }
+
+    const output = JSON.stringify(
+      await func(
+        this.apiRoot,
+        {projectKey: this.authMiddlewareOptions.projectKey},
+        arg
+      )
+    );
+
+    return output;
   }
 }
 
