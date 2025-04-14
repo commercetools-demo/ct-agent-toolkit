@@ -40,6 +40,9 @@ const ACCEPTED_TOOLS = [
   'product-selection.read',
   'product-selection.create',
   'product-selection.update',
+  'order.read',
+  'order.create',
+  'order.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
