@@ -43,6 +43,9 @@ const ACCEPTED_TOOLS = [
   'order.read',
   'order.create',
   'order.update',
+  'cart.read',
+  'cart.create',
+  'cart.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {

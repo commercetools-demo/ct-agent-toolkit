@@ -56,6 +56,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `order.read`               | Read order information                  |
 | `order.create`             | Create order (from cart, quote, import) |
 | `order.update`             | Update order information                |
+| `cart.read`                | Read cart information                   |
+| `cart.create`              | Create cart                             |
+| `cart.update`              | Update cart information                 |
 
 ## Debugging locally
 
