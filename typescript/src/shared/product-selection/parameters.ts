@@ -1,53 +1,38 @@
 import {z} from 'zod';
 
-export const readProductSelectionParameters = z
-  .object({
-    id: z.string().optional().describe('ID of the ProductSelection to fetch'),
-    key: z.string().optional().describe('Key of the ProductSelection to fetch'),
-    expand: z
-      .array(z.string())
-      .optional()
-      .describe('References to expand in the returned object'),
-    where: z
-      .array(z.string())
-      .optional()
-      .describe(
-        'Query predicates specified as strings for filtering ProductSelections'
-      ),
-    sort: z
-      .array(z.string())
-      .optional()
-      .describe(
-        'Sort criteria for the results. Example: ["name.en asc", "createdAt desc"]'
-      ),
-    limit: z
-      .number()
-      .int()
-      .min(1)
-      .max(500)
-      .optional()
-      .describe('Maximum number of results to return (default: 20, max: 500)'),
-    offset: z
-      .number()
-      .int()
-      .min(0)
-      .optional()
-      .describe('Number of results to skip'),
-  })
-  .refine(
-    (data) => {
-      // If id or key is provided, it's a single-product selection fetch
-      if (data.id || data.key) {
-        return true;
-      }
-      // Otherwise we're doing a query, so validate query parameters
-      return true;
-    },
-    {
-      message:
-        'Either provide id/key for a specific ProductSelection, or query parameters to list ProductSelections',
-    }
-  );
+export const readProductSelectionParameters = z.object({
+  id: z.string().optional().describe('ID of the ProductSelection to fetch'),
+  key: z.string().optional().describe('Key of the ProductSelection to fetch'),
+  expand: z
+    .array(z.string())
+    .optional()
+    .describe('References to expand in the returned object'),
+  where: z
+    .array(z.string())
+    .optional()
+    .describe(
+      'Query predicates specified as strings for filtering ProductSelections'
+    ),
+  sort: z
+    .array(z.string())
+    .optional()
+    .describe(
+      'Sort criteria for the results. Example: ["name.en asc", "createdAt desc"]'
+    ),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(500)
+    .optional()
+    .describe('Maximum number of results to return (default: 20, max: 500)'),
+  offset: z
+    .number()
+    .int()
+    .min(0)
+    .optional()
+    .describe('Number of results to skip'),
+});
 
 export const createProductSelectionParameters = z.object({
   key: z
