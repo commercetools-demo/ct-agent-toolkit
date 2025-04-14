@@ -18,6 +18,12 @@ import {
   createOrderByImport,
   updateOrder,
 } from './order/functions';
+import {
+  readCart,
+  createCart,
+  replicateCart,
+  updateCart,
+} from './cart/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -44,4 +50,8 @@ export const functionMapping: {
   create_order_from_quote: createOrderFromQuote,
   create_order_by_import: createOrderByImport,
   update_order: updateOrder,
+  read_cart: readCart,
+  create_cart: createCart,
+  replicate_cart: replicateCart,
+  update_cart: updateCart,
 };
