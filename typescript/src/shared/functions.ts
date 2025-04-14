@@ -11,6 +11,13 @@ import {
   createProductSelection,
   updateProductSelection,
 } from './product-selection/functions';
+import {
+  readOrder,
+  createOrderFromCart,
+  createOrderFromQuote,
+  createOrderByImport,
+  updateOrder,
+} from './order/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -32,4 +39,9 @@ export const functionMapping: {
   read_product_selection: readProductSelection,
   create_product_selection: createProductSelection,
   update_product_selection: updateProductSelection,
+  read_order: readOrder,
+  create_order_from_cart: createOrderFromCart,
+  create_order_from_quote: createOrderFromQuote,
+  create_order_by_import: createOrderByImport,
+  update_order: updateOrder,
 };
