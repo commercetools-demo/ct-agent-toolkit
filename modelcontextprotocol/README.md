@@ -40,13 +40,22 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 
 ## Available tools
 
-| Tool                  | Description                     |
-| --------------------- | ------------------------------- |
-| `products.read`       | Read product information        |
-| `products.create`     | Create product information      |
-| `products.update`     | Update product information      |
-| `project.read`        | Read project information        |
-| `product-search.read` | Read product search information |
+| Tool                       | Description                              |
+| -------------------------- | ---------------------------------------- |
+| `products.read`            | Read product information                 |
+| `products.create`          | Create product information               |
+| `products.update`          | Update product information               |
+| `project.read`             | Read project information                 |
+| `product-search.read`      | Read product search information          |
+| `category.read`            | Read category information                |
+| `category.create`          | Create category information              |
+| `category.update`          | Update category information              |
+| `product-selection.read`   | Read product selection information       |
+| `product-selection.create` | Create product selection information     |
+| `product-selection.update` | Update product selection information     |
+| `order.read`               | Read order information                   |
+| `order.create`             | Create order (from cart, quote, import)  |
+| `order.update`             | Update order information                 |
 
 ## Debugging locally
 
