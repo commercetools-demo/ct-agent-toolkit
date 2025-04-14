@@ -37,6 +37,7 @@ The following steps are defining implementation of an example `products.create`.
 
 6. Create and expose tools
   - Modified `typescript/src/shared/(namespace)/tools.ts` and add new tool using parameters and prompt created
+  - Update `typescript/src/shared/tools.ts` with new tool
 
 7. Add new tool to ACCEPTED_TOOLS
    - add too to `modelcontextprotocol/src/index.ts`'s ACCEPTED_TOOLS

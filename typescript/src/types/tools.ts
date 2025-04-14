@@ -5,6 +5,7 @@ export enum AvailableNamespaces {
   Project = 'project',
   ProductSearch = 'product-search',
   Category = 'category',
+  ProductSelection = 'product-selection',
 }
 
 export type Tool = {
