@@ -49,6 +49,11 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
       'product-search': {
         read: true,
       },
+      cart: {
+        read: true,
+        create: true,
+        update: true,
+      },
     },
   },
 });
@@ -122,6 +127,11 @@ const server = new CommercetoolsAgentToolkit({
     actions: {
       products: {
         read: true,
+      },
+      cart: {
+        read: true,
+        create: true,
+        update: true,
       }
     },
   },
@@ -142,3 +152,20 @@ main().catch((error) => {
 ## Supported API methods
 
 - [Read products](https://docs.commercetools.com/api/projects/products#query-products)
+- [Create products](https://docs.commercetools.com/api/projects/products#create-product)
+- [Update products](https://docs.commercetools.com/api/projects/products#update-product)
+- [Read project information](https://docs.commercetools.com/api/projects/project#get-project)
+- [Search products](https://docs.commercetools.com/api/projects/products#search-products)
+- [Read category information](https://docs.commercetools.com/api/projects/categories#get-category-by-id)
+- [Create category](https://docs.commercetools.com/api/projects/categories#create-category)
+- [Update category](https://docs.commercetools.com/api/projects/categories#update-category)
+- [Read product selection](https://docs.commercetools.com/api/projects/product-selections#get-productselection-by-id)
+- [Create product selection](https://docs.commercetools.com/api/projects/product-selections#create-a-productselection)
+- [Update product selection](https://docs.commercetools.com/api/projects/product-selections#update-productselection)
+- [Read order information](https://docs.commercetools.com/api/projects/orders#get-order-by-id)
+- [Create order](https://docs.commercetools.com/api/projects/orders#create-order-from-cart)
+- [Update order](https://docs.commercetools.com/api/projects/orders#update-order)
+- [Read cart information](https://docs.commercetools.com/api/projects/carts#get-cart-by-id)
+- [Create cart](https://docs.commercetools.com/api/projects/carts#create-cart)
+- [Replicate cart](https://docs.commercetools.com/api/projects/carts#replicate-cart)
+- [Update cart](https://docs.commercetools.com/api/projects/carts#update-cart)
