@@ -6,6 +6,11 @@ import {
   createCategory,
   updateCategory,
 } from './category/functions';
+import {
+  readProductSelection,
+  createProductSelection,
+  updateProductSelection,
+} from './product-selection/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -24,4 +29,7 @@ export const functionMapping: {
   read_category: readCategory,
   create_category: createCategory,
   update_category: updateCategory,
+  read_product_selection: readProductSelection,
+  create_product_selection: createProductSelection,
+  update_product_selection: updateProductSelection,
 };
