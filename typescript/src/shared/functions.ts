@@ -47,6 +47,11 @@ import {
   createProductDiscount,
   updateProductDiscount,
 } from './product-discount/functions';
+import {
+  readCartDiscount,
+  createCartDiscount,
+  updateCartDiscount,
+} from './cart-discount/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -92,4 +97,7 @@ export const functionMapping: {
   read_product_discount: readProductDiscount,
   create_product_discount: createProductDiscount,
   update_product_discount: updateProductDiscount,
+  read_cart_discount: readCartDiscount,
+  create_cart_discount: createCartDiscount,
+  update_cart_discount: updateCartDiscount,
 };

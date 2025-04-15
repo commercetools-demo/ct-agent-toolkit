@@ -71,6 +71,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `product-discount.read`    | Read product discount information       |
 | `product-discount.create`  | Create product discount                 |
 | `product-discount.update`  | Update product discount information     |
+| `cart-discount.read`       | Read cart discount information          |
+| `cart-discount.create`     | Create cart discount                    |
+| `cart-discount.update`     | Update cart discount information        |
 
 ## Debugging locally
 
