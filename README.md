@@ -169,3 +169,6 @@ main().catch((error) => {
 - [Create cart](https://docs.commercetools.com/api/projects/carts#create-cart)
 - [Replicate cart](https://docs.commercetools.com/api/projects/carts#replicate-cart)
 - [Update cart](https://docs.commercetools.com/api/projects/carts#update-cart)
+- [Read customer group](https://docs.commercetools.com/api/projects/customerGroups#get-customergroup)
+- [Create customer group](https://docs.commercetools.com/api/projects/customerGroups#create-customergroup)
+- [Update customer group](https://docs.commercetools.com/api/projects/customerGroups#update-customergroup)

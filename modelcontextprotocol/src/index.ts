@@ -49,6 +49,9 @@ const ACCEPTED_TOOLS = [
   'customer.create',
   'customer.read',
   'customer.update',
+  'customer-group.read',
+  'customer-group.create',
+  'customer-group.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
