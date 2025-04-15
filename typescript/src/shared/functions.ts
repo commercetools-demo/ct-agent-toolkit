@@ -37,6 +37,11 @@ import {
   createCustomerGroup,
   updateCustomerGroup,
 } from './customer-group/functions';
+import {
+  readStandalonePrice,
+  createStandalonePrice,
+  updateStandalonePrice,
+} from './standalone-price/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -76,4 +81,7 @@ export const functionMapping: {
   read_customer_group: getCustomerGroup,
   create_customer_group: createCustomerGroup,
   update_customer_group: updateCustomerGroup,
+  read_standalone_price: readStandalonePrice,
+  create_standalone_price: createStandalonePrice,
+  update_standalone_price: updateStandalonePrice,
 };
