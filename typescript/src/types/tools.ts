@@ -8,6 +8,8 @@ export enum AvailableNamespaces {
   ProductSelection = 'product-selection',
   Order = 'order',
   Cart = 'cart',
+  Customer = 'customer',
+  CustomerGroup = 'customer-group',
 }
 
 export type Tool = {

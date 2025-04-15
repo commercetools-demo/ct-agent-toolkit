@@ -6,6 +6,7 @@ import productSelectionTools from './product-selection/tools';
 import orderTools from './order/tools';
 import cartTools from './cart/tools';
 import customerTools from './customer/tools';
+import customerGroupTools from './customer-group/tools';
 
 export default [
   ...productTools,
@@ -16,4 +17,5 @@ export default [
   ...orderTools,
   ...cartTools,
   ...customerTools,
+  ...customerGroupTools,
 ];

@@ -32,6 +32,11 @@ import {
   queryCustomers,
   updateCustomer,
 } from './customer/functions';
+import {
+  getCustomerGroup,
+  createCustomerGroup,
+  updateCustomerGroup,
+} from './customer-group/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -68,4 +73,7 @@ export const functionMapping: {
   get_customer_in_store_by_id: getCustomerInStoreById,
   query_customers: queryCustomers,
   update_customer: updateCustomer,
+  read_customer_group: getCustomerGroup,
+  create_customer_group: createCustomerGroup,
+  update_customer_group: updateCustomerGroup,
 };
