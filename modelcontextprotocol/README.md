@@ -59,6 +59,12 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `cart.read`                | Read cart information                   |
 | `cart.create`              | Create cart                             |
 | `cart.update`              | Update cart information                 |
+| `customer.read`            | Read customer information               |
+| `customer.create`          | Create customer                         |
+| `customer.update`          | Update customer information             |
+| `customer-group.read`      | Read customer group information         |
+| `customer-group.create`    | Create customer group                   |
+| `customer-group.update`    | Update customer group information       |
 
 ## Debugging locally
 
