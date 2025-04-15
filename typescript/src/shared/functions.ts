@@ -24,6 +24,14 @@ import {
   replicateCart,
   updateCart,
 } from './cart/functions';
+import {
+  createCustomer,
+  createCustomerInStore,
+  getCustomerById,
+  getCustomerInStoreById,
+  queryCustomers,
+  updateCustomer,
+} from './customer/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -54,4 +62,10 @@ export const functionMapping: {
   create_cart: createCart,
   replicate_cart: replicateCart,
   update_cart: updateCart,
+  create_customer: createCustomer,
+  create_customer_in_store: createCustomerInStore,
+  get_customer_by_id: getCustomerById,
+  get_customer_in_store_by_id: getCustomerInStoreById,
+  query_customers: queryCustomers,
+  update_customer: updateCustomer,
 };
