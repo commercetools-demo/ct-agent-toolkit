@@ -10,6 +10,7 @@ export enum AvailableNamespaces {
   Cart = 'cart',
   Customer = 'customer',
   CustomerGroup = 'customer-group',
+  StandalonePrice = 'standalone-price',
 }
 
 export type Tool = {

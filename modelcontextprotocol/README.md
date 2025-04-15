@@ -65,6 +65,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `customer-group.read`      | Read customer group information         |
 | `customer-group.create`    | Create customer group                   |
 | `customer-group.update`    | Update customer group information       |
+| `standalone-price.read`    | Read standalone price information       |
+| `standalone-price.create`  | Create standalone price                 |
+| `standalone-price.update`  | Update standalone price information     |
 
 ## Debugging locally
 
