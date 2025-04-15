@@ -8,6 +8,7 @@ import cartTools from './cart/tools';
 import customerTools from './customer/tools';
 import customerGroupTools from './customer-group/tools';
 import standalonePriceTools from './standalone-price/tools';
+import productDiscountTools from './product-discount/tools';
 
 export default [
   ...productTools,
@@ -20,4 +21,5 @@ export default [
   ...customerTools,
   ...customerGroupTools,
   ...standalonePriceTools,
+  ...productDiscountTools,
 ];

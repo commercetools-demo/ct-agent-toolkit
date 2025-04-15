@@ -42,6 +42,7 @@ describe('main function', () => {
           customer: {read: true, create: true, update: true},
           'customer-group': {read: true, create: true, update: true},
           'standalone-price': {read: true, create: true, update: true},
+          'product-discount': {read: true, create: true, update: true},
         },
       },
     });
@@ -720,6 +721,84 @@ describe('main function', () => {
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
       configuration: {actions: {'standalone-price': {update: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (product-discount.read)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=product-discount.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'product-discount': {read: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (product-discount.create)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=product-discount.create',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'product-discount': {create: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (product-discount.update)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=product-discount.update',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'product-discount': {update: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();

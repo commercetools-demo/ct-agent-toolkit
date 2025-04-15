@@ -68,6 +68,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `standalone-price.read`    | Read standalone price information       |
 | `standalone-price.create`  | Create standalone price                 |
 | `standalone-price.update`  | Update standalone price information     |
+| `product-discount.read`    | Read product discount information       |
+| `product-discount.create`  | Create product discount                 |
+| `product-discount.update`  | Update product discount information     |
 
 ## Debugging locally
 

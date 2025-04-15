@@ -55,6 +55,9 @@ const ACCEPTED_TOOLS = [
   'standalone-price.read',
   'standalone-price.create',
   'standalone-price.update',
+  'product-discount.read',
+  'product-discount.create',
+  'product-discount.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {

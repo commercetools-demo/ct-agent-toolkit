@@ -42,6 +42,11 @@ import {
   createStandalonePrice,
   updateStandalonePrice,
 } from './standalone-price/functions';
+import {
+  readProductDiscount,
+  createProductDiscount,
+  updateProductDiscount,
+} from './product-discount/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -84,4 +89,7 @@ export const functionMapping: {
   read_standalone_price: readStandalonePrice,
   create_standalone_price: createStandalonePrice,
   update_standalone_price: updateStandalonePrice,
+  read_product_discount: readProductDiscount,
+  create_product_discount: createProductDiscount,
+  update_product_discount: updateProductDiscount,
 };
