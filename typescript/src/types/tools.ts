@@ -11,6 +11,7 @@ export enum AvailableNamespaces {
   Customer = 'customer',
   CustomerGroup = 'customer-group',
   StandalonePrice = 'standalone-price',
+  DiscountCode = 'discount-code',
 }
 
 export type Tool = {

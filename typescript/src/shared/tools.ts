@@ -10,6 +10,7 @@ import customerGroupTools from './customer-group/tools';
 import standalonePriceTools from './standalone-price/tools';
 import productDiscountTools from './product-discount/tools';
 import cartDiscountTools from './cart-discount/tools';
+import discountCodeTools from './discount-code/tools';
 
 export default [
   ...productTools,
@@ -24,4 +25,5 @@ export default [
   ...standalonePriceTools,
   ...productDiscountTools,
   ...cartDiscountTools,
+  ...discountCodeTools,
 ];
