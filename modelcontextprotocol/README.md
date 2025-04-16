@@ -25,7 +25,7 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
       "command": "npx",
       "args": [
         "-y",
-        "@commercetools-demo/mcp",
+        "@commercetools-demo/mcp@latest",
         "--tools=all",
         "--clientId=CLIENT_ID",
         "--clientSecret=CLIENT_SECRET",
