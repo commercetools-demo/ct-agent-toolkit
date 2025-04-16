@@ -20,7 +20,7 @@ const tools: Tool[] = [
     description: readDiscountCodePrompt,
     parameters: readDiscountCodeParameters,
     actions: {
-      discountCodes: {
+      'discount-code': {
         read: true,
       },
     },
@@ -31,7 +31,7 @@ const tools: Tool[] = [
     description: listDiscountCodesPrompt,
     parameters: listDiscountCodesParameters,
     actions: {
-      discountCodes: {
+      'discount-code': {
         read: true,
       },
     },
@@ -42,7 +42,7 @@ const tools: Tool[] = [
     description: createDiscountCodePrompt,
     parameters: createDiscountCodeParameters,
     actions: {
-      discountCodes: {
+      'discount-code': {
         create: true,
       },
     },
@@ -53,7 +53,7 @@ const tools: Tool[] = [
     description: updateDiscountCodePrompt,
     parameters: updateDiscountCodeParameters,
     actions: {
-      discountCodes: {
+      'discount-code': {
         update: true,
       },
     },
