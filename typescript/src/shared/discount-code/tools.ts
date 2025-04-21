@@ -21,7 +21,7 @@ const tools: Tool[] = [
     parameters: readDiscountCodeParameters,
     actions: {
       'discount-code': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -32,7 +32,7 @@ const tools: Tool[] = [
     parameters: listDiscountCodesParameters,
     actions: {
       'discount-code': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -43,7 +43,7 @@ const tools: Tool[] = [
     parameters: createDiscountCodeParameters,
     actions: {
       'discount-code': {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -54,7 +54,7 @@ const tools: Tool[] = [
     parameters: updateDiscountCodeParameters,
     actions: {
       'discount-code': {
-        update: true,
+        modify: true,
       },
     },
   },

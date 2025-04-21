@@ -19,7 +19,7 @@ const tools: Tool[] = [
     parameters: readProductDiscountParameters,
     actions: {
       'product-discount': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -30,7 +30,7 @@ const tools: Tool[] = [
     parameters: createProductDiscountParameters,
     actions: {
       'product-discount': {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -41,7 +41,7 @@ const tools: Tool[] = [
     parameters: updateProductDiscountParameters,
     actions: {
       'product-discount': {
-        update: true,
+        modify: true,
       },
     },
   },

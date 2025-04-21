@@ -12,7 +12,7 @@ describe('isToolAllowed', () => {
       }),
       actions: {
         products: {
-          read: true,
+          view: true,
         },
       },
     };
@@ -20,7 +20,7 @@ describe('isToolAllowed', () => {
     const configuration = {
       actions: {
         products: {
-          read: true,
+          view: true,
         },
       },
     };
@@ -38,7 +38,7 @@ describe('isToolAllowed', () => {
       }),
       actions: {
         products: {
-          read: true,
+          view: true,
         },
       },
     };
@@ -46,7 +46,7 @@ describe('isToolAllowed', () => {
     const configuration = {
       actions: {
         products: {
-          read: false,
+          view: false,
         },
       },
     };
@@ -64,7 +64,7 @@ describe('isToolAllowed', () => {
       }),
       actions: {
         products: {
-          read: true,
+          view: true,
         },
       },
     };

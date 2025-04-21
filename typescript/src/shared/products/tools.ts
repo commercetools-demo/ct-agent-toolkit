@@ -19,7 +19,7 @@ const tools: Tool[] = [
     parameters: listProductsParameters,
     actions: {
       products: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -30,7 +30,7 @@ const tools: Tool[] = [
     parameters: createProductParameters,
     actions: {
       products: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -41,7 +41,7 @@ const tools: Tool[] = [
     parameters: updateProductParameters,
     actions: {
       products: {
-        update: true,
+        modify: true,
       },
     },
   },

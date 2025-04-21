@@ -39,8 +39,8 @@ describe('main function', () => {
           'product-selection': {read: true, create: true, update: true},
           order: {read: true, create: true, update: true},
           cart: {read: true, create: true, update: true},
-          customer: {read: true, create: true, update: true},
-          'customer-group': {read: true, create: true, update: true},
+          customer: {view: true, modify: true},
+          'customer-group': {view: true, modify: true},
           'standalone-price': {read: true, create: true, update: true},
           'product-discount': {read: true, create: true, update: true},
           'cart-discount': {read: true, create: true, update: true},
@@ -494,11 +494,11 @@ describe('main function', () => {
     expect(StdioServerTransport).toHaveBeenCalled();
   });
 
-  it('should initialize the server with specific tools correctly (customer.create)', async () => {
+  it('should initialize the server with specific tools correctly (customer.modify)', async () => {
     process.argv = [
       'node',
       'index.js',
-      '--tools=customer.create',
+      '--tools=customer.modify',
       '--clientId=test_client_id',
       '--clientSecret=test_client_secret',
       '--authUrl=https://auth.commercetools.com',
@@ -514,17 +514,17 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {create: true}}},
+      configuration: {actions: {customer: {modify: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
   });
 
-  it('should initialize the server with specific tools correctly (customer.read)', async () => {
+  it('should initialize the server with specific tools correctly (customer.view)', async () => {
     process.argv = [
       'node',
       'index.js',
-      '--tools=customer.read',
+      '--tools=customer.view',
       '--clientId=test_client_id',
       '--clientSecret=test_client_secret',
       '--authUrl=https://auth.commercetools.com',
@@ -540,17 +540,17 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {read: true}}},
+      configuration: {actions: {customer: {view: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
   });
 
-  it('should initialize the server with specific tools correctly (customer.update)', async () => {
+  it('should initialize the server with customer-group.view tool correctly', async () => {
     process.argv = [
       'node',
       'index.js',
-      '--tools=customer.update',
+      '--tools=customer-group.view',
       '--clientId=test_client_id',
       '--clientSecret=test_client_secret',
       '--authUrl=https://auth.commercetools.com',
@@ -566,17 +566,17 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {update: true}}},
+      configuration: {actions: {'customer-group': {view: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
   });
 
-  it('should initialize the server with customer-group.read tool correctly', async () => {
+  it('should initialize the server with customer-group.modify tool correctly', async () => {
     process.argv = [
       'node',
       'index.js',
-      '--tools=customer-group.read',
+      '--tools=customer-group.modify',
       '--clientId=test_client_id',
       '--clientSecret=test_client_secret',
       '--authUrl=https://auth.commercetools.com',
@@ -592,59 +592,7 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {read: true}}},
-    });
-
-    expect(StdioServerTransport).toHaveBeenCalled();
-  });
-
-  it('should initialize the server with customer-group.create tool correctly', async () => {
-    process.argv = [
-      'node',
-      'index.js',
-      '--tools=customer-group.create',
-      '--clientId=test_client_id',
-      '--clientSecret=test_client_secret',
-      '--authUrl=https://auth.commercetools.com',
-      '--projectKey=test_project',
-      '--apiUrl=https://api.commercetools.com',
-    ];
-
-    await main();
-
-    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
-      clientId: 'test_client_id',
-      clientSecret: 'test_client_secret',
-      authUrl: 'https://auth.commercetools.com',
-      projectKey: 'test_project',
-      apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {create: true}}},
-    });
-
-    expect(StdioServerTransport).toHaveBeenCalled();
-  });
-
-  it('should initialize the server with customer-group.update tool correctly', async () => {
-    process.argv = [
-      'node',
-      'index.js',
-      '--tools=customer-group.update',
-      '--clientId=test_client_id',
-      '--clientSecret=test_client_secret',
-      '--authUrl=https://auth.commercetools.com',
-      '--projectKey=test_project',
-      '--apiUrl=https://api.commercetools.com',
-    ];
-
-    await main();
-
-    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
-      clientId: 'test_client_id',
-      clientSecret: 'test_client_secret',
-      authUrl: 'https://auth.commercetools.com',
-      projectKey: 'test_project',
-      apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {update: true}}},
+      configuration: {actions: {'customer-group': {modify: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -957,6 +905,162 @@ describe('main function', () => {
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
       configuration: {actions: {'discount-code': {update: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (customer.update)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer.update',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {customer: {update: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (customer.create)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer.create',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {customer: {create: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with specific tools correctly (customer.read)', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {customer: {read: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with customer-group.read tool correctly', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer-group.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'customer-group': {read: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with customer-group.create tool correctly', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer-group.create',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'customer-group': {create: true}}},
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with customer-group.update tool correctly', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=customer-group.update',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {actions: {'customer-group': {update: true}}},
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();

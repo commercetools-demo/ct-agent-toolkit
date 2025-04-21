@@ -5,6 +5,7 @@ import {
   getCustomerInStoreByIdPrompt,
   queryCustomersPrompt,
   updateCustomerPrompt,
+  updateCustomerInStorePrompt,
 } from './prompts';
 
 import {
@@ -14,6 +15,7 @@ import {
   getCustomerInStoreByIdParameters,
   queryCustomersParameters,
   updateCustomerParameters,
+  updateCustomerInStoreParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
 
@@ -25,7 +27,7 @@ const tools: Tool[] = [
     parameters: createCustomerParameters,
     actions: {
       customer: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -36,7 +38,7 @@ const tools: Tool[] = [
     parameters: createCustomerInStoreParameters,
     actions: {
       customer: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -47,7 +49,7 @@ const tools: Tool[] = [
     parameters: getCustomerByIdParameters,
     actions: {
       customer: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -58,7 +60,7 @@ const tools: Tool[] = [
     parameters: getCustomerInStoreByIdParameters,
     actions: {
       customer: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -69,7 +71,7 @@ const tools: Tool[] = [
     parameters: queryCustomersParameters,
     actions: {
       customer: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -80,7 +82,18 @@ const tools: Tool[] = [
     parameters: updateCustomerParameters,
     actions: {
       customer: {
-        update: true,
+        modify: true,
+      },
+    },
+  },
+  {
+    method: 'update_customer_in_store',
+    name: 'Update Customer In Store',
+    description: updateCustomerInStorePrompt,
+    parameters: updateCustomerInStoreParameters,
+    actions: {
+      customer: {
+        modify: true,
       },
     },
   },

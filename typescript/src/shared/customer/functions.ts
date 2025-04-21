@@ -6,6 +6,7 @@ import {
   getCustomerInStoreByIdParameters,
   queryCustomersParameters,
   updateCustomerParameters,
+  updateCustomerInStoreParameters,
 } from './parameters';
 import {
   ApiRoot,
@@ -149,5 +150,31 @@ export const updateCustomer = async (
     return customer.body;
   } catch (error: any) {
     throw new Error('Failed to update customer: ' + error.message);
+  }
+};
+
+export const updateCustomerInStore = async (
+  apiRoot: ApiRoot,
+  context: {projectKey: string},
+  params: z.infer<typeof updateCustomerInStoreParameters>
+) => {
+  try {
+    const {storeKey, ...updateRequest} = params;
+    const customer = await apiRoot
+      .withProjectKey({projectKey: context.projectKey})
+      .inStoreKeyWithStoreKeyValue({storeKey})
+      .customers()
+      .withId({ID: params.id})
+      .post({
+        body: {
+          version: params.version,
+          actions: params.actions as CustomerUpdateAction[],
+        },
+      })
+      .execute();
+
+    return customer.body;
+  } catch (error: any) {
+    throw new Error('Failed to update customer in store: ' + error.message);
   }
 };

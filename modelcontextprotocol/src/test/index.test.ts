@@ -128,7 +128,7 @@ describe('parseArgs function', () => {
         '--apiUrl=https://api.commercetools.com',
       ];
       expect(() => parseArgs(args)).toThrow(
-        'Invalid tool: invalid.tool. Accepted tools are: products.read, products.create, products.update, project.read, product-search.read, category.read, category.create, category.update, product-selection.read, product-selection.create, product-selection.update'
+        'Invalid tool: invalid.tool. Accepted tools are:'
       );
     });
 

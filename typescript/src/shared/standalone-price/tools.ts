@@ -19,7 +19,7 @@ const tools: Tool[] = [
     parameters: readStandalonePriceParameters,
     actions: {
       'standalone-price': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -30,7 +30,7 @@ const tools: Tool[] = [
     parameters: createStandalonePriceParameters,
     actions: {
       'standalone-price': {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -41,7 +41,7 @@ const tools: Tool[] = [
     parameters: updateStandalonePriceParameters,
     actions: {
       'standalone-price': {
-        update: true,
+        modify: true,
       },
     },
   },

@@ -23,7 +23,7 @@ const tools: Tool[] = [
     parameters: readOrderParameters,
     actions: {
       order: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -34,7 +34,7 @@ const tools: Tool[] = [
     parameters: createOrderFromCartParameters,
     actions: {
       order: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -45,7 +45,7 @@ const tools: Tool[] = [
     parameters: createOrderFromQuoteParameters,
     actions: {
       order: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -56,7 +56,7 @@ const tools: Tool[] = [
     parameters: createOrderByImportParameters,
     actions: {
       order: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -67,7 +67,7 @@ const tools: Tool[] = [
     parameters: updateOrderParameters,
     actions: {
       order: {
-        update: true,
+        modify: true,
       },
     },
   },

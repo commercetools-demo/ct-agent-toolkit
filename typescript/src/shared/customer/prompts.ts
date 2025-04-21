@@ -122,3 +122,38 @@ Example actions from commercetools API include:
 
 Each action type requires specific fields according to the commercetools API.
 `;
+
+export const updateCustomerInStorePrompt = `
+This tool will update a Customer in a specific store in commercetools using update actions from the commercetools API.
+
+It takes these required arguments:
+- id (string): The ID of the customer to update.
+- version (integer): The current version of the customer.
+- storeKey (string): The key of the store to update the customer in.
+- actions (array): An array of update actions to perform on the customer. Each action should have an "action" field indicating the action type.
+
+Example actions from commercetools API include:
+- addAddress
+- addBillingAddressId
+- addShippingAddressId
+- changeAddress
+- changeEmail
+- removeAddress
+- removeBillingAddressId
+- removeShippingAddressId
+- setCompanyName
+- setCustomField
+- setCustomType
+- setDateOfBirth
+- setDefaultBillingAddress
+- setDefaultShippingAddress
+- setFirstName
+- setLastName
+- setLocale
+- setMiddleName
+- setSalutation
+- setTitle
+- setVatId
+
+Each action type requires specific fields according to the commercetools API.
+`;

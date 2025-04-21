@@ -27,7 +27,7 @@ const tools: Tool[] = [
     >,
     actions: {
       cart: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -43,7 +43,7 @@ const tools: Tool[] = [
     >,
     actions: {
       cart: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -59,7 +59,7 @@ const tools: Tool[] = [
     >,
     actions: {
       cart: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -75,7 +75,7 @@ const tools: Tool[] = [
     >,
     actions: {
       cart: {
-        update: true,
+        modify: true,
       },
     },
   },

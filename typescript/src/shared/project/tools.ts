@@ -10,7 +10,7 @@ const tools: Tool[] = [
     parameters: readProjectParameters,
     actions: {
       project: {
-        read: true,
+        view: true,
       },
     },
   },

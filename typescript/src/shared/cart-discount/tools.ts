@@ -19,7 +19,7 @@ const tools: Tool[] = [
     parameters: readCartDiscountParameters,
     actions: {
       'cart-discount': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -30,7 +30,7 @@ const tools: Tool[] = [
     parameters: createCartDiscountParameters,
     actions: {
       'cart-discount': {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -41,7 +41,7 @@ const tools: Tool[] = [
     parameters: updateCartDiscountParameters,
     actions: {
       'cart-discount': {
-        update: true,
+        modify: true,
       },
     },
   },

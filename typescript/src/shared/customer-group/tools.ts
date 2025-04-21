@@ -107,7 +107,7 @@ const tools: Tool[] = [
     >,
     actions: {
       'customer-group': {
-        read: true,
+        view: true,
       },
     },
   },
@@ -123,7 +123,7 @@ const tools: Tool[] = [
     >,
     actions: {
       'customer-group': {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -139,7 +139,7 @@ const tools: Tool[] = [
     >,
     actions: {
       'customer-group': {
-        update: true,
+        modify: true,
       },
     },
   },

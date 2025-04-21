@@ -10,7 +10,7 @@ const tools: Tool[] = [
     parameters: searchProductsParameters,
     actions: {
       'product-search': {
-        read: true,
+        view: true,
       },
     },
   },

@@ -3,7 +3,7 @@ import {AvailableNamespaces} from './tools';
 // Actions restrict the subset of API calls that can be made. They should
 // be used in conjunction with Restricted API Keys. Setting a permission to false
 // prevents the related "tool" from being considered.
-export type Permission = 'create' | 'update' | 'read';
+export type Permission = 'view' | 'modify';
 
 export type Actions = {
   [K in AvailableNamespaces]?: {

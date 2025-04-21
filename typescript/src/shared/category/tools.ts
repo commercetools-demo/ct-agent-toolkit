@@ -19,7 +19,7 @@ const tools: Tool[] = [
     parameters: readCategoryParameters,
     actions: {
       category: {
-        read: true,
+        view: true,
       },
     },
   },
@@ -30,7 +30,7 @@ const tools: Tool[] = [
     parameters: createCategoryParameters,
     actions: {
       category: {
-        create: true,
+        modify: true,
       },
     },
   },
@@ -41,7 +41,7 @@ const tools: Tool[] = [
     parameters: updateCategoryParameters,
     actions: {
       category: {
-        update: true,
+        modify: true,
       },
     },
   },

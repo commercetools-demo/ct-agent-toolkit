@@ -157,3 +157,7 @@ export const updateCustomerParameters = z.object({
       )
   ),
 });
+
+export const updateCustomerInStoreParameters = updateCustomerParameters.extend({
+  storeKey: z.string().describe('The key of the store to update the customer in')
+});
