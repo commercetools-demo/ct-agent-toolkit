@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@commercetools-demo/ct-agent-toolkit':
-        specifier: ^1.10.0
-        version: 1.10.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))
+        specifier: ^1.11.0
+        version: 1.11.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))
       '@modelcontextprotocol/sdk':
         specifier: ^1.9.0
         version: 1.9.0
@@ -266,8 +266,8 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@commercetools-demo/ct-agent-toolkit@1.10.0':
-    resolution: {integrity: sha512-UG5wY/fLdFXhQbCk11sGyFtyS4CuFyWSY0A5rmzAe04fhgLI9CJ8V3RA/PdMeA1INQynxwLjQWhg7j4t6RGJGg==}
+  '@commercetools-demo/ct-agent-toolkit@1.11.0':
+    resolution: {integrity: sha512-4+2h1tUWPufP/g2okXvfDSBFHD/usN19ynWlvJ89xBZQK5n3bqZ6DZGVhE3J0R604oHnau/IGjAwsi1hvLkghQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^0.3.6
@@ -3829,7 +3829,7 @@ snapshots:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
       zod: 3.24.2
-      zod-to-json-schema: 3.24.1(zod@3.24.2)
+      zod-to-json-schema: 3.24.5(zod@3.24.2)
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -4053,7 +4053,7 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@commercetools-demo/ct-agent-toolkit@1.10.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))':
+  '@commercetools-demo/ct-agent-toolkit@1.11.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))':
     dependencies:
       '@commercetools/platform-sdk': 8.8.0
       '@commercetools/ts-client': 3.3.0
@@ -4354,7 +4354,7 @@ snapshots:
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.2
-      zod-to-json-schema: 3.24.1(zod@3.24.2)
+      zod-to-json-schema: 3.24.5(zod@3.24.2)
     transitivePeerDependencies:
       - openai
 
