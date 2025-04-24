@@ -1,4 +1,4 @@
-import {readProject} from '../../../shared/project/functions';
+import {readProject} from '../functions';
 
 interface ErrorWithStatusCode extends Error {
   statusCode?: number;
