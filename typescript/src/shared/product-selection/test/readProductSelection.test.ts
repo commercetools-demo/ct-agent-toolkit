@@ -185,6 +185,6 @@ describe('readProductSelection', () => {
         mockContext,
         params
       )
-    ).rejects.toThrow('Failed to read ProductSelection: API Error');
+    ).rejects.toThrow('Failed to read ProductSelection');
   });
 });

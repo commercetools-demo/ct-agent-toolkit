@@ -9,6 +9,7 @@ import {
   StandalonePriceDraft,
   StandalonePriceUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readStandalonePrice = async (
   apiRoot: ApiRoot,
@@ -65,7 +66,7 @@ export const readStandalonePrice = async (
 
     return response.body;
   } catch (error: any) {
-    throw new Error('Failed to read standalone prices: ' + error.message);
+    throw new SDKError('Failed to read standalone prices', error);
   }
 };
 
@@ -85,7 +86,7 @@ export const createStandalonePrice = async (
 
     return response.body;
   } catch (error: any) {
-    throw new Error('Failed to create standalone price: ' + error.message);
+    throw new SDKError('Failed to create standalone price', error);
   }
 };
 
@@ -133,6 +134,6 @@ export const updateStandalonePrice = async (
 
     return response.body;
   } catch (error: any) {
-    throw new Error('Failed to update standalone price: ' + error.message);
+    throw new SDKError('Failed to update standalone price', error);
   }
 };

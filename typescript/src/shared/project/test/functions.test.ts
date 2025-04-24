@@ -66,7 +66,7 @@ describe('readProject', () => {
 
     const params = {};
     await expect(readProject(mockApiRoot, mockContext, params)).rejects.toThrow(
-      'Failed to read project: API Error (404)'
+      'Failed to read project'
     );
   });
 });

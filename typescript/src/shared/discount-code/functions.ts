@@ -10,6 +10,7 @@ import {
   DiscountCodeDraft,
   DiscountCodeUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readDiscountCode = async (
   apiRoot: ApiRoot,
@@ -47,7 +48,7 @@ export const readDiscountCode = async (
       throw new Error('Either id or key must be provided');
     }
   } catch (error: any) {
-    throw new Error('Failed to read discount code: ' + error.message);
+    throw new SDKError('Failed to read discount code', error);
   }
 };
 
@@ -73,7 +74,7 @@ export const listDiscountCodes = async (
 
     return discountCodes.body;
   } catch (error: any) {
-    throw new Error('Failed to list discount codes: ' + error.message);
+    throw new SDKError('Failed to list discount codes', error);
   }
 };
 
@@ -93,7 +94,7 @@ export const createDiscountCode = async (
 
     return discountCode.body;
   } catch (error: any) {
-    throw new Error('Failed to create discount code: ' + error.message);
+    throw new SDKError('Failed to create discount code', error);
   }
 };
 
@@ -135,6 +136,6 @@ export const updateDiscountCode = async (
       throw new Error('Either id or key must be provided');
     }
   } catch (error: any) {
-    throw new Error('Failed to update discount code: ' + error.message);
+    throw new SDKError('Failed to update discount code', error);
   }
 };

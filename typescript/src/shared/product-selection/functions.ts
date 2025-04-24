@@ -9,6 +9,7 @@ import {
   ProductSelectionDraft,
   ProductSelectionUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readProductSelection = async (
   apiRoot: ApiRoot,
@@ -62,7 +63,7 @@ export const readProductSelection = async (
       return productSelections.body;
     }
   } catch (error: any) {
-    throw new Error('Failed to read ProductSelection: ' + error.message);
+    throw new SDKError('Failed to read ProductSelection', error);
   }
 };
 
@@ -82,7 +83,7 @@ export const createProductSelection = async (
 
     return productSelection.body;
   } catch (error: any) {
-    throw new Error('Failed to create ProductSelection: ' + error.message);
+    throw new SDKError('Failed to create ProductSelection', error);
   }
 };
 
@@ -126,6 +127,6 @@ export const updateProductSelection = async (
       );
     }
   } catch (error: any) {
-    throw new Error('Failed to update ProductSelection: ' + error.message);
+    throw new SDKError('Failed to update ProductSelection', error);
   }
 };

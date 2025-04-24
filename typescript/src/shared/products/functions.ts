@@ -9,6 +9,7 @@ import {
   ProductDraft,
   ProductUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const listProducts = async (
   apiRoot: ApiRoot,
@@ -32,7 +33,7 @@ export const listProducts = async (
 
     return products.body;
   } catch (error: any) {
-    return 'Failed to list products' + error.message;
+    throw new SDKError('Failed to list products', error);
   }
 };
 
@@ -52,7 +53,7 @@ export const createProduct = async (
 
     return product.body;
   } catch (error: any) {
-    throw new Error('Failed to create product: ' + error.message);
+    throw new SDKError('Failed to create product', error);
   }
 };
 
@@ -76,6 +77,6 @@ export const updateProduct = async (
 
     return product.body;
   } catch (error: any) {
-    throw new Error('Failed to update product: ' + error.message);
+    throw new SDKError('Failed to update product', error);
   }
 };

@@ -14,6 +14,7 @@ import {
   OrderImportDraft,
   OrderFromQuoteDraft,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readOrder = async (
   apiRoot: ApiRoot,
@@ -155,7 +156,7 @@ export const readOrder = async (
       'Invalid parameters. Either id, orderNumber, or where must be provided'
     );
   } catch (error: any) {
-    throw new Error('Failed to read order: ' + error.message);
+    throw new SDKError('Failed to read order', error);
   }
 };
 
@@ -209,7 +210,7 @@ export const createOrderFromCart = async (
       return response.body;
     }
   } catch (error: any) {
-    throw new Error('Failed to create order from cart: ' + error.message);
+    throw new SDKError('Failed to create order from cart', error);
   }
 };
 
@@ -245,9 +246,7 @@ export const createOrderFromQuote = async (
 
         return response.body;
       } catch (error: any) {
-        throw new Error(
-          'Failed to create order from quote in store: ' + error.message
-        );
+        throw new SDKError('Failed to create order from quote in store', error);
       }
     } else {
       // Create without store
@@ -262,11 +261,11 @@ export const createOrderFromQuote = async (
 
         return response.body;
       } catch (error: any) {
-        throw new Error('Failed to create order from quote: ' + error.message);
+        throw new SDKError('Failed to create order from quote', error);
       }
     }
   } catch (error: any) {
-    throw new Error('Failed to create order from quote: ' + error.message);
+    throw new SDKError('Failed to create order from quote', error);
   }
 };
 
@@ -324,7 +323,7 @@ export const createOrderByImport = async (
 
     return response.body;
   } catch (error: any) {
-    throw new Error('Failed to import order: ' + error.message);
+    throw new SDKError('Failed to import order', error);
   }
 };
 
@@ -402,12 +401,10 @@ export const updateOrder = async (
 
         return response.body;
       }
+    } else {
+      throw new Error('Either id or orderNumber must be provided');
     }
-
-    throw new Error(
-      'Invalid parameters. Either id or orderNumber must be provided'
-    );
   } catch (error: any) {
-    throw new Error('Failed to update order: ' + error.message);
+    throw new SDKError('Failed to update order', error);
   }
 };

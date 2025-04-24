@@ -125,7 +125,7 @@ describe('Cart Functions', () => {
       const params = {} as z.infer<typeof readCartParameters>;
       await expect(
         readCart(mockApiRoot as any, context, params)
-      ).rejects.toThrow('Invalid parameters');
+      ).rejects.toThrow('Failed to read cart');
     });
   });
 
@@ -316,7 +316,7 @@ describe('Cart Functions', () => {
 
       await expect(
         updateCart(mockApiRoot as any, context, params)
-      ).rejects.toThrow('Either id or key must be provided');
+      ).rejects.toThrow('Failed to update cart');
     });
 
     it('should handle errors', async () => {

@@ -118,6 +118,6 @@ describe('readCategory', () => {
 
     await expect(
       readCategory(mockApiRoot as any, {projectKey: 'test-project'}, {})
-    ).rejects.toThrow('Failed to read category: API Error');
+    ).rejects.toThrow('Failed to read category');
   });
 });

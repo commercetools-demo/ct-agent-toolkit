@@ -8,6 +8,7 @@ import {
   UpdateCustomerGroupByIdParameters,
   UpdateCustomerGroupByKeyParameters,
 } from './parameters';
+import {SDKError} from '../errors/sdkError';
 
 // Export the CustomerGroupUpdateAction type for use in tests
 export {CustomerGroupUpdateAction};
@@ -73,9 +74,7 @@ export async function getCustomerGroupById(
       return response.body;
     }
   } catch (error) {
-    throw new Error(
-      `Error fetching customer group by ID: ${(error as Error).message}`
-    );
+    throw new SDKError('Error fetching customer group by ID', error);
   }
 }
 
@@ -109,9 +108,7 @@ export async function getCustomerGroupByKey(
       return response.body;
     }
   } catch (error) {
-    throw new Error(
-      `Error fetching customer group by key: ${(error as Error).message}`
-    );
+    throw new SDKError('Error fetching customer group by key', error);
   }
 }
 
@@ -158,9 +155,7 @@ export async function queryCustomerGroups(
 
     return response.body;
   } catch (error) {
-    throw new Error(
-      `Error querying customer groups: ${(error as Error).message}`
-    );
+    throw new SDKError('Error querying customer groups', error);
   }
 }
 
@@ -185,9 +180,7 @@ export async function createCustomerGroup(
 
     return response.body;
   } catch (error) {
-    throw new Error(
-      `Error creating customer group: ${(error as Error).message}`
-    );
+    throw new SDKError('Error creating customer group', error);
   }
 }
 
@@ -216,9 +209,7 @@ export async function updateCustomerGroupById(
 
     return response.body;
   } catch (error) {
-    throw new Error(
-      `Error updating customer group by ID: ${(error as Error).message}`
-    );
+    throw new SDKError('Error updating customer group by ID', error);
   }
 }
 
@@ -247,8 +238,6 @@ export async function updateCustomerGroupByKey(
 
     return response.body;
   } catch (error) {
-    throw new Error(
-      `Error updating customer group by key: ${(error as Error).message}`
-    );
+    throw new SDKError('Error updating customer group by key', error);
   }
 }

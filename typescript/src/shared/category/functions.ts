@@ -9,6 +9,7 @@ import {
   CategoryDraft,
   CategoryUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readCategory = async (
   apiRoot: ApiRoot,
@@ -65,7 +66,7 @@ export const readCategory = async (
 
     return categories.body;
   } catch (error: any) {
-    throw new Error('Failed to read category: ' + error.message);
+    throw new SDKError('Failed to read category', error);
   }
 };
 
@@ -85,7 +86,7 @@ export const createCategory = async (
 
     return category.body;
   } catch (error: any) {
-    throw new Error('Failed to create category: ' + error.message);
+    throw new SDKError('Failed to create category', error);
   }
 };
 
@@ -131,6 +132,6 @@ export const updateCategory = async (
       'Either id or key must be provided for updating a category'
     );
   } catch (error: any) {
-    throw new Error('Failed to update category: ' + error.message);
+    throw new SDKError('Failed to update category', error);
   }
 };

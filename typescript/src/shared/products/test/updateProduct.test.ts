@@ -87,6 +87,6 @@ describe('updateProduct', () => {
 
     await expect(
       updateProduct(mockApiRoot as any, {projectKey: 'test'}, params)
-    ).rejects.toThrow('Failed to update product: Update failed');
+    ).rejects.toThrow('Failed to update product');
   });
 });

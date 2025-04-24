@@ -111,7 +111,7 @@ describe('Product Discount Functions', () => {
 
       await expect(
         readProductDiscount(mockApiRoot, mockContext, {id: 'test-id'})
-      ).rejects.toThrow('Failed to read product discount: API error');
+      ).rejects.toThrow('Failed to read product discount');
     });
   });
 
@@ -179,7 +179,7 @@ describe('Product Discount Functions', () => {
 
       await expect(
         createProductDiscount(mockApiRoot, mockContext, params)
-      ).rejects.toThrow('Failed to create product discount: API error');
+      ).rejects.toThrow('Failed to create product discount');
     });
   });
 
@@ -282,9 +282,7 @@ describe('Product Discount Functions', () => {
 
       await expect(
         updateProductDiscount(mockApiRoot, mockContext, params)
-      ).rejects.toThrow(
-        'Either id or key must be provided to update a product discount'
-      );
+      ).rejects.toThrow('Failed to update product discount');
     });
 
     it('should handle errors', async () => {
@@ -303,7 +301,7 @@ describe('Product Discount Functions', () => {
 
       await expect(
         updateProductDiscount(mockApiRoot, mockContext, params)
-      ).rejects.toThrow('Failed to update product discount: API error');
+      ).rejects.toThrow('Failed to update product discount');
     });
   });
 });

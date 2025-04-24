@@ -136,6 +136,6 @@ describe('createProductSelection', () => {
         mockContext,
         mockProductSelectionDraft
       )
-    ).rejects.toThrow('Failed to create ProductSelection: API Error');
+    ).rejects.toThrow('Failed to create ProductSelection');
   });
 });

@@ -9,7 +9,9 @@ import {
   ApiRoot,
   CartDraft,
   CartUpdateAction,
+  CartReference,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 // Helper function to read cart by ID
 const readCartById = async (
@@ -221,7 +223,7 @@ export const readCart = async (
       'Invalid parameters: At least one of id, key, customerId, or where must be provided'
     );
   } catch (error: any) {
-    throw new Error('Failed to read cart: ' + error.message);
+    throw new SDKError('Failed to read cart', error);
   }
 };
 
@@ -255,7 +257,7 @@ export const createCart = async (
 
     return cart.body;
   } catch (error: any) {
-    throw new Error('Failed to create cart: ' + error.message);
+    throw new SDKError('Failed to create cart', error);
   }
 };
 
@@ -297,7 +299,7 @@ export const replicateCart = async (
 
     return cart.body;
   } catch (error: any) {
-    throw new Error('Failed to replicate cart: ' + error.message);
+    throw new SDKError('Failed to replicate cart', error);
   }
 };
 
@@ -374,6 +376,6 @@ export const updateCart = async (
 
     return cart.body;
   } catch (error: any) {
-    throw new Error('Failed to update cart: ' + error.message);
+    throw new SDKError('Failed to update cart', error);
   }
 };

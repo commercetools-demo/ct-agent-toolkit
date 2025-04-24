@@ -1,6 +1,7 @@
 import {z} from 'zod';
 import {searchProductsParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const searchProducts = async (
   apiRoot: ApiRoot,
@@ -31,6 +32,6 @@ export const searchProducts = async (
 
     return response.body;
   } catch (error: any) {
-    throw new Error('Failed to search products: ' + error.message);
+    throw new SDKError('Failed to search products', error);
   }
 };
