@@ -58,6 +58,7 @@ import {
   createDiscountCode,
   updateDiscountCode,
 } from './discount-code/functions';
+import {bulkCreate} from './bulk/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -110,4 +111,5 @@ export const functionMapping: {
   list_discount_codes: listDiscountCodes,
   create_discount_code: createDiscountCode,
   update_discount_code: updateDiscountCode,
+  bulk_create: bulkCreate,
 };

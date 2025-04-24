@@ -197,7 +197,7 @@ describe('Cart Discount Functions', () => {
 
       await expect(
         readCartDiscount(errorApiRoot, context, params)
-      ).rejects.toThrow('Failed to read cart discount: API Error');
+      ).rejects.toThrow('Failed to read cart discount');
     });
   });
 
@@ -278,7 +278,7 @@ describe('Cart Discount Functions', () => {
 
       await expect(
         createCartDiscount(errorApiRoot, context, params)
-      ).rejects.toThrow('Failed to create cart discount: API Error');
+      ).rejects.toThrow('Failed to create cart discount');
     });
   });
 
@@ -362,9 +362,7 @@ describe('Cart Discount Functions', () => {
 
       await expect(
         updateCartDiscount(mockApiRoot, context, params)
-      ).rejects.toThrow(
-        'Either id or key must be provided to update a cart discount'
-      );
+      ).rejects.toThrow('Failed to update cart discount');
     });
 
     it('should handle API errors gracefully', async () => {
@@ -397,7 +395,7 @@ describe('Cart Discount Functions', () => {
 
       await expect(
         updateCartDiscount(errorApiRoot, context, params)
-      ).rejects.toThrow('Failed to update cart discount: API Error');
+      ).rejects.toThrow('Failed to update cart discount');
     });
   });
 });

@@ -12,6 +12,7 @@ import {
   CustomerDraft,
   CustomerUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const createCustomer = async (
   apiRoot: ApiRoot,
@@ -29,7 +30,7 @@ export const createCustomer = async (
 
     return customer.body;
   } catch (error: any) {
-    throw new Error('Failed to create customer: ' + error.message);
+    throw new SDKError('Failed to create customer', error);
   }
 };
 
@@ -51,7 +52,7 @@ export const createCustomerInStore = async (
 
     return customer.body;
   } catch (error: any) {
-    throw new Error('Failed to create customer in store: ' + error.message);
+    throw new SDKError('Failed to create customer in store', error);
   }
 };
 
@@ -74,7 +75,7 @@ export const getCustomerById = async (
 
     return customer.body;
   } catch (error: any) {
-    throw new Error('Failed to get customer: ' + error.message);
+    throw new SDKError('Failed to get customer', error);
   }
 };
 
@@ -98,7 +99,7 @@ export const getCustomerInStoreById = async (
 
     return customer.body;
   } catch (error: any) {
-    throw new Error('Failed to get customer in store: ' + error.message);
+    throw new SDKError('Failed to get customer in store', error);
   }
 };
 
@@ -124,7 +125,7 @@ export const queryCustomers = async (
 
     return customers.body;
   } catch (error: any) {
-    throw new Error('Failed to query customers: ' + error.message);
+    throw new SDKError('Failed to query customers', error);
   }
 };
 
@@ -148,6 +149,6 @@ export const updateCustomer = async (
 
     return customer.body;
   } catch (error: any) {
-    throw new Error('Failed to update customer: ' + error.message);
+    throw new SDKError('Failed to update customer', error);
   }
 };

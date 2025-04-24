@@ -1,4 +1,5 @@
 import type {ApiRoot} from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export async function readProject(
   apiRoot: ApiRoot,
@@ -13,8 +14,6 @@ export async function readProject(
     const response = await requestBuilder.get().execute();
     return response.body;
   } catch (error: any) {
-    const errorMessage = error?.message || 'An unknown error occurred';
-    const statusCode = error?.statusCode || 500;
-    throw new Error(`Failed to read project: ${errorMessage} (${statusCode})`);
+    throw new SDKError('Failed to read project', error);
   }
 }

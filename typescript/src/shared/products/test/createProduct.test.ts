@@ -86,10 +86,10 @@ describe('createProduct', () => {
 
     await expect(
       createProduct(
-        mockApiRoot as unknown as ApiRoot,
-        mockContext,
+        mockApiRoot as any,
+        {projectKey: 'test-project'},
         mockProductDraft
       )
-    ).rejects.toThrow('Failed to create product: API Error');
+    ).rejects.toThrow('Failed to create product');
   });
 });

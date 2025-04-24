@@ -271,7 +271,7 @@ describe('CustomerGroup Functions', () => {
 
       await expect(
         getCustomerGroupById(mockApiRoot, mockContext, {id: 'group-id'})
-      ).rejects.toThrow('Error fetching customer group by ID: API Error');
+      ).rejects.toThrow('Error fetching customer group by ID');
     });
 
     it('should throw an error when createCustomerGroup fails', async () => {
@@ -279,7 +279,7 @@ describe('CustomerGroup Functions', () => {
 
       await expect(
         createCustomerGroup(mockApiRoot, mockContext, {groupName: 'New Group'})
-      ).rejects.toThrow('Error creating customer group: API Error');
+      ).rejects.toThrow('Error creating customer group');
     });
   });
 });

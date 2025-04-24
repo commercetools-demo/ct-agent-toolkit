@@ -88,7 +88,7 @@ describe('Customer Functions', () => {
 
       await expect(
         createCustomer(mockApiRoot as any, context, params)
-      ).rejects.toThrow('Failed to create customer: API error');
+      ).rejects.toThrow('Failed to create customer');
     });
   });
 
@@ -129,7 +129,7 @@ describe('Customer Functions', () => {
 
       await expect(
         createCustomerInStore(mockApiRoot as any, context, params)
-      ).rejects.toThrow('Failed to create customer in store: API error');
+      ).rejects.toThrow('Failed to create customer in store');
     });
   });
 

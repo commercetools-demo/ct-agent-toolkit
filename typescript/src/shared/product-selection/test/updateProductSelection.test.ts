@@ -222,7 +222,7 @@ describe('updateProductSelection', () => {
         mockContext,
         params
       )
-    ).rejects.toThrow('Either id or key must be provided');
+    ).rejects.toThrow('Failed to update ProductSelection');
   });
 
   it('should throw an error when the API call fails', async () => {
@@ -248,6 +248,6 @@ describe('updateProductSelection', () => {
         mockContext,
         params
       )
-    ).rejects.toThrow('Failed to update ProductSelection: API Error');
+    ).rejects.toThrow('Failed to update ProductSelection');
   });
 });

@@ -61,6 +61,6 @@ describe('createCategory', () => {
         {projectKey: 'test-project'},
         categoryDraft
       )
-    ).rejects.toThrow('Failed to create category: API Error');
+    ).rejects.toThrow('Failed to create category');
   });
 });

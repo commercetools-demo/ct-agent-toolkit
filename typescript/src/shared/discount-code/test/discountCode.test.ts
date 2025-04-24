@@ -84,7 +84,7 @@ describe('Discount Code Functions', () => {
     it('should throw an error if neither id nor key is provided', async () => {
       await expect(
         readDiscountCode(mockApiRoot as any, {projectKey: 'test-project'}, {})
-      ).rejects.toThrow('Either id or key must be provided');
+      ).rejects.toThrow('Failed to read discount code');
     });
   });
 
@@ -286,7 +286,7 @@ describe('Discount Code Functions', () => {
           {projectKey: 'test-project'},
           {version: 1, actions: []}
         )
-      ).rejects.toThrow('Either id or key must be provided');
+      ).rejects.toThrow('Failed to update discount code');
     });
   });
 });

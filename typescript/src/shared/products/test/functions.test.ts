@@ -95,12 +95,13 @@ describe('listProducts', () => {
     const error = new Error('Failed to fetch products');
     mockExecute.mockRejectedValue(error);
 
-    const result = await listProducts(commercetools, context, {});
+    await expect(listProducts(commercetools, context, {})).rejects.toThrow(
+      'Failed to list products'
+    );
 
     expect(mockWithProjectKey).toHaveBeenCalledWith({
       projectKey: 'test-project',
     });
-    expect(result).toBe('Failed to list products' + error.message);
   });
 });
 

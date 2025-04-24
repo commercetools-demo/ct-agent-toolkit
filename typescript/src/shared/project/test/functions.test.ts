@@ -1,4 +1,4 @@
-import {readProject} from '../../../shared/project/functions';
+import {readProject} from '../functions';
 
 interface ErrorWithStatusCode extends Error {
   statusCode?: number;
@@ -66,7 +66,7 @@ describe('readProject', () => {
 
     const params = {};
     await expect(readProject(mockApiRoot, mockContext, params)).rejects.toThrow(
-      'Failed to read project: API Error (404)'
+      'Failed to read project'
     );
   });
 });

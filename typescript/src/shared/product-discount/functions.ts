@@ -9,6 +9,7 @@ import {
   ProductDiscountDraft,
   ProductDiscountUpdateAction,
 } from '@commercetools/platform-sdk';
+import {SDKError} from '../errors/sdkError';
 
 export const readProductDiscount = async (
   apiRoot: ApiRoot,
@@ -65,7 +66,7 @@ export const readProductDiscount = async (
 
     return productDiscounts.body;
   } catch (error: any) {
-    throw new Error('Failed to read product discount: ' + error.message);
+    throw new SDKError('Failed to read product discount', error);
   }
 };
 
@@ -85,7 +86,7 @@ export const createProductDiscount = async (
 
     return productDiscount.body;
   } catch (error: any) {
-    throw new Error('Failed to create product discount: ' + error.message);
+    throw new SDKError('Failed to create product discount', error);
   }
 };
 
@@ -131,6 +132,6 @@ export const updateProductDiscount = async (
       'Either id or key must be provided to update a product discount'
     );
   } catch (error: any) {
-    throw new Error('Failed to update product discount: ' + error.message);
+    throw new SDKError('Failed to update product discount', error);
   }
 };

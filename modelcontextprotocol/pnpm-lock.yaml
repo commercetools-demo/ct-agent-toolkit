@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@commercetools-demo/ct-agent-toolkit':
         specifier: ^1.10.0
-        version: 1.10.0(@langchain/core@0.3.44(openai@4.94.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.7(react@19.0.0)(zod@3.24.2))(openai@4.94.0(ws@8.18.1)(zod@3.24.2))
+        version: 1.10.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))
       '@modelcontextprotocol/sdk':
         specifier: ^1.9.0
         version: 1.9.0
@@ -279,8 +279,8 @@ packages:
     resolution: {integrity: sha512-fHXx4e/4vU8VEofUhIUSo0jjjOqjPy2RsZGDlEahd60ZCTPOMTtyRq6JExQoBtAucBO++8CKCaEdWAp1hZJkOQ==}
     engines: {node: '>=18'}
 
-  '@commercetools/ts-client@3.2.2':
-    resolution: {integrity: sha512-TOFskoZEOZgxFra78yHgOMvk23xPmu90vsMeb458hHljw+NqC+UX10Ku+ERx3EHhzT8nJDK2QmyvNumZsMnt0w==}
+  '@commercetools/ts-client@3.3.0':
+    resolution: {integrity: sha512-qqbtvIVcvDS3xd1kUYfYoMUhGLPcY4TCP2WzTvrEHEs/MhrZqUhZUKcblxxY5/d8pROARlbl+XrYnKdFaZxO3g==}
     engines: {node: '>=18'}
 
   '@cspotcode/source-map-support@0.8.1':
@@ -463,8 +463,8 @@ packages:
     peerDependencies:
       jsep: ^0.4.0||^1.0.0
 
-  '@langchain/core@0.3.44':
-    resolution: {integrity: sha512-3BsSFf7STvPPZyl2kMANgtVnCUvDdyP4k+koP+nY2Tczd5V+RFkuazIn/JOj/xxy/neZjr4PxFU4BFyF1aKXOA==}
+  '@langchain/core@0.3.48':
+    resolution: {integrity: sha512-R/G/ax4O3UrDV0JIkz6jiQSLBB68r9FswpHDgN6OPxU0R3YgAVnaiYuiNgUwHymmuUOJ6rZbndsnec73DE0iTw==}
     engines: {node: '>=18'}
 
   '@mdx-js/mdx@3.1.0':
@@ -835,8 +835,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@4.3.7:
-    resolution: {integrity: sha512-lUwpDjv4neo/OBe092LYOZtFMoMtrBDf3/bKUuM8Tc+2MCpLNgD21NDT9+Zo6Z0g1vRzz2VIurNwH/FumVFG9g==}
+  ai@4.3.9:
+    resolution: {integrity: sha512-P2RpV65sWIPdUlA4f1pcJ11pB0N1YmqPVLEmC4j8WuBwKY0L3q9vGhYPh0Iv+spKHKyn0wUbMfas+7Z6nTfS0g==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -2327,8 +2327,8 @@ packages:
       node-notifier:
         optional: true
 
-  js-tiktoken@1.0.19:
-    resolution: {integrity: sha512-XC63YQeEcS47Y53gg950xiZ4IWmkfMe4p2V9OSaBt26q+p47WHn18izuXzSclCI73B7yGqtfRsT6jcZQI0y08g==}
+  js-tiktoken@1.0.20:
+    resolution: {integrity: sha512-Xlaqhhs8VfCd6Sh7a1cFkZHQbYTLCwVJJWiHVxBYzLPxW0XsoxBy1hitmjkdIjD3Aon5BXLHFwU5O8WUx6HH+A==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -2415,8 +2415,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  langsmith@0.3.16:
-    resolution: {integrity: sha512-P3Y0YGHzixgnHuuir2mHZCw6heIeZMFLEmQqVrspy9w57+zwk4PJV6+wP6JrNd/gvt5oKHoN11368GnjO8lE5g==}
+  langsmith@0.3.21:
+    resolution: {integrity: sha512-klsPStt91LqcO5+FAHOuD2FJMrpKFSqa5H4ANv+YYs/fCdL2Ey9hg/YAFYKsDsCLabzcD1tCt/SN9A9JsIZ9ag==}
     peerDependencies:
       openai: '*'
     peerDependenciesMeta:
@@ -2841,8 +2841,8 @@ packages:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
 
-  openai@4.94.0:
-    resolution: {integrity: sha512-WVmr9HWcwfouLJ7R3UHd2A93ClezTPuJljQxkCYQAL15Sjyt+FBNoqEz5MHSdH/ebQrVyvRhFyn/bvdqtSPyIA==}
+  openai@4.96.0:
+    resolution: {integrity: sha512-dKoW56i02Prv2XQolJ9Rl9Svqubqkzg3QpwEOBuSVZLk05Shelu7s+ErRTwFc1Bs3JZ2qBqBfVpXQiJhwOGG8A==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -3829,7 +3829,7 @@ snapshots:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
       zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
+      zod-to-json-schema: 3.24.1(zod@3.24.2)
 
   '@ampproject/remapping@2.3.0':
     dependencies:
@@ -4053,22 +4053,22 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@commercetools-demo/ct-agent-toolkit@1.10.0(@langchain/core@0.3.44(openai@4.94.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.7(react@19.0.0)(zod@3.24.2))(openai@4.94.0(ws@8.18.1)(zod@3.24.2))':
+  '@commercetools-demo/ct-agent-toolkit@1.10.0(@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2)))(@modelcontextprotocol/sdk@1.9.0)(ai@4.3.9(react@19.0.0)(zod@3.24.2))(openai@4.96.0(ws@8.18.1)(zod@3.24.2))':
     dependencies:
       '@commercetools/platform-sdk': 8.8.0
-      '@commercetools/ts-client': 3.2.2
-      '@langchain/core': 0.3.44(openai@4.94.0(ws@8.18.1)(zod@3.24.2))
+      '@commercetools/ts-client': 3.3.0
+      '@langchain/core': 0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2))
       '@modelcontextprotocol/sdk': 1.9.0
-      ai: 4.3.7(react@19.0.0)(zod@3.24.2)
-      openai: 4.94.0(ws@8.18.1)(zod@3.24.2)
+      ai: 4.3.9(react@19.0.0)(zod@3.24.2)
+      openai: 4.96.0(ws@8.18.1)(zod@3.24.2)
       zod: 3.24.2
       zod-to-json-schema: 3.24.5(zod@3.24.2)
 
   '@commercetools/platform-sdk@8.8.0':
     dependencies:
-      '@commercetools/ts-client': 3.2.2
+      '@commercetools/ts-client': 3.3.0
 
-  '@commercetools/ts-client@3.2.2':
+  '@commercetools/ts-client@3.3.0':
     dependencies:
       buffer: 6.0.3
 
@@ -4341,20 +4341,20 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@langchain/core@0.3.44(openai@4.94.0(ws@8.18.1)(zod@3.24.2))':
+  '@langchain/core@0.3.48(openai@4.96.0(ws@8.18.1)(zod@3.24.2))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
-      js-tiktoken: 1.0.19
-      langsmith: 0.3.16(openai@4.94.0(ws@8.18.1)(zod@3.24.2))
+      js-tiktoken: 1.0.20
+      langsmith: 0.3.21(openai@4.96.0(ws@8.18.1)(zod@3.24.2))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 10.0.0
       zod: 3.24.2
-      zod-to-json-schema: 3.24.5(zod@3.24.2)
+      zod-to-json-schema: 3.24.1(zod@3.24.2)
     transitivePeerDependencies:
       - openai
 
@@ -4999,7 +4999,7 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@4.3.7(react@19.0.0)(zod@3.24.2):
+  ai@4.3.9(react@19.0.0)(zod@3.24.2):
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.7(zod@3.24.2)
@@ -6931,7 +6931,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  js-tiktoken@1.0.19:
+  js-tiktoken@1.0.20:
     dependencies:
       base64-js: 1.5.1
 
@@ -7004,7 +7004,7 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  langsmith@0.3.16(openai@4.94.0(ws@8.18.1)(zod@3.24.2)):
+  langsmith@0.3.21(openai@4.96.0(ws@8.18.1)(zod@3.24.2)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -7014,7 +7014,7 @@ snapshots:
       semver: 7.7.1
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.94.0(ws@8.18.1)(zod@3.24.2)
+      openai: 4.96.0(ws@8.18.1)(zod@3.24.2)
 
   lcm@0.0.3:
     dependencies:
@@ -7715,7 +7715,7 @@ snapshots:
     dependencies:
       mimic-fn: 2.1.0
 
-  openai@4.94.0(ws@8.18.1)(zod@3.24.2):
+  openai@4.96.0(ws@8.18.1)(zod@3.24.2):
     dependencies:
       '@types/node': 18.19.86
       '@types/node-fetch': 2.6.12

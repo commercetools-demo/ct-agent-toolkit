@@ -145,6 +145,6 @@ describe('searchProducts', () => {
 
     await expect(
       searchProducts(mockApiRoot, mockContext, params)
-    ).rejects.toThrow('Failed to search products: API Error');
+    ).rejects.toThrow('Failed to search products');
   });
 });

@@ -163,7 +163,7 @@ describe('StandalonePrice Functions', () => {
           version: 1,
           actions: [],
         })
-      ).rejects.toThrow('Either id or key must be provided');
+      ).rejects.toThrow('Failed to update standalone price');
     });
   });
 });

@@ -102,12 +102,7 @@ describe('updateCategory', () => {
 
     const updateRequest = {
       version: 1,
-      actions: [
-        {
-          action: 'changeName',
-          name: {en: 'Updated Category'},
-        },
-      ],
+      actions: [{action: 'changeName', name: {en: 'New Name'}}],
     };
 
     await expect(
@@ -116,9 +111,7 @@ describe('updateCategory', () => {
         {projectKey: 'test-project'},
         updateRequest
       )
-    ).rejects.toThrow(
-      'Either id or key must be provided for updating a category'
-    );
+    ).rejects.toThrow('Failed to update category');
   });
 
   it('should handle API errors properly', async () => {
@@ -151,6 +144,6 @@ describe('updateCategory', () => {
         {projectKey: 'test-project'},
         updateRequest
       )
-    ).rejects.toThrow('Failed to update category: API Error');
+    ).rejects.toThrow('Failed to update category');
   });
 });
