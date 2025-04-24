@@ -64,6 +64,7 @@ const ACCEPTED_TOOLS = [
   'discount-code.read',
   'discount-code.create',
   'discount-code.update',
+  'bulk.create',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
