@@ -8,28 +8,41 @@ import {
   createInventoryPrompt,
   updateInventoryPrompt,
 } from './prompts';
+import {Tool} from '../../types/tools';
 
-const inventoryTools = [
+const inventoryTools: Tool[] = [
   {
-    name: 'inventory.read',
+    name: 'Read Inventory',
     method: 'read_inventory',
-    description: 'Read inventory entries by ID, key, or list with filtering',
     parameters: readInventoryParameters,
-    prompt: readInventoryPrompt,
+    description: readInventoryPrompt,
+    actions: {
+      inventory: {
+        read: true,
+      },
+    },
   },
   {
-    name: 'inventory.create',
+    name: 'Create Inventory',
     method: 'create_inventory',
-    description: 'Create a new inventory entry',
     parameters: createInventoryParameters,
-    prompt: createInventoryPrompt,
+    description: createInventoryPrompt,
+    actions: {
+      inventory: {
+        create: true,
+      },
+    },
   },
   {
-    name: 'inventory.update',
+    name: 'Update Inventory',
     method: 'update_inventory',
-    description: 'Update or delete an inventory entry by ID or key',
     parameters: updateInventoryParameters,
-    prompt: updateInventoryPrompt,
+    description: updateInventoryPrompt,
+    actions: {
+      inventory: {
+        update: true,
+      },
+    },
   },
 ];
 
