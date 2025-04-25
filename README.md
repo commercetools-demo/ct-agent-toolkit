@@ -16,7 +16,7 @@ You don't need this source code unless you want to modify the package. If you ju
 want to use the package run:
 
 ```
-npm install @commercetools-demo/commercetools-agent-toolkit
+npm install @commercetools-demo/ct-agent-toolkit 
 ```
 
 #### Requirements
