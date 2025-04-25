@@ -11,6 +11,7 @@ import standalonePriceTools from './standalone-price/tools';
 import productDiscountTools from './product-discount/tools';
 import cartDiscountTools from './cart-discount/tools';
 import discountCodeTools from './discount-code/tools';
+import productTypeTools from './product-type/tools';
 import bulkTools from './bulk/tools';
 
 export default [
@@ -27,5 +28,6 @@ export default [
   ...productDiscountTools,
   ...cartDiscountTools,
   ...discountCodeTools,
+  ...productTypeTools,
   ...bulkTools,
 ];

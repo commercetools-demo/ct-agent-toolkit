@@ -45,6 +45,7 @@ describe('main function', () => {
           'product-discount': {read: true, create: true, update: true},
           'cart-discount': {read: true, create: true, update: true},
           'discount-code': {read: true, create: true, update: true},
+          'product-type': {read: true, create: true, update: true},
           bulk: {create: true},
         },
       },
