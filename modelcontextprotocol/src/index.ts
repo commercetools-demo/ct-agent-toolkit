@@ -68,6 +68,10 @@ const ACCEPTED_TOOLS = [
   'product-type.create',
   'product-type.update',
   'bulk.create',
+  'bulk.update',
+  'inventory.read',
+  'inventory.create',
+  'inventory.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {

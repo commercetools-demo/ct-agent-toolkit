@@ -13,6 +13,7 @@ import cartDiscountTools from './cart-discount/tools';
 import discountCodeTools from './discount-code/tools';
 import productTypeTools from './product-type/tools';
 import bulkTools from './bulk/tools';
+import inventoryTools from './inventory/tools';
 
 export default [
   ...productTools,
@@ -30,4 +31,5 @@ export default [
   ...discountCodeTools,
   ...productTypeTools,
   ...bulkTools,
+  ...inventoryTools,
 ];

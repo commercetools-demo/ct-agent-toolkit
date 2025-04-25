@@ -2,6 +2,8 @@ import {bulkCreate} from '../functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {bulkCreateParameters} from '../parameters';
 import {z} from 'zod';
+import {bulkUpdate} from '../functions';
+import {bulkUpdateParameters} from '../parameters';
 
 // Mock the API Root
 const mockExecute = jest.fn();
@@ -21,6 +23,7 @@ const mockWithProjectKey = jest.fn(() => ({
   productDiscounts: jest.fn(() => ({post: mockPost})),
   customerGroups: jest.fn(() => ({post: mockPost})),
   standalonePrices: jest.fn(() => ({post: mockPost})),
+  inventory: jest.fn(() => ({post: mockPost})),
   orders: mockOrders,
 }));
 
@@ -29,6 +32,23 @@ const mockApiRoot = {
 } as unknown as ApiRoot;
 
 const mockContext = {projectKey: 'test-project'};
+
+// Mock the update functions only (not affecting the createProduct)
+jest.mock('../../products/functions', () => {
+  const originalModule = jest.requireActual('../../products/functions');
+  return {
+    ...originalModule,
+    updateProduct: jest.fn().mockResolvedValue({id: 'mock-product-id'}),
+  };
+});
+
+jest.mock('../../inventory/functions', () => {
+  const originalModule = jest.requireActual('../../inventory/functions');
+  return {
+    ...originalModule,
+    updateInventory: jest.fn().mockResolvedValue({id: 'mock-inventory-id'}),
+  };
+});
 
 // Reset mocks before each test
 beforeEach(() => {
@@ -182,5 +202,135 @@ describe('bulkCreate', () => {
     await expect(bulkCreate(mockApiRoot, mockContext, params)).rejects.toThrow(
       'Bulk creation failed: Unsupported entity type: unsupported-entity'
     );
+  });
+});
+
+describe('Bulk Functions', () => {
+  describe('bulkUpdate', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should update multiple entities in parallel', async () => {
+      // Create test parameters
+      const params: z.infer<typeof bulkUpdateParameters> = {
+        items: [
+          {
+            entityType: 'product',
+            data: {
+              id: 'product-id-1',
+              version: 1,
+              actions: [
+                {
+                  action: 'changeName',
+                  name: {
+                    en: 'Updated Product Name',
+                  },
+                },
+              ],
+            },
+          },
+          {
+            entityType: 'inventory',
+            data: {
+              id: 'inventory-id-1',
+              version: 1,
+              actions: [
+                {
+                  action: 'changeQuantity',
+                  quantity: 50,
+                },
+              ],
+            },
+          },
+        ],
+      };
+
+      // Call the function
+      const result = await bulkUpdate(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        params
+      );
+
+      // Check the result format
+      expect(result).toHaveProperty('success', true);
+      expect(result).toHaveProperty('results');
+      expect(result.results).toHaveLength(2);
+
+      // Each entity update should have been called with the correct parameters
+      const {updateProduct} = require('../../products/functions');
+      const {updateInventory} = require('../../inventory/functions');
+
+      expect(updateProduct).toHaveBeenCalledWith(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        params.items[0].data
+      );
+
+      expect(updateInventory).toHaveBeenCalledWith(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        params.items[1].data
+      );
+    });
+
+    it('should throw an error for unsupported entity types', async () => {
+      // Create test parameters with an unsupported entity type
+      const params: z.infer<typeof bulkUpdateParameters> = {
+        items: [
+          {
+            entityType: 'unsupported-entity' as any,
+            data: {
+              id: 'unsupported-id',
+              version: 1,
+              actions: [],
+            },
+          },
+        ],
+      };
+
+      // Expect the function to throw an error
+      await expect(
+        bulkUpdate(mockApiRoot, {projectKey: 'test-project'}, params)
+      ).rejects.toThrow(
+        'Bulk update failed: Unsupported entity type: unsupported-entity'
+      );
+    });
+
+    it('should throw an error if any update operation fails', async () => {
+      // Mock one of the update functions to throw an error
+      const mockUpdateProduct =
+        require('../../products/functions').updateProduct;
+      mockUpdateProduct.mockImplementationOnce(() => {
+        throw new Error('Failed to update product');
+      });
+
+      // Create test parameters
+      const params: z.infer<typeof bulkUpdateParameters> = {
+        items: [
+          {
+            entityType: 'product',
+            data: {
+              id: 'product-id-1',
+              version: 1,
+              actions: [
+                {
+                  action: 'changeName',
+                  name: {
+                    en: 'Updated Product Name',
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      };
+
+      // Expect the function to throw an error
+      await expect(
+        bulkUpdate(mockApiRoot, {projectKey: 'test-project'}, params)
+      ).rejects.toThrow('Bulk update failed: Failed to update product');
+    });
   });
 });

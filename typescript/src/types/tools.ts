@@ -11,9 +11,12 @@ export enum AvailableNamespaces {
   Customer = 'customer',
   CustomerGroup = 'customer-group',
   StandalonePrice = 'standalone-price',
+  ProductDiscount = 'product-discount',
+  CartDiscount = 'cart-discount',
   DiscountCode = 'discount-code',
   ProductType = 'product-type',
   Bulk = 'bulk',
+  Inventory = 'inventory',
 }
 
 export type Tool = {
