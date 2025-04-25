@@ -181,3 +181,7 @@ main().catch((error) => {
 - [Read cart discount](https://docs.commercetools.com/api/projects/cartDiscounts#get-cartdiscount-by-id)
 - [Create cart discount](https://docs.commercetools.com/api/projects/cartDiscounts#create-cartdiscount)
 - [Update cart discount](https://docs.commercetools.com/api/projects/cartDiscounts#update-cartdiscount)
+- [Read product type](https://docs.commercetools.com/api/projects/productTypes#get-producttype-by-id)
+- [List product types](https://docs.commercetools.com/api/projects/productTypes#query-producttypes)
+- [Create product type](https://docs.commercetools.com/api/projects/productTypes#create-producttype)
+- [Update product type](https://docs.commercetools.com/api/projects/productTypes#update-producttype)

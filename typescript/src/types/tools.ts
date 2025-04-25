@@ -12,6 +12,7 @@ export enum AvailableNamespaces {
   CustomerGroup = 'customer-group',
   StandalonePrice = 'standalone-price',
   DiscountCode = 'discount-code',
+  ProductType = 'product-type',
   Bulk = 'bulk',
 }
 

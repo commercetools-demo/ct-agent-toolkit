@@ -77,6 +77,10 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `discount-code.read`       | Read discount code information          |
 | `discount-code.create`     | Create discount code                    |
 | `discount-code.update`     | Update discount code information        |
+| `product-type.read`        | Read product type information           |
+| `product-type.create`      | Create product type                     |
+| `product-type.update`      | Update product type information         |
+| `bulk.create`              | Create bulk entities                    |
 
 ## Debugging locally
 

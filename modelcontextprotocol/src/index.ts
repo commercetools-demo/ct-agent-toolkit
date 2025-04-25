@@ -64,6 +64,9 @@ const ACCEPTED_TOOLS = [
   'discount-code.read',
   'discount-code.create',
   'discount-code.update',
+  'product-type.read',
+  'product-type.create',
+  'product-type.update',
   'bulk.create',
 ];
 
