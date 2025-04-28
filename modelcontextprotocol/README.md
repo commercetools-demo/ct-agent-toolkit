@@ -81,6 +81,10 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `product-type.create`      | Create product type                     |
 | `product-type.update`      | Update product type information         |
 | `bulk.create`              | Create bulk entities                    |
+| `bulk.update`              | Update bulk entities                    |
+| `inventory.read`           | Read inventory information              |
+| `inventory.create`         | Create inventory                        |
+| `inventory.update`         | Update inventory information            |
 
 ## Debugging locally
 

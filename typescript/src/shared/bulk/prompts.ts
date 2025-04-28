@@ -17,6 +17,7 @@ Supported entity types:
 - product-discount
 - customer-group
 - standalone-price
+- inventory
 
 Parameters:
 - items: An array of objects, each containing:
@@ -95,6 +96,7 @@ The supported entity types are:
 - product-discount
 - customer-group
 - standalone-price
+- inventory
 
 # PARAMETERS
 "items": [
@@ -160,4 +162,187 @@ Response:
 
 # OUTPUT
 Focus on providing the essential parameters needed for each entity type and ensure that the entity types and their data are correctly structured.
+`;
+
+export const UPDATE_BULK_DESCRIPTION = `
+Bulk update different types of entities in commercetools.
+
+This function allows you to update multiple entities of different types in a single operation. All operations are executed in parallel using Promise.all.
+
+The function accepts an array of items, where each item specifies:
+- entityType: The type of entity to update (e.g., 'product', 'customer', etc.)
+- data: The data for updating the entity, which should match the schema required by the corresponding update function
+
+Supported entity types:
+- product
+- customer
+- cart
+- category
+- discount-code
+- cart-discount
+- product-discount
+- customer-group
+- standalone-price
+- inventory
+- order
+- product-selection
+- product-type
+
+Parameters:
+- items: An array of objects, each containing:
+  - entityType: The type of entity to update
+  - data: The data for updating the entity
+
+Example request:
+\`\`\`json
+{
+  "items": [
+    {
+      "entityType": "product",
+      "data": {
+        "id": "product-id-1",
+        "version": 1,
+        "actions": [
+          {
+            "action": "changeName",
+            "name": {
+              "en": "Updated Product Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "entityType": "inventory",
+      "data": {
+        "id": "inventory-id-1",
+        "version": 1,
+        "actions": [
+          {
+            "action": "changeQuantity",
+            "quantity": 50
+          }
+        ]
+      }
+    }
+  ]
+}
+\`\`\`
+
+Example response:
+\`\`\`json
+{
+  "success": true,
+  "results": [
+    {
+      // Product update result
+    },
+    {
+      // Inventory update result
+    }
+  ]
+}
+\`\`\`
+
+Errors:
+- If any update operation fails, the entire operation will fail
+- The error message will indicate which entity type failed to be updated
+`;
+
+export const UPDATE_BULK_PROMPT = `
+You are a specialized assistant for the commercetools platform, focusing on bulk entity updates.
+
+# TASK
+Update multiple entities in the commercetools platform in a single operation.
+
+This tool accepts an array of items, where each item contains:
+- "entityType": the type of entity (e.g., "product", "inventory")
+- "data": the update parameters for that entity type (including id/key, version, and actions)
+
+The supported entity types are:
+- product
+- customer
+- cart
+- category
+- discount-code
+- cart-discount
+- product-discount
+- customer-group
+- standalone-price
+- inventory
+- order
+- product-selection
+- product-type
+
+# PARAMETERS
+"items": [
+  {
+    "entityType": string,
+    "data": object (matching the schema for the specified entity type update)
+  },
+  ...
+]
+
+# RESPONSE FORMAT
+The response will include:
+- "success": boolean
+- "results": array of responses from each update operation
+
+# EXAMPLE
+Request:
+\`\`\`json
+{
+  "items": [
+    {
+      "entityType": "product",
+      "data": {
+        "id": "product-id-1",
+        "version": 1,
+        "actions": [
+          {
+            "action": "changeName",
+            "name": {
+              "en": "Updated Product Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "entityType": "inventory",
+      "data": {
+        "id": "inventory-id-1",
+        "version": 1,
+        "actions": [
+          {
+            "action": "changeQuantity",
+            "quantity": 50
+          }
+        ]
+      }
+    }
+  ]
+}
+\`\`\`
+
+Response:
+\`\`\`json
+{
+  "success": true,
+  "results": [
+    {
+      // Product update result with details
+    },
+    {
+      // Inventory update result with details
+    }
+  ]
+}
+\`\`\`
+
+# OUTPUT
+Focus on providing the essential parameters needed for each entity type's update and ensure that the entity types and their data are correctly structured. Remember that all update operations require:
+1. An identifier (id or key)
+2. The current version of the entity
+3. An array of update actions specific to the entity type
 `;

@@ -64,7 +64,12 @@ import {
   createProductType,
   updateProductType,
 } from './product-type/functions';
-import {bulkCreate} from './bulk/functions';
+import {bulkCreate, bulkUpdate} from './bulk/functions';
+import {
+  readInventory,
+  createInventory,
+  updateInventory,
+} from './inventory/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Initialize function mapping
@@ -122,4 +127,8 @@ export const functionMapping: {
   create_product_type: createProductType,
   update_product_type: updateProductType,
   bulk_create: bulkCreate,
+  bulk_update: bulkUpdate,
+  read_inventory: readInventory,
+  create_inventory: createInventory,
+  update_inventory: updateInventory,
 };

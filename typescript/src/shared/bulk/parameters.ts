@@ -8,11 +8,26 @@ import {createCartDiscountParameters} from '../cart-discount/parameters';
 import {createProductDiscountParameters} from '../product-discount/parameters';
 import {createCustomerGroupParametersSchema} from '../customer-group/parameters';
 import {createStandalonePriceParameters} from '../standalone-price/parameters';
+import {createInventoryParameters} from '../inventory/parameters';
 import {
   createOrderFromCartParameters,
   createOrderFromQuoteParameters,
   createOrderByImportParameters,
 } from '../order/parameters';
+
+import {updateProductParameters} from '../products/parameters';
+import {updateCustomerParameters} from '../customer/parameters';
+import {updateCartParameters} from '../cart/parameters';
+import {updateCategoryParameters} from '../category/parameters';
+import {updateDiscountCodeParameters} from '../discount-code/parameters';
+import {updateCartDiscountParameters} from '../cart-discount/parameters';
+import {updateProductDiscountParameters} from '../product-discount/parameters';
+import {updateCustomerGroupByIdParametersSchema} from '../customer-group/parameters';
+import {updateStandalonePriceParameters} from '../standalone-price/parameters';
+import {updateInventoryParameters} from '../inventory/parameters';
+import {updateOrderParameters} from '../order/parameters';
+import {updateProductSelectionParameters} from '../product-selection/parameters';
+import {updateProductTypeParameters} from '../product-type/parameters';
 
 // Define the bulk create parameters for products
 export const bulkCreateParameters = z.object({
@@ -29,6 +44,7 @@ export const bulkCreateParameters = z.object({
         'customer-group',
         'standalone-price',
         'order',
+        'inventory',
       ]),
       data: z.union([
         createProductParameters,
@@ -40,9 +56,48 @@ export const bulkCreateParameters = z.object({
         createProductDiscountParameters,
         createCustomerGroupParametersSchema,
         createStandalonePriceParameters,
+        createInventoryParameters,
         createOrderFromCartParameters,
         createOrderFromQuoteParameters,
         createOrderByImportParameters,
+      ]),
+    })
+  ),
+});
+
+// Define the bulk update parameters
+export const bulkUpdateParameters = z.object({
+  items: z.array(
+    z.object({
+      entityType: z.enum([
+        'product',
+        'customer',
+        'cart',
+        'category',
+        'discount-code',
+        'cart-discount',
+        'product-discount',
+        'customer-group',
+        'standalone-price',
+        'inventory',
+        'order',
+        'product-selection',
+        'product-type',
+      ]),
+      data: z.union([
+        updateProductParameters,
+        updateCustomerParameters,
+        updateCartParameters,
+        updateCategoryParameters,
+        updateDiscountCodeParameters,
+        updateCartDiscountParameters,
+        updateProductDiscountParameters,
+        updateCustomerGroupByIdParametersSchema,
+        updateStandalonePriceParameters,
+        updateInventoryParameters,
+        updateOrderParameters,
+        updateProductSelectionParameters,
+        updateProductTypeParameters,
       ]),
     })
   ),

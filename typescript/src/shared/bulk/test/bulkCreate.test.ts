@@ -26,6 +26,14 @@ jest.mock('../../category/functions', () => ({
     }),
 }));
 
+jest.mock('../../inventory/functions', () => ({
+  createInventory: jest
+    .fn()
+    .mockImplementation((_apiRoot: any, _context: any, params: any) => {
+      return {id: 'mock-inventory-id', ...params};
+    }),
+}));
+
 describe('bulkCreate function', () => {
   const mockApiRoot = {} as unknown as ApiRoot;
   const mockContext = {projectKey: 'test-project'};
@@ -72,6 +80,15 @@ describe('bulkCreate function', () => {
             },
           },
         },
+        {
+          entityType: 'inventory' as const,
+          data: {
+            sku: 'SKU-123',
+            quantityOnStock: 100,
+            key: 'inventory-key-123',
+            restockableInDays: 7,
+          },
+        },
       ],
     };
 
@@ -83,6 +100,7 @@ describe('bulkCreate function', () => {
         {id: 'mock-product-id', ...params.items[0].data},
         {id: 'mock-customer-id', ...params.items[1].data},
         {id: 'mock-category-id', ...params.items[2].data},
+        {id: 'mock-inventory-id', ...params.items[3].data},
       ],
     });
   });
