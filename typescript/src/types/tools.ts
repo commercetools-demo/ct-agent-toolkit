@@ -15,7 +15,6 @@ export enum AvailableNamespaces {
   CartDiscount = 'cart-discount',
   DiscountCode = 'discount-code',
   ProductType = 'product-type',
-  ProductDiscount = 'product-discount',
   Bulk = 'bulk',
   Inventory = 'inventory',
 }
