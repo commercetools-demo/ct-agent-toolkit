@@ -19,7 +19,8 @@ export type Actions = {
 export type Context = {
   // Account is a Connected Account ID. If set, the integration will
   // make requests for this Account.
-  account?: string;
+  customerId?: string;
+  isAdmin?: boolean;
 };
 
 // Configuration provides various settings and options for the integration

@@ -9,12 +9,11 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import {functionMapping} from './functions';
-
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
   private httpMiddlewareOptions: HttpMiddlewareOptions;
   private client: Client;
-  private apiRoot: ApiRoot;
+  public apiRoot: ApiRoot;
 
   constructor(
     clientId: string,
