@@ -102,6 +102,36 @@ describe('parseArgs function', () => {
       delete process.env.PROJECT_KEY;
       delete process.env.API_URL;
     });
+
+    it('should parse customerId and isAdmin arguments correctly', () => {
+      const args = [
+        '--tools=all',
+        '--clientId=test_client_id',
+        '--clientSecret=test_client_secret',
+        '--authUrl=https://auth.commercetools.com',
+        '--projectKey=test_project',
+        '--apiUrl=https://api.commercetools.com',
+        '--customerId=xxx',
+        '--isAdmin=true',
+      ];
+      const {options} = parseArgs(args);
+      expect(options.customerId).toBe('xxx');
+      expect(options.isAdmin).toBe(true);
+    });
+
+    it('should correctly parse isAdmin as boolean', () => {
+      const args = [
+        '--tools=all',
+        '--clientId=test_client_id',
+        '--clientSecret=test_client_secret',
+        '--authUrl=https://auth.commercetools.com',
+        '--projectKey=test_project',
+        '--apiUrl=https://api.commercetools.com',
+        '--isAdmin=false',
+      ];
+      const {options} = parseArgs(args);
+      expect(options.isAdmin).toBe(false);
+    });
   });
 
   describe('error cases', () => {

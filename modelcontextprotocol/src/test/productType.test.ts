@@ -22,6 +22,7 @@ describe('Product Type Tools', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -32,7 +33,12 @@ describe('Product Type Tools', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-type': {read: true}}},
+      configuration: {
+        actions: {'product-type': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -48,6 +54,7 @@ describe('Product Type Tools', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -58,7 +65,12 @@ describe('Product Type Tools', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-type': {create: true}}},
+      configuration: {
+        actions: {'product-type': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
   });
 
@@ -72,6 +84,7 @@ describe('Product Type Tools', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -82,7 +95,12 @@ describe('Product Type Tools', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-type': {update: true}}},
+      configuration: {
+        actions: {'product-type': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
   });
 
@@ -96,6 +114,7 @@ describe('Product Type Tools', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -108,7 +127,44 @@ describe('Product Type Tools', () => {
       apiUrl: 'https://api.commercetools.com',
       configuration: {
         actions: {'product-type': {read: true, create: true, update: true}},
+        context: {
+          isAdmin: true,
+        },
       },
     });
+  });
+
+  it('should correctly pass customerId to configuration.context', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=product-type.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+      '--customerId=xxx',
+      '--isAdmin=true',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {
+        actions: {'product-type': {read: true}},
+        context: {
+          customerId: 'xxx',
+          isAdmin: true,
+        },
+      },
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
   });
 });

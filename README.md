@@ -157,6 +157,58 @@ main().catch((error) => {
 });
 ```
 
+### Authentication Flow
+
+The toolkit supports dynamic authentication for different user types:
+
+#### Customer Authentication
+
+You can initialize the toolkit with a customer ID to implement a customer-specific experience:
+
+```typescript
+const server = new CommercetoolsAgentToolkit({
+  // ...other configuration
+  customerId: "customer-12345",
+  configuration: {
+    actions: {
+      // All available tools configuration
+    },
+  },
+});
+```
+
+When initialized with `customerId`, only a single `authenticateCustomer` tool is available initially. When this tool is called, it verifies the customer exists and enables only customer-appropriate tools such as:
+- Reading products and categories
+- Managing their own cart
+- Creating orders
+- Other customer-related operations
+
+#### Admin Authentication 
+
+For administrative access, initialize with the `isAdmin` flag:
+
+```typescript
+const server = new CommercetoolsAgentToolkit({
+  // ...other configuration
+  isAdmin: true,
+  configuration: {
+    actions: {
+      // All available tools configuration
+    },
+  },
+});
+```
+
+When initialized with `isAdmin`, only the `authenticateAdmin` tool is available initially. This tool requires username and password credentials and enables all tools after successful authentication.
+
+```bash
+# Run with customer context
+npx -y @commercetools-demo/mcp --tools=all --customerId=CUSTOMER_ID --clientId=CLIENT_ID ...
+
+# Run with admin context
+npx -y @commercetools-demo/mcp --tools=all --isAdmin=true --clientId=CLIENT_ID ...
+```
+
 ## Supported API methods
 
 - [Read products](https://docs.commercetools.com/api/projects/products#query-products)
