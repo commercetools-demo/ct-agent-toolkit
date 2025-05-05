@@ -8,11 +8,22 @@ import type {
   Experimental_LanguageModelV1Middleware as LanguageModelV1Middleware,
 } from 'ai';
 import CommercetoolsTool from './tool';
+import {getCustomerById} from '../shared/customer/functions';
+
+// Define customer allowed tools
+const customerAllowedTools = [
+  'list_products',
+  'search_products',
+  'read_category',
+];
 
 class CommercetoolsAgentToolkit {
   private _commercetools: CommercetoolsAPI;
+  private _configuration: Configuration;
+  private _projectKey: string;
 
   tools: {[key: string]: CoreTool};
+  private _allTools: {[key: string]: CoreTool} = {};
 
   constructor({
     clientId,
@@ -36,19 +47,54 @@ class CommercetoolsAgentToolkit {
       projectKey,
       apiUrl
     );
+    this._configuration = configuration;
+    this._projectKey = projectKey;
     this.tools = {};
+    this._allTools = {};
 
     const filteredTools = tools.filter((tool) =>
       isToolAllowed(tool, configuration)
     );
 
     filteredTools.forEach((tool) => {
-      this.tools[tool.method] = CommercetoolsTool(
+      this._allTools[tool.method] = CommercetoolsTool(
         this._commercetools,
         tool.method,
         tool.description,
         tool.parameters
       );
+    });
+
+    // By default, initialize with all tools
+    this.tools = {...this._allTools};
+  }
+
+  public authenticateCustomer() {
+    if (this._configuration.context?.customerId) {
+      return getCustomerById(
+        this._commercetools.apiRoot,
+        {projectKey: this._projectKey},
+        {id: this._configuration.context?.customerId}
+      ).then((customer) => {
+        if (customer) {
+          console.error('Customer found');
+          this.enableCustomerTools();
+        } else {
+          throw new Error('Customer not found');
+        }
+      });
+    }
+  }
+
+  private enableCustomerTools() {
+    // Reset tools and only keep customer allowed ones
+    this.tools = {};
+
+    // Filter tools to only allow customer-specific ones
+    customerAllowedTools.forEach((toolName) => {
+      if (this._allTools[toolName]) {
+        this.tools[toolName] = this._allTools[toolName];
+      }
     });
   }
 
