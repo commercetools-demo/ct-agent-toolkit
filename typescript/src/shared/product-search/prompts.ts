@@ -18,9 +18,10 @@ The tool takes these arguments:
 - facets (array, optional): Facets to calculate counts, distinct values, or ranges on the result set.
 
 Example query formats:
+- Wildcard: { "wildcard": { "field": "name", "language": "en-US", "value": "*pasta*", "caseInsensitive": true } }
 - Exact match: { "exact": { "field": "variants.attributes.color", "fieldType": "text", "value": "red" } }
 - Range: { "range": { "field": "variants.price.centAmount", "fieldType": "number", "lte": 5000 } }
-- Full text: { "fullText": { "value": "running shoes", "locale": "en" } }
+- Full text: { "fullText": { "field": "name", "value": "running shoes", "language": "en-US" } }
 
 The API supports only those Locales configured in the Project.
 `;

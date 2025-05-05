@@ -113,6 +113,8 @@ mcp call list_products --params '{"limit": 2}' npx ts-node /<absolute-path>/ct-a
 
 ## Testing Using Claude Desktop
 
+NOTE: This will not work with Claude Desktop unless you uninstall node v16 from your machine!
+
 ```bash
 #  navigate to ../typescript
 pnpm run build
