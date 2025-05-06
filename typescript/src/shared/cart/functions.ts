@@ -165,11 +165,54 @@ const queryCarts = async (
 
 export const readCart = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: {projectKey: string; cartId?: string; customerId?: string},
   params: z.infer<typeof readCartParameters>
 ) => {
   try {
-    // Case 1: Read cart by ID
+    // Case 0: If context.cartId is provided, always return that cart
+    if (context.cartId) {
+      return await readCartById(
+        apiRoot,
+        context.projectKey,
+        context.cartId,
+        params.expand,
+        params.storeKey
+      );
+    }
+
+    // Case 1: When context.customerId is present but no cartId
+    if (context.customerId && !context.cartId) {
+      if (params.where) {
+        const whereWithCustomerId = [...params.where];
+        whereWithCustomerId.push(`customerId="${context.customerId}"`);
+
+        return await queryCarts(
+          apiRoot,
+          context.projectKey,
+          whereWithCustomerId,
+          params.limit,
+          params.offset,
+          params.sort,
+          params.expand,
+          params.storeKey
+        );
+      }
+
+      // Default to querying by customerId if no specific query method was provided
+      return await readCartByCustomerId(
+        apiRoot,
+        context.projectKey,
+        context.customerId,
+        params.limit,
+        params.offset,
+        params.sort,
+        params.expand,
+        params.storeKey
+      );
+    }
+
+    // Case 2: No context.cartId or context.customerId - proceed with original logic
+    // Case 2a: Read cart by ID
     if (params.id) {
       return await readCartById(
         apiRoot,
@@ -180,7 +223,7 @@ export const readCart = async (
       );
     }
 
-    // Case 2: Read cart by key
+    // Case 2b: Read cart by key
     if (params.key) {
       return await readCartByKey(
         apiRoot,
@@ -191,7 +234,7 @@ export const readCart = async (
       );
     }
 
-    // Case 3: Read cart by customer ID
+    // Case 2c: Read cart by customer ID
     if (params.customerId) {
       return await readCartByCustomerId(
         apiRoot,
@@ -205,7 +248,7 @@ export const readCart = async (
       );
     }
 
-    // Case 4: Query carts with provided where conditions
+    // Case 2d: Query carts with provided where conditions
     if (params.where) {
       return await queryCarts(
         apiRoot,
