@@ -1,6 +1,6 @@
 {
   "name": "@commercetools-demo/ct-agent-toolkit",
-  "version": "1.13.0-alpha.1",
+  "version": "1.13.0-alpha.2",
   "homepage": "https://github.com/commercetools-demo/ct-agent-toolkit",
   "scripts": {
     "build": "tsup",

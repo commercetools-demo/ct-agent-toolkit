@@ -4,12 +4,7 @@ import type {Configuration} from '../types/configuration';
 import CommercetoolsAPI from '../shared/api';
 import tools from '../shared/tools';
 import {getCustomerById} from '../shared/customer/functions';
-
-const customerAllowedTools = [
-  'list_products',
-  'search_products',
-  'read_category',
-];
+import {customerAllowedTools} from '../shared/constants';
 class CommercetoolsAgentToolkit extends McpServer {
   private _commercetools: CommercetoolsAPI;
   private _toolDefinitions: Map<string, any> = new Map();
@@ -40,7 +35,8 @@ class CommercetoolsAgentToolkit extends McpServer {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
     this._configuration = configuration;
     this._projectKey = projectKey;
@@ -75,7 +71,6 @@ class CommercetoolsAgentToolkit extends McpServer {
         {id: this._configuration.context?.customerId}
       ).then((customer) => {
         if (customer) {
-          console.error('Customer found');
           this.enableCustomerTools();
         } else {
           throw new Error('Customer not found');

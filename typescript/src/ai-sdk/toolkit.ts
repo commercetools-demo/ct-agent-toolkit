@@ -9,14 +9,7 @@ import type {
 } from 'ai';
 import CommercetoolsTool from './tool';
 import {getCustomerById} from '../shared/customer/functions';
-
-// Define customer allowed tools
-const customerAllowedTools = [
-  'list_products',
-  'search_products',
-  'read_category',
-];
-
+import {customerAllowedTools} from '../shared/constants';
 class CommercetoolsAgentToolkit {
   private _commercetools: CommercetoolsAPI;
   private _configuration: Configuration;
@@ -45,7 +38,8 @@ class CommercetoolsAgentToolkit {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
     this._configuration = configuration;
     this._projectKey = projectKey;
@@ -77,12 +71,18 @@ class CommercetoolsAgentToolkit {
         {id: this._configuration.context?.customerId}
       ).then((customer) => {
         if (customer) {
-          console.error('Customer found');
           this.enableCustomerTools();
         } else {
           throw new Error('Customer not found');
         }
       });
+    }
+  }
+
+  public authenticateAdmin() {
+    if (this._configuration.context?.isAdmin) {
+      // Implement admin authentication
+      return this.registerAdminTools();
     }
   }
 
@@ -98,6 +98,11 @@ class CommercetoolsAgentToolkit {
     });
   }
 
+  private registerAdminTools() {
+    for (const [name, tool] of Object.entries(this._allTools)) {
+      this.tools[name] = tool;
+    }
+  }
   getTools(): {[key: string]: CoreTool} {
     return this.tools;
   }

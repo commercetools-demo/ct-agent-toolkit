@@ -76,7 +76,7 @@ import {ApiRoot} from '@commercetools/platform-sdk';
 export const functionMapping: {
   [key: string]: (
     apiRoot: ApiRoot,
-    context: {projectKey: string},
+    context: {projectKey: string; customerId?: string; cartId?: string},
     params: any
   ) => Promise<any>;
 } = {

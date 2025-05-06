@@ -11,6 +11,7 @@ import {red, yellow} from 'colors';
 type Options = {
   tools?: string[];
   customerId?: string;
+  cartId?: string;
   isAdmin?: boolean;
 };
 
@@ -102,6 +103,8 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
         options.customerId = value;
       } else if (key == 'isAdmin') {
         options.isAdmin = value === 'true';
+      } else if (key == 'cartId') {
+        options.cartId = value;
       } else {
         throw new Error(
           `Invalid argument: ${key}. Accepted arguments are: ${ACCEPTED_ARGS.join(
@@ -169,6 +172,7 @@ export async function main() {
     context: {
       customerId: options.customerId,
       isAdmin: options.isAdmin,
+      cartId: options.cartId,
     },
   };
 
@@ -209,8 +213,7 @@ export async function main() {
   const transport = new StdioServerTransport();
   if (options.customerId) {
     await server.authenticateCustomer();
-  }
-  if (options.isAdmin) {
+  } else if (options.isAdmin) {
     await server.authenticateAdmin();
   }
   await server.connect(transport);

@@ -94,7 +94,8 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   apiUrl: process.env.API_URL!,
   configuration: {
     context: {
-      account: "acct_123",
+      customerId: "customer-12345",
+      cartId: "cart-12345",
     },
   },
 });
@@ -168,20 +169,19 @@ You can initialize the toolkit with a customer ID to implement a customer-specif
 ```typescript
 const server = new CommercetoolsAgentToolkit({
   // ...other configuration
-  customerId: "customer-12345",
   configuration: {
     actions: {
       // All available tools configuration
     },
+    context: {
+      customerId: "customer-12345",
+      cartId: "cart-12345",
+    }
   },
 });
 ```
 
-When initialized with `customerId`, only a single `authenticateCustomer` tool is available initially. When this tool is called, it verifies the customer exists and enables only customer-appropriate tools such as:
-- Reading products and categories
-- Managing their own cart
-- Creating orders
-- Other customer-related operations
+When initialized with a customer ID in the context, you can call the `authenticateCustomer()` method which verifies the customer exists and enables only customer-appropriate tools.
 
 #### Admin Authentication 
 
@@ -190,16 +190,18 @@ For administrative access, initialize with the `isAdmin` flag:
 ```typescript
 const server = new CommercetoolsAgentToolkit({
   // ...other configuration
-  isAdmin: true,
   configuration: {
     actions: {
       // All available tools configuration
     },
+    context: {
+      isAdmin: true
+    }
   },
 });
 ```
 
-When initialized with `isAdmin`, only the `authenticateAdmin` tool is available initially. This tool requires username and password credentials and enables all tools after successful authentication.
+When initialized with `isAdmin` in the context, you can call the `authenticateAdmin()` method which enables all configured tools.
 
 ```bash
 # Run with customer context
@@ -207,6 +209,47 @@ npx -y @commercetools-demo/mcp --tools=all --customerId=CUSTOMER_ID --clientId=C
 
 # Run with admin context
 npx -y @commercetools-demo/mcp --tools=all --isAdmin=true --clientId=CLIENT_ID ...
+```
+
+### Authentication Methods
+
+The toolkit exposes the following authentication methods:
+
+#### authenticateCustomer()
+
+This method checks if a customer ID exists in the configuration context and attempts to retrieve the customer. If successful, it enables only customer-appropriate tools such as:
+- Reading products and categories
+- Managing their own cart
+- Creating orders
+- Other customer-related operations
+
+Example usage:
+```typescript
+// After initialization with customerId in context
+await commercetoolsAgentToolkit.authenticateCustomer();
+```
+
+#### authenticateAdmin()
+
+This method checks if `isAdmin` is set in the configuration context and enables all available tools that were configured, including:
+- Product management
+- Category management
+- Order management
+- Customer management
+- Advanced operations like product types, discounts, inventory management, etc.
+
+Example usage:
+```typescript
+// After initialization with isAdmin in context
+commercetoolsAgentToolkit.authenticateAdmin();
+```
+
+#### getTools()
+
+Returns the current set of available tools that can be used with LangChain, AI SDK, or other agent frameworks:
+
+```typescript
+const tools = commercetoolsAgentToolkit.getTools();
 ```
 
 ## Supported API methods
