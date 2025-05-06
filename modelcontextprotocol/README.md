@@ -11,8 +11,12 @@ npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=C
 # To set up specific tools
 npx -y @commercetools-demo/mcp --tools=products.read --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
 
+# Additional optional parameters:
+# --isAdmin           Enable admin access for backend operations (not restricted to a specific customer)
+# --customerId        Restrict operations to a specific customer (e.g., --customerId=CUSTOMER_ID)
+# --cartId            Restrict operations to a specific cart (e.g., --cartId=CART_ID)
 
-Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. Alternatively, you could set the API_KEY in your environment variables.
+Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. If using the customerId parameter, replace `CUSTOMER_ID` with the actual customer ID. Alternatively, you could set the API_KEY in your environment variables.
 
 ### Usage with Claude Desktop
 
@@ -32,6 +36,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
         "--authUrl=AUTH_URL",
         "--projectKey=PROJECT_KEY",
         "--apiUrl=API_URL"
+        // Optional: add "--isAdmin" for admin access
+        // Optional: add "--customerId=CUSTOMER_ID" to restrict to a specific customer
+        // Optional: add "--cartId=CART_ID" to restrict to a specific cart
       ]
     }
   }
@@ -98,6 +105,8 @@ pnpm add link:../typescript
 
 # run the server in terminal
 npx ts-node src/index.ts --tools=products.read --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --authUrl=AUTH_URL --projectKey=PROJECT_KEY --apiUrl=API_URL
+# Optional: add --isAdmin for admin access
+# Optional: add --customerId=CUSTOMER_ID to restrict to a specific customer
 
 # test using mcptools : Install mcptools from https://github.com/f/mcptools
 mcp call list_products --params '{"limit": 2}' npx ts-node /<absolute-path>/ct-agent-toolkit/modelcontextprotocol/src/index.ts --tools=all \
@@ -106,7 +115,9 @@ mcp call list_products --params '{"limit": 2}' npx ts-node /<absolute-path>/ct-a
 --clientId="CLIENT_ID" \
 --authUrl="AUTH_URL" \
 --apiUrl="API_URL"
-
+# Optional: add --isAdmin for admin access
+# Optional: add --customerId="CUSTOMER_ID" to restrict to a specific customer
+# Optional: add --cartId="CART_ID" to restrict to a specific cart
 ```
 
 **_Do not commit the linked package in package.json to the repo_**
@@ -141,6 +152,9 @@ Configure MCP servers in Claude Desktop
         "--clientId=CLIENT_ID",
         "--authUrl=AUTH_URL",
         "--apiUrl=API_URL"
+        // Optional: add "--isAdmin" for admin access
+        // Optional: add "--customerId=CUSTOMER_ID" to restrict to a specific customer
+        // Optional: add "--cartId=CART_ID" to restrict to a specific cart
       ]
     }
   }
@@ -162,6 +176,9 @@ Run the following command in your terminal:
 ```bash
 # Start MCP Inspector and server with all tools
 npx @modelcontextprotocol/inspector node dist/index.js --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
+# Optional: add --isAdmin for admin access
+# Optional: add --customerId=CUSTOMER_ID to restrict to a specific customer
+# Optional: add --cartId=CART_ID to restrict to a specific cart
 ```
 
 ### Instructions

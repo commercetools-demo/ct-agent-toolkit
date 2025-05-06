@@ -9,18 +9,21 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import {functionMapping} from './functions';
+import {Context} from '../types/configuration';
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
   private httpMiddlewareOptions: HttpMiddlewareOptions;
   private client: Client;
   public apiRoot: ApiRoot;
+  private context?: Context;
 
   constructor(
     clientId: string,
     clientSecret: string,
     authUrl: string,
     projectKey: string,
-    apiUrl: string
+    apiUrl: string,
+    context?: Context
   ) {
     this.authMiddlewareOptions = {
       credentials: {
@@ -39,6 +42,7 @@ class CommercetoolsAPI {
       .withClientCredentialsFlow(this.authMiddlewareOptions)
       .build();
     this.apiRoot = createApiBuilderFromCtpClient(this.client);
+    this.context = context;
   }
 
   async run(method: string, arg: any) {
@@ -51,7 +55,10 @@ class CommercetoolsAPI {
     const output = JSON.stringify(
       await func(
         this.apiRoot,
-        {projectKey: this.authMiddlewareOptions.projectKey},
+        {
+          projectKey: this.authMiddlewareOptions.projectKey,
+          ...this.context,
+        },
         arg
       )
     );

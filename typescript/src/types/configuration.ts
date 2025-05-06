@@ -21,6 +21,7 @@ export type Context = {
   // make requests for this Account.
   customerId?: string;
   isAdmin?: boolean;
+  cartId?: string;
 };
 
 // Configuration provides various settings and options for the integration
