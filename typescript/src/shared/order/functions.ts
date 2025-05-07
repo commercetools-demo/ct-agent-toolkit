@@ -310,20 +310,14 @@ export const readOrder = async (
     }
 
     // If where is provided, query orders
-    if (params.where) {
-      return await queryOrders(apiRoot, context, {
-        where: params.where,
-        storeKey: params.storeKey,
-        limit: params.limit,
-        offset: params.offset,
-        sort: params.sort,
-        expand: params.expand,
-      });
-    }
-
-    throw new Error(
-      'Invalid parameters. Either id, orderNumber, or where must be provided'
-    );
+    return await queryOrders(apiRoot, context, {
+      where: params.where || [],
+      storeKey: params.storeKey,
+      limit: params.limit,
+      offset: params.offset,
+      sort: params.sort,
+      expand: params.expand,
+    });
   } catch (error: any) {
     throw new SDKError('Failed to read order', error);
   }
