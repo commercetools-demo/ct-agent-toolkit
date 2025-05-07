@@ -3,7 +3,7 @@ import tools from '../shared/tools';
 import {isToolAllowed} from '../shared/configuration';
 import type {Configuration} from '../types/configuration';
 import type {
-  Tool,
+  CoreTool,
   LanguageModelV1StreamPart,
   Experimental_LanguageModelV1Middleware as LanguageModelV1Middleware,
 } from 'ai';
@@ -14,9 +14,9 @@ class CommercetoolsAgentToolkit {
   private _commercetools: CommercetoolsAPI;
   private _configuration: Configuration;
   private _projectKey: string;
-  private _toolDefinitions: Map<string, Tool> = new Map();
 
-  tools: {[key: string]: Tool};
+  tools: {[key: string]: CoreTool};
+  private _allTools: {[key: string]: CoreTool} = {};
 
   constructor({
     clientId,
@@ -44,27 +44,19 @@ class CommercetoolsAgentToolkit {
     this._configuration = configuration;
     this._projectKey = projectKey;
     this.tools = {};
+    this._allTools = {};
 
     const filteredTools = tools.filter((tool) =>
       isToolAllowed(tool, configuration)
     );
 
     filteredTools.forEach((tool) => {
-      this._toolDefinitions.set(tool.method, {
-        parameters: tool.parameters,
-        description: tool.description,
-        execute: async (arg: any) => {
-          const result = await this._commercetools.run(tool.method, arg);
-          return {
-            content: [
-              {
-                type: 'text' as const,
-                text: String(result),
-              },
-            ],
-          };
-        },
-      });
+      this._allTools[tool.method] = CommercetoolsTool(
+        this._commercetools,
+        tool.method,
+        tool.description,
+        tool.parameters
+      );
     });
   }
 
@@ -92,24 +84,20 @@ class CommercetoolsAgentToolkit {
   }
 
   private enableCustomerTools() {
+    // Filter tools to only allow customer-specific ones
     customerAllowedTools.forEach((toolName) => {
-      const toolConfig = this._toolDefinitions.get(toolName);
-      if (toolConfig) {
-        this.registerTool(toolName, toolConfig);
+      if (this._allTools[toolName]) {
+        this.tools[toolName] = this._allTools[toolName];
       }
     });
   }
 
-  private registerTool(name: string, tool: Tool) {
-    this.tools[name] = tool;
-  }
-
   private registerAdminTools() {
-    for (const [name, tool] of this._toolDefinitions.entries()) {
-      this.registerTool(name, tool);
+    for (const [name, tool] of Object.entries(this._allTools)) {
+      this.tools[name] = tool;
     }
   }
-  getTools(): {[key: string]: Tool} {
+  getTools(): {[key: string]: CoreTool} {
     return this.tools;
   }
 }
