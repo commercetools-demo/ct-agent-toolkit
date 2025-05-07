@@ -107,7 +107,6 @@ class CommercetoolsAgentToolkit extends McpServer {
     customerAllowedTools.forEach((toolName) => {
       const toolConfig = this._toolDefinitions.get(toolName);
       if (toolConfig) {
-        console.error('toolConfig', toolConfig);
         this.registerTool(toolName, toolConfig);
       }
     });
