@@ -51,7 +51,7 @@ class CommercetoolsAgentToolkit {
 
     filteredTools.forEach((tool) => {
       this._toolDefinitions.set(tool.method, {
-        parameters: tool.parameters.shape,
+        parameters: tool.parameters,
         description: tool.description,
         execute: async (arg: any) => {
           const result = await this._commercetools.run(tool.method, arg);
