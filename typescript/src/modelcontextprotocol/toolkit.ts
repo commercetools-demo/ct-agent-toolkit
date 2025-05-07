@@ -4,7 +4,7 @@ import type {Configuration} from '../types/configuration';
 import CommercetoolsAPI from '../shared/api';
 import tools from '../shared/tools';
 import {getCustomerById} from '../shared/customer/functions';
-import {customerAllowedTools} from '../shared/constants';
+import {customerAllowedTools, anonymousAllowedTools} from '../shared/constants';
 class CommercetoolsAgentToolkit extends McpServer {
   private _commercetools: CommercetoolsAPI;
   private _toolDefinitions: Map<string, any> = new Map();
@@ -64,18 +64,24 @@ class CommercetoolsAgentToolkit extends McpServer {
   }
 
   public authenticateCustomer() {
-    if (this._configuration.context?.customerId) {
-      return getCustomerById(
-        this._commercetools.apiRoot,
-        {projectKey: this._projectKey},
-        {id: this._configuration.context?.customerId}
-      ).then((customer) => {
-        if (customer) {
-          this.enableCustomerTools();
-        } else {
-          throw new Error('Customer not found');
-        }
-      });
+    try {
+      if (this._configuration.context?.customerId) {
+        return getCustomerById(
+          this._commercetools.apiRoot,
+          {projectKey: this._projectKey},
+          {id: this._configuration.context?.customerId}
+        ).then((customer) => {
+          if (customer) {
+            this.enableCustomerTools();
+          } else {
+            throw new Error('Customer not found');
+          }
+        });
+      } else {
+        throw new Error('No customer ID found');
+      }
+    } catch (error) {
+      this.enableAnonymousTools();
     }
   }
 
@@ -105,6 +111,15 @@ class CommercetoolsAgentToolkit extends McpServer {
 
   private enableCustomerTools() {
     customerAllowedTools.forEach((toolName) => {
+      const toolConfig = this._toolDefinitions.get(toolName);
+      if (toolConfig) {
+        this.registerTool(toolName, toolConfig);
+      }
+    });
+  }
+
+  private enableAnonymousTools() {
+    anonymousAllowedTools.forEach((toolName) => {
       const toolConfig = this._toolDefinitions.get(toolName);
       if (toolConfig) {
         this.registerTool(toolName, toolConfig);

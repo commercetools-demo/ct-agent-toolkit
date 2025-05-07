@@ -9,7 +9,7 @@ import type {
 } from 'ai';
 import CommercetoolsTool from './tool';
 import {getCustomerById} from '../shared/customer/functions';
-import {customerAllowedTools} from '../shared/constants';
+import {anonymousAllowedTools, customerAllowedTools} from '../shared/constants';
 class CommercetoolsAgentToolkit {
   private _commercetools: CommercetoolsAPI;
   private _configuration: Configuration;
@@ -61,18 +61,24 @@ class CommercetoolsAgentToolkit {
   }
 
   public authenticateCustomer() {
-    if (this._configuration.context?.customerId) {
-      return getCustomerById(
-        this._commercetools.apiRoot,
-        {projectKey: this._projectKey},
-        {id: this._configuration.context?.customerId}
-      ).then((customer) => {
-        if (customer) {
-          this.enableCustomerTools();
-        } else {
-          throw new Error('Customer not found');
-        }
-      });
+    try {
+      if (this._configuration.context?.customerId) {
+        return getCustomerById(
+          this._commercetools.apiRoot,
+          {projectKey: this._projectKey},
+          {id: this._configuration.context?.customerId}
+        ).then((customer) => {
+          if (customer) {
+            this.enableCustomerTools();
+          } else {
+            throw new Error('Customer not found');
+          }
+        });
+      } else {
+        throw new Error('No customer ID found');
+      }
+    } catch (error) {
+      this.enableAnonymousTools();
     }
   }
 
@@ -86,6 +92,14 @@ class CommercetoolsAgentToolkit {
   private enableCustomerTools() {
     // Filter tools to only allow customer-specific ones
     customerAllowedTools.forEach((toolName) => {
+      if (this._allTools[toolName]) {
+        this.tools[toolName] = this._allTools[toolName];
+      }
+    });
+  }
+
+  private enableAnonymousTools() {
+    anonymousAllowedTools.forEach((toolName) => {
       if (this._allTools[toolName]) {
         this.tools[toolName] = this._allTools[toolName];
       }
