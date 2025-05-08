@@ -8,7 +8,7 @@ import {
   ApiRoot,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
-import {functionMapping} from './functions';
+import {contextToFunctionMapping} from './functions';
 import {Context} from '../types/configuration';
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
@@ -46,7 +46,7 @@ class CommercetoolsAPI {
   }
 
   async run(method: string, arg: any) {
-    const func = functionMapping[method];
+    const func = contextToFunctionMapping(this.context)[method];
 
     if (!func) {
       throw new Error('Invalid method ' + method);

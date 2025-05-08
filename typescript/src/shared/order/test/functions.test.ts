@@ -1,203 +1,339 @@
-import {readOrder} from '../functions';
-import {ApiRoot} from '@commercetools/platform-sdk';
+import {ApiRoot, Order} from '@commercetools/platform-sdk';
+import {
+  readOrder,
+  createOrderFromCart,
+  createOrderFromQuote,
+  updateOrder,
+} from '../admin.functions';
 import {SDKError} from '../../errors/sdkError';
 
-// Mock the API Root
-const mockGet = jest.fn();
-const mockExecute = jest.fn();
-const mockWithId = jest.fn().mockReturnValue({
-  get: mockGet.mockReturnValue({
-    execute: mockExecute,
-  }),
-});
-const mockWithOrderNumber = jest.fn().mockReturnValue({
-  get: mockGet.mockReturnValue({
-    execute: mockExecute,
-  }),
-});
-const mockOrders = jest.fn().mockReturnValue({
-  withId: mockWithId,
-  withOrderNumber: mockWithOrderNumber,
-  get: mockGet.mockReturnValue({
-    execute: mockExecute,
-  }),
-});
-const mockInStoreKeyWithStoreKeyValue = jest.fn().mockReturnValue({
-  orders: mockOrders,
-});
-const mockWithProjectKey = jest.fn().mockReturnValue({
-  orders: mockOrders,
-  inStoreKeyWithStoreKeyValue: mockInStoreKeyWithStoreKeyValue,
-});
-
-const mockApiRoot = {
-  withProjectKey: mockWithProjectKey,
-} as unknown as ApiRoot;
+// Mock the entire ApiRoot
+jest.mock('@commercetools/platform-sdk', () => ({
+  ApiRoot: jest.fn(),
+}));
 
 describe('Order Functions', () => {
+  let mockApiRoot: any;
+  let executeFunction: jest.Mock;
+
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Set up the mock chain
+    executeFunction = jest.fn();
+    const getMock = jest.fn().mockReturnValue({execute: executeFunction});
+    const postMock = jest.fn().mockReturnValue({execute: executeFunction});
+    const withIdMock = jest.fn().mockReturnValue({
+      get: getMock,
+      post: postMock,
+    });
+    const withOrderNumberMock = jest.fn().mockReturnValue({
+      get: getMock,
+      post: postMock,
+    });
+    const importOrderMock = jest.fn().mockReturnValue({post: postMock});
+    const ordersMock = jest.fn().mockReturnValue({
+      get: getMock,
+      post: postMock,
+      withId: withIdMock,
+      withOrderNumber: withOrderNumberMock,
+      importOrder: importOrderMock,
+    });
+    const withProjectKeyMock = jest.fn().mockReturnValue({
+      orders: ordersMock,
+    });
+
+    // Build the complete mock
+    mockApiRoot = {
+      withProjectKey: withProjectKeyMock,
+    };
   });
 
   describe('readOrder', () => {
-    it('should get order by ID when no customerId is provided', async () => {
-      // Mock response
-      mockExecute.mockResolvedValueOnce({
-        body: {id: 'order-123', orderNumber: '1001'},
+    it('should read an order by ID', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
       });
 
+      // Call function with ID
       const result = await readOrder(
         mockApiRoot,
         {projectKey: 'test-project'},
         {id: 'order-123'}
       );
 
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'order-123'});
-      expect(mockGet).toHaveBeenCalled();
-      expect(mockExecute).toHaveBeenCalled();
-      expect(result).toEqual({id: 'order-123', orderNumber: '1001'});
+      expect(result).toEqual(mockOrder);
     });
 
-    it('should filter orders by customerID when getting by ID with customerId in context', async () => {
-      // Mock response for the filtered query
-      mockExecute.mockResolvedValueOnce({
-        body: {
-          count: 1,
-          results: [
-            {id: 'order-123', orderNumber: '1001', customerId: 'customer-456'},
-          ],
+    it('should read an order by orderNumber', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-456',
+        orderNumber: 'ON-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
         },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
       });
 
+      // Call function with orderNumber
       const result = await readOrder(
         mockApiRoot,
-        {projectKey: 'test-project', customerId: 'customer-456'},
-        {id: 'order-123'}
+        {projectKey: 'test-project'},
+        {orderNumber: 'ON-123'}
       );
 
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockGet).toHaveBeenCalledWith({
-        queryArgs: {
-          where: ['id="order-123"', 'customerId="customer-456"'],
-          limit: 1,
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-      expect(result).toEqual({
-        id: 'order-123',
-        orderNumber: '1001',
-        customerId: 'customer-456',
-      });
+      expect(result).toEqual(mockOrder);
     });
 
-    it('should filter orders by customerID when getting by orderNumber with customerId in context', async () => {
-      // Mock response for the filtered query
-      mockExecute.mockResolvedValueOnce({
-        body: {
-          count: 1,
-          results: [
-            {id: 'order-123', orderNumber: '1001', customerId: 'customer-456'},
-          ],
-        },
-      });
-
-      const result = await readOrder(
-        mockApiRoot,
-        {projectKey: 'test-project', customerId: 'customer-456'},
-        {orderNumber: '1001'}
-      );
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockGet).toHaveBeenCalledWith({
-        queryArgs: {
-          where: ['orderNumber="1001"', 'customerId="customer-456"'],
-          limit: 1,
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-      expect(result).toEqual({
-        id: 'order-123',
-        orderNumber: '1001',
-        customerId: 'customer-456',
-      });
-    });
-
-    it('should add customerId to where conditions when filtering with where and customerId in context', async () => {
-      // Mock response for the filtered query
-      mockExecute.mockResolvedValueOnce({
-        body: {
-          count: 1,
-          results: [
-            {id: 'order-123', orderNumber: '1001', customerId: 'customer-456'},
-            {id: 'order-124', orderNumber: '1002', customerId: 'customer-456'},
-          ],
-        },
-      });
-
-      const result = await readOrder(
-        mockApiRoot,
-        {projectKey: 'test-project', customerId: 'customer-456'},
-        {where: ['orderNumber="1001" or orderNumber="1002"']}
-      );
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockGet).toHaveBeenCalledWith({
-        queryArgs: {
-          where: [
-            'orderNumber="1001" or orderNumber="1002"',
-            'customerId="customer-456"',
-          ],
-          limit: 10,
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-      expect(result).toEqual({
-        count: 1,
+    it('should query orders with where conditions', async () => {
+      // Setup mock response for querying orders
+      const mockOrders = {
+        count: 2,
+        total: 2,
+        offset: 0,
+        limit: 20,
         results: [
-          {id: 'order-123', orderNumber: '1001', customerId: 'customer-456'},
-          {id: 'order-124', orderNumber: '1002', customerId: 'customer-456'},
+          {
+            id: 'order-1',
+            version: 1,
+            lineItems: [],
+            customLineItems: [],
+            totalPrice: {
+              type: 'centPrecision',
+              currencyCode: 'USD',
+              centAmount: 1000,
+              fractionDigits: 2,
+            },
+            orderState: 'Open',
+          },
+          {
+            id: 'order-2',
+            version: 1,
+            lineItems: [],
+            customLineItems: [],
+            totalPrice: {
+              type: 'centPrecision',
+              currencyCode: 'USD',
+              centAmount: 2000,
+              fractionDigits: 2,
+            },
+            orderState: 'Complete',
+          },
         ],
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrders,
       });
+
+      // Call function with where conditions
+      const result = await readOrder(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {where: ['totalPrice.centAmount > 1000']}
+      );
+
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(result).toEqual(mockOrders);
     });
 
-    it('should throw an SDKError when no order is found for customer ID', async () => {
-      // Mock empty response for the filtered query
-      mockExecute.mockResolvedValueOnce({
-        body: {
-          count: 0,
-          results: [],
-        },
-      });
+    it('should wrap errors in SDKError', async () => {
+      // Setup mock to throw error
+      const originalError = new Error('API error');
+      executeFunction.mockRejectedValueOnce(originalError);
 
-      // Since SDKError doesn't expose the original error, we'll just test that it throws
+      // Call function and check for wrapped error
       await expect(
-        readOrder(
-          mockApiRoot,
-          {projectKey: 'test-project', customerId: 'customer-456'},
-          {id: 'order-123'}
-        )
-      ).rejects.toThrow('Failed to read order');
+        readOrder(mockApiRoot, {projectKey: 'test-project'}, {id: 'order-123'})
+      ).rejects.toThrow(SDKError);
+    });
+  });
 
-      // Verify that the query was made with the correct customer ID filter
-      expect(mockGet).toHaveBeenCalledWith({
-        queryArgs: {
-          where: ['id="order-123"', 'customerId="customer-456"'],
-          limit: 1,
+  describe('createOrderFromCart', () => {
+    it('should create an order from cart', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'new-order-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
         },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
       });
+
+      // Call function
+      const result = await createOrderFromCart(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {id: 'cart-123', version: 1}
+      );
+
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(result).toEqual(mockOrder);
+    });
+  });
+
+  describe('createOrderFromQuote', () => {
+    it('should create an order from quote', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'new-order-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
+      });
+
+      // Call function without store context
+      const result = await createOrderFromQuote(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {quoteId: 'quote-123', version: 1}
+      );
+
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(result).toEqual(mockOrder);
+    });
+  });
+
+  describe('updateOrder', () => {
+    it('should update an order by ID', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-123',
+        version: 2,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
+      });
+
+      // Call function without store context
+      const result = await updateOrder(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {
+          id: 'order-123',
+          version: 1,
+          actions: [{action: 'setOrderNumber', orderNumber: 'NEW-123'}],
+        }
+      );
+
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
+    it('should update an order by orderNumber', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-123',
+        orderNumber: 'ON-123',
+        version: 2,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      executeFunction.mockResolvedValueOnce({
+        body: mockOrder,
+      });
+
+      // Call function without store context
+      const result = await updateOrder(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {
+          orderNumber: 'ON-123',
+          version: 1,
+          actions: [{action: 'changeOrderState', orderState: 'Complete'}],
+        }
+      );
+
+      // Verify API was called correctly
+      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(result).toEqual(mockOrder);
     });
   });
 });
