@@ -11,19 +11,8 @@ import {
   createProductSelection,
   updateProductSelection,
 } from './product-selection/functions';
-import {
-  readOrder,
-  createOrderFromCart,
-  createOrderFromQuote,
-  createOrderByImport,
-  updateOrder,
-} from './order/functions';
-import {
-  readCart,
-  createCart,
-  replicateCart,
-  updateCart,
-} from './cart/functions';
+import {contextToOrderFunctionMapping} from './order/functions';
+import {contextToCartFunctionMapping} from './cart/functions';
 import {
   createCustomer,
   createCustomerInStore,
@@ -72,8 +61,18 @@ import {
 } from './inventory/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
+export const contextToFunctionMapping = (context?: {
+  customerId?: string;
+  storeKey?: string;
+  cartId?: string;
+}) => {
+  return {
+    ...contextToOrderFunctionMapping(context),
+    ...contextToCartFunctionMapping(context),
+  };
+};
 // Initialize function mapping
-export const functionMapping: {
+const functionMapping: {
   [key: string]: (
     apiRoot: ApiRoot,
     context: {projectKey: string; customerId?: string; cartId?: string},
@@ -91,15 +90,6 @@ export const functionMapping: {
   read_product_selection: readProductSelection,
   create_product_selection: createProductSelection,
   update_product_selection: updateProductSelection,
-  read_order: readOrder,
-  create_order_from_cart: createOrderFromCart,
-  create_order_from_quote: createOrderFromQuote,
-  create_order_by_import: createOrderByImport,
-  update_order: updateOrder,
-  read_cart: readCart,
-  create_cart: createCart,
-  replicate_cart: replicateCart,
-  update_cart: updateCart,
   create_customer: createCustomer,
   create_customer_in_store: createCustomerInStore,
   get_customer_by_id: getCustomerById,
