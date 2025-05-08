@@ -1,4 +1,5 @@
-import {readOrder} from '../../../shared/order/functions';
+import {readOrder} from '../../../shared/order/admin.functions';
+import {readCustomerOrder} from '../../../shared/order/customer.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {SDKError} from '../../../shared/errors/sdkError';
 
@@ -39,30 +40,8 @@ describe('Order Functions', () => {
     jest.clearAllMocks();
   });
 
-  describe('readOrder', () => {
-    it('should get order by ID when no customerId is provided', async () => {
-      // Mock response
-      mockExecute.mockResolvedValueOnce({
-        body: {id: 'order-123', orderNumber: '1001'},
-      });
-
-      const result = await readOrder(
-        mockApiRoot,
-        {projectKey: 'test-project'},
-        {id: 'order-123'}
-      );
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'order-123'});
-      expect(mockGet).toHaveBeenCalled();
-      expect(mockExecute).toHaveBeenCalled();
-      expect(result).toEqual({id: 'order-123', orderNumber: '1001'});
-    });
-
-    it('should filter orders by customerID when getting by ID with customerId in context', async () => {
+  describe('readCustomerOrder', () => {
+    it('should get order by ID when customerId is provided', async () => {
       // Mock response for the filtered query
       mockExecute.mockResolvedValueOnce({
         body: {
@@ -73,7 +52,7 @@ describe('Order Functions', () => {
         },
       });
 
-      const result = await readOrder(
+      const result = await readCustomerOrder(
         mockApiRoot,
         {projectKey: 'test-project', customerId: 'customer-456'},
         {id: 'order-123'}
@@ -108,7 +87,7 @@ describe('Order Functions', () => {
         },
       });
 
-      const result = await readOrder(
+      const result = await readCustomerOrder(
         mockApiRoot,
         {projectKey: 'test-project', customerId: 'customer-456'},
         {orderNumber: '1001'}
@@ -144,7 +123,7 @@ describe('Order Functions', () => {
         },
       });
 
-      const result = await readOrder(
+      const result = await readCustomerOrder(
         mockApiRoot,
         {projectKey: 'test-project', customerId: 'customer-456'},
         {where: ['orderNumber="1001" or orderNumber="1002"']}
@@ -184,12 +163,12 @@ describe('Order Functions', () => {
 
       // Since SDKError doesn't expose the original error, we'll just test that it throws
       await expect(
-        readOrder(
+        readCustomerOrder(
           mockApiRoot,
           {projectKey: 'test-project', customerId: 'customer-456'},
           {id: 'order-123'}
         )
-      ).rejects.toThrow('Failed to read order');
+      ).rejects.toThrow('Failed to read customer order');
 
       // Verify that the query was made with the correct customer ID filter
       expect(mockGet).toHaveBeenCalledWith({
@@ -198,6 +177,30 @@ describe('Order Functions', () => {
           limit: 1,
         },
       });
+    });
+  });
+
+  describe('readOrder', () => {
+    it('should get order by ID without customerId', async () => {
+      // Mock response
+      mockExecute.mockResolvedValueOnce({
+        body: {id: 'order-123', orderNumber: '1001'},
+      });
+
+      const result = await readOrder(
+        mockApiRoot,
+        {projectKey: 'test-project'},
+        {id: 'order-123'}
+      );
+
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
+      expect(mockOrders).toHaveBeenCalled();
+      expect(mockWithId).toHaveBeenCalledWith({ID: 'order-123'});
+      expect(mockGet).toHaveBeenCalled();
+      expect(mockExecute).toHaveBeenCalled();
+      expect(result).toEqual({id: 'order-123', orderNumber: '1001'});
     });
   });
 });
