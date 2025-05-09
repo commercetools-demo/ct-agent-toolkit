@@ -7,4 +7,7 @@ export const customerAllowedTools = [
   ...anonymousAllowedTools,
   'read_order',
   'read_cart',
+  'create_cart',
+  'update_cart',
+  'replicate_cart',
 ];

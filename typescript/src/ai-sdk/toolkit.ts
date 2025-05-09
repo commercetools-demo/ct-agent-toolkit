@@ -69,7 +69,7 @@ class CommercetoolsAgentToolkit {
           {id: this._configuration.context?.customerId}
         ).then((customer) => {
           if (customer) {
-            this.enableCustomerTools();
+            this.registerAllTools();
           } else {
             throw new Error('Customer not found');
           }
@@ -85,7 +85,7 @@ class CommercetoolsAgentToolkit {
   public authenticateAdmin() {
     if (this._configuration.context?.isAdmin) {
       // Implement admin authentication
-      return this.registerAdminTools();
+      return this.registerAllTools();
     }
   }
 
@@ -106,7 +106,7 @@ class CommercetoolsAgentToolkit {
     });
   }
 
-  private registerAdminTools() {
+  private registerAllTools() {
     for (const [name, tool] of Object.entries(this._allTools)) {
       this.tools[name] = tool;
     }
