@@ -14,7 +14,7 @@ import {
 } from './parameters';
 
 // Helper function to handle reading an order by ID in a specific store
-const readOrderByIdInStore = async (
+export const readOrderByIdInStore = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: {
@@ -45,7 +45,7 @@ const readOrderByIdInStore = async (
 };
 
 // Helper function to handle reading an order by orderNumber in a specific store
-const readOrderByOrderNumberInStore = async (
+export const readOrderByOrderNumberInStore = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: {
@@ -76,7 +76,7 @@ const readOrderByOrderNumberInStore = async (
 };
 
 // Helper function to handle querying orders within a specific store
-const queryOrdersInStore = async (
+export const queryOrdersInStore = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: {
