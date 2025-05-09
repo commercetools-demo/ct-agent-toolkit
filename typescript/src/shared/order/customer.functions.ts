@@ -4,7 +4,7 @@ import {ApiRoot} from '@commercetools/platform-sdk';
 import {SDKError} from '../errors/sdkError';
 
 // Helper function to handle reading an order by ID for a specific customer
-const readOrderByIdForCustomer = async (
+export const readOrderByIdForCustomer = async (
   apiRoot: ApiRoot,
   context: {projectKey: string; customerId?: string},
   params: {
@@ -46,7 +46,7 @@ const readOrderByIdForCustomer = async (
 };
 
 // Helper function to handle reading an order by orderNumber for a specific customer
-const readOrderByOrderNumberForCustomer = async (
+export const readOrderByOrderNumberForCustomer = async (
   apiRoot: ApiRoot,
   context: {projectKey: string; customerId?: string},
   params: {
@@ -88,7 +88,7 @@ const readOrderByOrderNumberForCustomer = async (
 };
 
 // Helper function to handle querying orders for a specific customer
-const queryOrdersForCustomer = async (
+export const queryOrdersForCustomer = async (
   apiRoot: ApiRoot,
   context: {projectKey: string; customerId?: string},
   params: {

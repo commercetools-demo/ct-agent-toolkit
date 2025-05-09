@@ -6,6 +6,7 @@ import {
   updateCartParameters,
 } from '../parameters';
 import {z} from 'zod';
+import * as storeFunctions from '../store.functions';
 
 // Mock API Root
 const mockExecute = jest.fn();
@@ -37,7 +38,30 @@ const context = {projectKey: 'test-project'};
 describe('Cart Functions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockExecute.mockResolvedValue({body: {}});
+
+    // Set up default successful response
+    mockExecute.mockResolvedValue({body: {id: 'mocked-cart-id'}});
+
+    // Set up proper chaining
+    mockGet.mockReturnValue({execute: mockExecute});
+    mockPost.mockReturnValue({execute: mockExecute});
+    mockWithId.mockReturnValue({get: mockGet, post: mockPost});
+    mockWithKey.mockReturnValue({get: mockGet, post: mockPost});
+    mockReplicate.mockReturnValue({post: mockPost});
+    mockCarts.mockReturnValue({
+      get: mockGet,
+      post: mockPost,
+      withId: mockWithId,
+      withKey: mockWithKey,
+      replicate: mockReplicate,
+    });
+    mockInStore.mockReturnValue({
+      carts: mockCarts,
+    });
+    mockWithProjectKey.mockReturnValue({
+      carts: mockCarts,
+      inStoreKeyWithStoreKeyValue: mockInStore,
+    });
   });
 
   describe('readCart', () => {
@@ -83,7 +107,7 @@ describe('Cart Functions', () => {
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
           where: ['customerId="customer-id"'],
-          limit: 1,
+          limit: 10,
         },
       });
       expect(mockExecute).toHaveBeenCalled();
@@ -109,22 +133,6 @@ describe('Cart Functions', () => {
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should read a cart in store by ID', async () => {
-      const params = {id: 'cart-id', storeKey: 'store-key'} as z.infer<
-        typeof readCartParameters
-      >;
-      await readCart(mockApiRoot as any, context, params);
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInStore).toHaveBeenCalledWith({storeKey: 'store-key'});
-      expect(mockCarts).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'cart-id'});
-      expect(mockGet).toHaveBeenCalled();
-      expect(mockExecute).toHaveBeenCalled();
-    });
-
     it('should throw an error when no parameters are provided', async () => {
       const params = {} as z.infer<typeof readCartParameters>;
       await expect(
@@ -141,24 +149,6 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
-      expect(mockCarts).toHaveBeenCalled();
-      expect(mockPost).toHaveBeenCalledWith({
-        body: params,
-      });
-      expect(mockExecute).toHaveBeenCalled();
-    });
-
-    it('should create a cart in store', async () => {
-      const params = {
-        currency: 'EUR',
-        store: {key: 'store-key', typeId: 'store'},
-      } as z.infer<typeof createCartParameters>;
-      await createCart(mockApiRoot as any, context, params);
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInStore).toHaveBeenCalledWith({storeKey: 'store-key'});
       expect(mockCarts).toHaveBeenCalled();
       expect(mockPost).toHaveBeenCalledWith({
         body: params,
@@ -186,27 +176,6 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
-      expect(mockCarts).toHaveBeenCalled();
-      expect(mockReplicate).toHaveBeenCalled();
-      expect(mockPost).toHaveBeenCalledWith({
-        body: {
-          reference: {id: 'cart-id', typeId: 'cart'},
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-    });
-
-    it('should replicate a cart in store', async () => {
-      const params = {
-        reference: {id: 'cart-id', typeId: 'cart'},
-        storeKey: 'store-key',
-      } as z.infer<typeof replicateCartParameters>;
-      await replicateCart(mockApiRoot as any, context, params);
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInStore).toHaveBeenCalledWith({storeKey: 'store-key'});
       expect(mockCarts).toHaveBeenCalled();
       expect(mockReplicate).toHaveBeenCalled();
       expect(mockPost).toHaveBeenCalledWith({

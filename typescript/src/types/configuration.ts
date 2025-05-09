@@ -20,8 +20,15 @@ export type Context = {
   // Account is a Connected Account ID. If set, the integration will
   // make requests for this Account.
   customerId?: string;
+  storeKey?: string;
+  distributionChannelId?: string;
+  supplyChannelId?: string;
   isAdmin?: boolean;
   cartId?: string;
+};
+
+export type CommercetoolsFuncContext = Context & {
+  projectKey: string;
 };
 
 // Configuration provides various settings and options for the integration

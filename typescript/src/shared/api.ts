@@ -9,7 +9,7 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import {contextToFunctionMapping} from './functions';
-import {Context} from '../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../types/configuration';
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
   private httpMiddlewareOptions: HttpMiddlewareOptions;
@@ -46,7 +46,11 @@ class CommercetoolsAPI {
   }
 
   async run(method: string, arg: any) {
-    const func = contextToFunctionMapping(this.context)[method];
+    const functionMap = contextToFunctionMapping(this.context) as Record<
+      string,
+      any
+    >;
+    const func = functionMap[method];
 
     if (!func) {
       throw new Error('Invalid method ' + method);
@@ -58,7 +62,7 @@ class CommercetoolsAPI {
         {
           projectKey: this.authMiddlewareOptions.projectKey,
           ...this.context,
-        },
+        } as CommercetoolsFuncContext,
         arg
       )
     );
