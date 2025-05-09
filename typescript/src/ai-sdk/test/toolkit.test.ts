@@ -30,7 +30,7 @@ describe('CommercetoolsAgentToolkit', () => {
     jest.clearAllMocks();
     toolkit = new CommercetoolsAgentToolkit(mockConfig);
     // Mock private methods that aren't directly testable
-    (toolkit as any).enableCustomerTools = jest.fn();
+    (toolkit as any).registerAllTools = jest.fn();
   });
 
   describe('authenticateCustomer', () => {
@@ -52,7 +52,7 @@ describe('CommercetoolsAgentToolkit', () => {
         {projectKey: 'test-project'},
         {id: 'test-customer-id'}
       );
-      expect((toolkit as any).enableCustomerTools).toHaveBeenCalled();
+      expect((toolkit as any).registerAllTools).toHaveBeenCalled();
     });
 
     it('should throw an error when customer is not found', async () => {
@@ -63,7 +63,7 @@ describe('CommercetoolsAgentToolkit', () => {
         'Customer not found'
       );
 
-      expect((toolkit as any).enableCustomerTools).not.toHaveBeenCalled();
+      expect((toolkit as any).registerAllTools).not.toHaveBeenCalled();
     });
 
     it('should do nothing if customerId is not provided', async () => {
