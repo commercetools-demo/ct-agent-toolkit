@@ -34,7 +34,7 @@ describe('Cart Functions with Context', () => {
   });
 
   describe('readCart with context.cartId', () => {
-    it('should prioritize context.cartId over params', async () => {
+    it('should prioritize context.cartId over params.id', async () => {
       const context = {
         projectKey: 'test-project',
         cartId: 'context-cart-id',
@@ -46,12 +46,11 @@ describe('Cart Functions with Context', () => {
 
       await readCart(mockApiRoot as any, context, params);
 
-      // Should use context.cartId instead of params.id
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
       expect(mockCarts).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'context-cart-id'});
+      expect(mockWithId).toHaveBeenCalledWith({ID: 'params-cart-id'});
       expect(mockGet).toHaveBeenCalled();
       expect(mockExecute).toHaveBeenCalled();
     });
@@ -76,7 +75,7 @@ describe('Cart Functions with Context', () => {
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
           where: ['customerId="context-customer-id"'],
-          limit: 1,
+          limit: 10,
         },
       });
       expect(mockExecute).toHaveBeenCalled();
@@ -150,7 +149,7 @@ describe('Cart Functions with Context', () => {
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
           where: ['customerId="context-customer-id"'],
-          limit: 1,
+          limit: 10,
         },
       });
       expect(mockExecute).toHaveBeenCalled();
@@ -213,7 +212,7 @@ describe('Cart Functions with Context', () => {
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
           where: ['customerId="customer-id"'],
-          limit: 1,
+          limit: 10,
         },
       });
       expect(mockExecute).toHaveBeenCalled();

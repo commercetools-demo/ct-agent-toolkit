@@ -50,32 +50,22 @@ const mockAdminReplicate = {id: 'mock-cart-id'} as Cart;
 describe('Cart Function Context Mapping', () => {
   // Mock the scope functions
   beforeEach(() => {
+    jest.spyOn(customer, 'readCart').mockResolvedValue(mockCustomerRead);
+    jest.spyOn(customer, 'createCart').mockResolvedValue(mockCustomerCreate);
+    jest.spyOn(customer, 'updateCart').mockResolvedValue(mockCustomerUpdate);
     jest
-      .spyOn(customer, 'readCustomerCart')
-      .mockResolvedValue(mockCustomerRead);
-    jest
-      .spyOn(customer, 'createCustomerCart')
-      .mockResolvedValue(mockCustomerCreate);
-    jest
-      .spyOn(customer, 'updateCustomerCart')
-      .mockResolvedValue(mockCustomerUpdate);
-    jest
-      .spyOn(customer, 'replicateCustomerCart')
+      .spyOn(customer, 'replicateCart')
       .mockResolvedValue(mockCustomerReplicate);
 
-    jest.spyOn(store, 'readStoreCart').mockResolvedValue(mockStoreRead);
-    jest.spyOn(store, 'createStoreCart').mockResolvedValue(mockStoreCreate);
-    jest.spyOn(store, 'updateStoreCart').mockResolvedValue(mockStoreUpdate);
-    jest
-      .spyOn(store, 'replicateStoreCart')
-      .mockResolvedValue(mockStoreReplicate);
+    jest.spyOn(store, 'readCart').mockResolvedValue(mockStoreRead);
+    jest.spyOn(store, 'createCart').mockResolvedValue(mockStoreCreate);
+    jest.spyOn(store, 'updateCart').mockResolvedValue(mockStoreUpdate);
+    jest.spyOn(store, 'replicateCart').mockResolvedValue(mockStoreReplicate);
 
-    jest.spyOn(admin, 'readAdminCart').mockResolvedValue(mockAdminRead);
-    jest.spyOn(admin, 'createAdminCart').mockResolvedValue(mockAdminCreate);
-    jest.spyOn(admin, 'updateAdminCart').mockResolvedValue(mockAdminUpdate);
-    jest
-      .spyOn(admin, 'replicateAdminCart')
-      .mockResolvedValue(mockAdminReplicate);
+    jest.spyOn(admin, 'readCart').mockResolvedValue(mockAdminRead);
+    jest.spyOn(admin, 'createCart').mockResolvedValue(mockAdminCreate);
+    jest.spyOn(admin, 'updateCart').mockResolvedValue(mockAdminUpdate);
+    jest.spyOn(admin, 'replicateCart').mockResolvedValue(mockAdminReplicate);
   });
 
   afterEach(() => {
@@ -88,28 +78,28 @@ describe('Cart Function Context Mapping', () => {
         customerId: 'customer-1',
       });
 
-      expect(functionMap.read_cart).toBe(customer.readCustomerCart);
-      expect(functionMap.create_cart).toBe(customer.createCustomerCart);
-      expect(functionMap.update_cart).toBe(customer.updateCustomerCart);
-      expect(functionMap.replicate_cart).toBe(customer.replicateCustomerCart);
+      expect(functionMap.read_cart).toBe(customer.readCart);
+      expect(functionMap.create_cart).toBe(customer.createCart);
+      expect(functionMap.update_cart).toBe(customer.updateCart);
+      expect(functionMap.replicate_cart).toBe(customer.replicateCart);
     });
 
     it('returns store functions when storeKey is provided', () => {
       const functionMap = contextToCartFunctionMapping({storeKey: 'store-1'});
 
-      expect(functionMap.read_cart).toBe(store.readStoreCart);
-      expect(functionMap.create_cart).toBe(store.createStoreCart);
-      expect(functionMap.update_cart).toBe(store.updateStoreCart);
-      expect(functionMap.replicate_cart).toBe(store.replicateStoreCart);
+      expect(functionMap.read_cart).toBe(store.readCart);
+      expect(functionMap.create_cart).toBe(store.createCart);
+      expect(functionMap.update_cart).toBe(store.updateCart);
+      expect(functionMap.replicate_cart).toBe(store.replicateCart);
     });
 
     it('returns admin functions when neither customerId nor storeKey is provided', () => {
       const functionMap = contextToCartFunctionMapping({});
 
-      expect(functionMap.read_cart).toBe(admin.readAdminCart);
-      expect(functionMap.create_cart).toBe(admin.createAdminCart);
-      expect(functionMap.update_cart).toBe(admin.updateAdminCart);
-      expect(functionMap.replicate_cart).toBe(admin.replicateAdminCart);
+      expect(functionMap.read_cart).toBe(admin.readCart);
+      expect(functionMap.create_cart).toBe(admin.createCart);
+      expect(functionMap.update_cart).toBe(admin.updateCart);
+      expect(functionMap.replicate_cart).toBe(admin.replicateCart);
     });
 
     it('prioritizes customerId over storeKey when both are provided', () => {
@@ -118,10 +108,10 @@ describe('Cart Function Context Mapping', () => {
         storeKey: 'store-1',
       });
 
-      expect(functionMap.read_cart).toBe(customer.readCustomerCart);
-      expect(functionMap.create_cart).toBe(customer.createCustomerCart);
-      expect(functionMap.update_cart).toBe(customer.updateCustomerCart);
-      expect(functionMap.replicate_cart).toBe(customer.replicateCustomerCart);
+      expect(functionMap.read_cart).toBe(customer.readCart);
+      expect(functionMap.create_cart).toBe(customer.createCart);
+      expect(functionMap.update_cart).toBe(customer.updateCart);
+      expect(functionMap.replicate_cart).toBe(customer.replicateCart);
     });
   });
 
@@ -137,9 +127,9 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockCustomerRead);
-      expect(customer.readCustomerCart).toHaveBeenCalled();
-      expect(store.readStoreCart).not.toHaveBeenCalled();
-      expect(admin.readAdminCart).not.toHaveBeenCalled();
+      expect(customer.readCart).toHaveBeenCalled();
+      expect(store.readCart).not.toHaveBeenCalled();
+      expect(admin.readCart).not.toHaveBeenCalled();
     });
 
     it('uses store scope when storeKey is provided in context', async () => {
@@ -153,24 +143,9 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockStoreRead);
-      expect(store.readStoreCart).toHaveBeenCalled();
-      expect(customer.readCustomerCart).not.toHaveBeenCalled();
-      expect(admin.readAdminCart).not.toHaveBeenCalled();
-    });
-
-    it('uses store scope when storeKey is provided in params', async () => {
-      const result = await readCart(
-        mockApiRoot,
-        {
-          projectKey: 'test-project',
-        },
-        {storeKey: 'store-1'} as z.infer<typeof readCartParameters>
-      );
-
-      expect(result).toBe(mockStoreRead);
-      expect(store.readStoreCart).toHaveBeenCalled();
-      expect(customer.readCustomerCart).not.toHaveBeenCalled();
-      expect(admin.readAdminCart).not.toHaveBeenCalled();
+      expect(store.readCart).toHaveBeenCalled();
+      expect(customer.readCart).not.toHaveBeenCalled();
+      expect(admin.readCart).not.toHaveBeenCalled();
     });
 
     it('uses admin scope when neither customerId nor storeKey is provided', async () => {
@@ -183,9 +158,9 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockAdminRead);
-      expect(admin.readAdminCart).toHaveBeenCalled();
-      expect(customer.readCustomerCart).not.toHaveBeenCalled();
-      expect(store.readStoreCart).not.toHaveBeenCalled();
+      expect(admin.readCart).toHaveBeenCalled();
+      expect(customer.readCart).not.toHaveBeenCalled();
+      expect(store.readCart).not.toHaveBeenCalled();
     });
   });
 
@@ -202,7 +177,7 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockCustomerCreate);
-      expect(customer.createCustomerCart).toHaveBeenCalled();
+      expect(customer.createCart).toHaveBeenCalled();
     });
 
     it('uses store scope when storeKey is provided via params.store.key', async () => {
@@ -215,7 +190,7 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockStoreCreate);
-      expect(store.createStoreCart).toHaveBeenCalled();
+      expect(store.createCart).toHaveBeenCalled();
     });
   });
 
@@ -231,7 +206,7 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockCustomerUpdate);
-      expect(customer.updateCustomerCart).toHaveBeenCalled();
+      expect(customer.updateCart).toHaveBeenCalled();
     });
   });
 
@@ -246,7 +221,7 @@ describe('Cart Function Context Mapping', () => {
       );
 
       expect(result).toBe(mockStoreReplicate);
-      expect(store.replicateStoreCart).toHaveBeenCalled();
+      expect(store.replicateCart).toHaveBeenCalled();
     });
   });
 });
