@@ -93,3 +93,216 @@ export const queryCarts = async (
     return carts;
   }
 };
+
+export const updateCartById = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  id: string,
+  actions: CartUpdateAction[],
+  storeKey?: string
+) => {
+  try {
+    // First fetch the cart to get the latest version
+    const cart = await readCartById(apiRoot, projectKey, id);
+    const currentVersion = cart.version;
+
+    const projectApiRoot = apiRoot.withProjectKey({
+      projectKey,
+    });
+
+    let apiRequest;
+    if (storeKey) {
+      apiRequest = projectApiRoot
+        .inStoreKeyWithStoreKeyValue({storeKey})
+        .carts();
+    } else {
+      apiRequest = projectApiRoot.carts();
+    }
+
+    const updatedCart = await apiRequest
+      .withId({ID: id})
+      .post({
+        body: {
+          version: currentVersion,
+          actions,
+        },
+      })
+      .execute();
+
+    return updatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to update cart by ID: ${error.message}`);
+  }
+};
+
+export const updateCartByKey = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  key: string,
+  actions: CartUpdateAction[],
+  storeKey?: string
+) => {
+  try {
+    // First fetch the cart to get the latest version
+    const cart = await readCartByKey(apiRoot, projectKey, key);
+    const currentVersion = cart.version;
+
+    const projectApiRoot = apiRoot.withProjectKey({
+      projectKey,
+    });
+
+    let apiRequest;
+    if (storeKey) {
+      apiRequest = projectApiRoot
+        .inStoreKeyWithStoreKeyValue({storeKey})
+        .carts();
+    } else {
+      apiRequest = projectApiRoot.carts();
+    }
+
+    const updatedCart = await apiRequest
+      .withKey({key})
+      .post({
+        body: {
+          version: currentVersion,
+          actions,
+        },
+      })
+      .execute();
+
+    return updatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to update cart by key: ${error.message}`);
+  }
+};
+
+// New function for verifying cart ownership by customer
+export const verifyCartBelongsToCustomer = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  customerId: string,
+  cartId?: string,
+  cartKey?: string
+) => {
+  let cart;
+
+  if (cartId) {
+    cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .withId({ID: cartId})
+      .get()
+      .execute();
+  } else if (cartKey) {
+    cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .withKey({key: cartKey})
+      .get()
+      .execute();
+  } else {
+    throw new Error('Either cart ID or key must be provided');
+  }
+
+  return cart.body.customerId === customerId;
+};
+
+// New function for verifying cart belongs to store
+export const verifyCartBelongsToStore = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  storeKey: string,
+  cartId?: string,
+  cartKey?: string
+) => {
+  let cart;
+
+  if (cartId) {
+    cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .withId({ID: cartId})
+      .get()
+      .execute();
+  } else if (cartKey) {
+    cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .withKey({key: cartKey})
+      .get()
+      .execute();
+  } else {
+    throw new Error('Either cart ID or key must be provided');
+  }
+
+  return cart.body.store?.key === storeKey;
+};
+
+// New function for creating a cart
+export const createCart = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  cartDraft: CartDraft,
+  storeKey?: string
+) => {
+  if (storeKey) {
+    // Using in-store endpoint
+    const cart = await apiRoot
+      .withProjectKey({projectKey})
+      .inStoreKeyWithStoreKeyValue({storeKey})
+      .carts()
+      .post({
+        body: cartDraft,
+      })
+      .execute();
+    return cart.body;
+  } else {
+    const cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .post({
+        body: cartDraft,
+      })
+      .execute();
+    return cart.body;
+  }
+};
+
+// New function for replicating a cart
+export const replicateCart = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  reference: CartReference,
+  key?: string,
+  storeKey?: string
+) => {
+  if (storeKey) {
+    // Using in-store endpoint
+    const cart = await apiRoot
+      .withProjectKey({projectKey})
+      .inStoreKeyWithStoreKeyValue({storeKey})
+      .carts()
+      .replicate()
+      .post({
+        body: {
+          reference,
+          ...(key && {key}),
+        },
+      })
+      .execute();
+    return cart.body;
+  } else {
+    const cart = await apiRoot
+      .withProjectKey({projectKey})
+      .carts()
+      .replicate()
+      .post({
+        body: {
+          reference,
+          ...(key && {key}),
+        },
+      })
+      .execute();
+    return cart.body;
+  }
+};

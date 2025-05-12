@@ -6,7 +6,16 @@ import {
 import {z} from 'zod';
 import {CommercetoolsFuncContext} from '../../types/configuration';
 import {SDKError} from '../errors/sdkError';
-import {queryCarts, readCartById, readCartByKey} from './base.functions';
+import {
+  queryCarts,
+  readCartById,
+  readCartByKey,
+  updateCartById,
+  updateCartByKey,
+  verifyCartBelongsToStore,
+  createCart as baseCreateCart,
+  replicateCart as baseReplicateCart,
+} from './base.functions';
 import {
   readCartParameters,
   createCartParameters,
@@ -136,17 +145,13 @@ export const createCart = async (
       },
     } as CartDraft;
 
-    // Always use in-store endpoint when we have store context
-    const cart = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: context.storeKey})
-      .carts()
-      .post({
-        body: cartDraft,
-      })
-      .execute();
-
-    return cart.body;
+    // Use base function with store context
+    return await baseCreateCart(
+      apiRoot,
+      context.projectKey,
+      cartDraft,
+      context.storeKey
+    );
   } catch (error: any) {
     throw new SDKError('Failed to create cart', error);
   }
@@ -165,34 +170,27 @@ export const replicateCart = async (
     }
 
     // Verify that the cart to be replicated belongs to the store
-    const originalCart = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .carts()
-      .withId({ID: params.reference.id})
-      .get()
-      .execute();
+    const isStoreCart = await verifyCartBelongsToStore(
+      apiRoot,
+      context.projectKey,
+      context.storeKey,
+      params.reference.id
+    );
 
-    if (originalCart.body.store?.key !== context.storeKey) {
+    if (!isStoreCart) {
       throw new SDKError('Cannot replicate cart: not from this store', {
         statusCode: 403,
       });
     }
 
-    // Always use in-store endpoint when we have store context
-    const cart = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: context.storeKey})
-      .carts()
-      .replicate()
-      .post({
-        body: {
-          reference: params.reference,
-          ...(params.key && {key: params.key}),
-        },
-      })
-      .execute();
-
-    return cart.body;
+    // Use base function to replicate cart
+    return await baseReplicateCart(
+      apiRoot,
+      context.projectKey,
+      params.reference,
+      params.key,
+      context.storeKey
+    );
   } catch (error: any) {
     throw new SDKError('Failed to replicate cart', error);
   }
@@ -215,24 +213,15 @@ export const updateCart = async (
 
     // Verify the cart belongs to the store if we have an ID or key
     if (cartId || cartKey) {
-      let cart;
-      if (cartId) {
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .carts()
-          .withId({ID: cartId})
-          .get()
-          .execute();
-      } else if (cartKey) {
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .carts()
-          .withKey({key: cartKey})
-          .get()
-          .execute();
-      }
+      const isStoreCart = await verifyCartBelongsToStore(
+        apiRoot,
+        context.projectKey,
+        context.storeKey,
+        cartId,
+        cartKey
+      );
 
-      if (cart && cart.body.store?.key !== context.storeKey) {
+      if (!isStoreCart) {
         throw new SDKError('Cannot update cart: not from this store', {
           statusCode: 403,
         });
@@ -243,38 +232,28 @@ export const updateCart = async (
       });
     }
 
-    let updatedCart;
-
     // Always use in-store endpoint when we have store context
     if (cartId) {
-      updatedCart = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inStoreKeyWithStoreKeyValue({storeKey: context.storeKey})
-        .carts()
-        .withId({ID: cartId})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as CartUpdateAction[],
-          },
-        })
-        .execute();
+      return await updateCartById(
+        apiRoot,
+        context.projectKey,
+        cartId,
+        params.actions as CartUpdateAction[],
+        context.storeKey
+      );
     } else if (cartKey) {
-      updatedCart = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inStoreKeyWithStoreKeyValue({storeKey: context.storeKey})
-        .carts()
-        .withKey({key: cartKey})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as CartUpdateAction[],
-          },
-        })
-        .execute();
+      return await updateCartByKey(
+        apiRoot,
+        context.projectKey,
+        cartKey,
+        params.actions as CartUpdateAction[],
+        context.storeKey
+      );
     }
 
-    return updatedCart!.body;
+    throw new SDKError('Failed to update cart', {
+      statusCode: 500,
+    });
   } catch (error: any) {
     throw new SDKError('Failed to update cart', error);
   }

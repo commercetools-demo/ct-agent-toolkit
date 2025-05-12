@@ -12,6 +12,7 @@ The following steps are defining implementation of an example `cart.read`. So th
 # NOTES: 
     1. CRUD functions are read, update and create. do not add delete functions.
     2. DO NOT MODIFY `parameters.ts` or `prompts.ts` or `tools.ts`
+    3. when creating update base functions, use get (by id or key) base functions to first fetch the entity, and use the version from the fetched entity in the update payload
 
 # Refactor steps
 
@@ -83,18 +84,21 @@ The following steps are defining implementation of an example `cart.read`. So th
             // replicate_cart: store.replicateCart,
             };
         }
-        return {
-            read_cart: admin.readCart,
-            // create_cart: admin.createAdminCart,
-            // update_cart: admin.updateAdminCart,
-            // replicate_cart: admin.replicateAdminCart,
-        };
+        if (context?.isAdmin) { // IMPORTANT
+            return {
+                read_cart: admin.readCart,
+                // create_cart: admin.createAdminCart,
+                // update_cart: admin.updateAdminCart,
+                // replicate_cart: admin.replicateAdminCart,
+            };
+        }
         };
     ```
 
 6. create a test file to check if correct context is loading right functions from  `contextTo<namespace>FunctionMapping` and if none is provided, it should be empty
 7. update current tests to match the function calls
 8. refactor `typescript/src/shared/functions.ts` and import `import {contextToCartFunctionMapping} from './cart/functions';` then update  this method return 
+9. confirm that this method call `apiRoot.withProjectKey()` is only being called from base functions not in `customer.functions.ts` and not in `customer` and `admin`. if usage of `apiRoot.withProjectKey` found, move the method to base and reused from base functions.  
 ```
 export const contextToFunctionMapping = (context?: Context) => {
   return {

@@ -2,6 +2,7 @@ import {z} from 'zod';
 import {readOrderParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {SDKError} from '../errors/sdkError';
+import {queryOrders, verifyOrderBelongsToCustomer} from './base.functions';
 
 // Helper function to handle reading an order by ID for a specific customer
 export const readOrderByIdForCustomer = async (
@@ -13,36 +14,29 @@ export const readOrderByIdForCustomer = async (
     expand?: string[];
   }
 ) => {
+  // Use the base queryOrders function with customer ID filter
   const whereConditions = [
     `id="${params.id}"`,
     `customerId="${context.customerId}"`,
   ];
 
-  // Create API request with or without store
-  const ordersRequest = params.storeKey
-    ? apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-        .orders()
-    : apiRoot.withProjectKey({projectKey: context.projectKey}).orders();
+  const response = await queryOrders(
+    apiRoot,
+    context.projectKey,
+    whereConditions,
+    1, // limit to 1
+    undefined,
+    undefined,
+    params.expand,
+    params.storeKey
+  );
 
-  // Execute the query with where conditions
-  const response = await ordersRequest
-    .get({
-      queryArgs: {
-        where: whereConditions,
-        limit: 1,
-        ...(params.expand && {expand: params.expand}),
-      },
-    })
-    .execute();
-
-  if (response.body.count === 0) {
+  if (response.count === 0) {
     throw new Error(
       `Order with ID ${params.id} not found for customer ${context.customerId}`
     );
   }
-  return response.body.results[0];
+  return response.results[0];
 };
 
 // Helper function to handle reading an order by orderNumber for a specific customer
@@ -55,40 +49,33 @@ export const readOrderByOrderNumberForCustomer = async (
     expand?: string[];
   }
 ) => {
+  // Use the base queryOrders function with customer ID filter
   const whereConditions = [
     `orderNumber="${params.orderNumber}"`,
     `customerId="${context.customerId}"`,
   ];
 
-  // Create API request with or without store
-  const ordersRequest = params.storeKey
-    ? apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-        .orders()
-    : apiRoot.withProjectKey({projectKey: context.projectKey}).orders();
+  const response = await queryOrders(
+    apiRoot,
+    context.projectKey,
+    whereConditions,
+    1, // limit to 1
+    undefined,
+    undefined,
+    params.expand,
+    params.storeKey
+  );
 
-  // Execute the query with where conditions
-  const response = await ordersRequest
-    .get({
-      queryArgs: {
-        where: whereConditions,
-        limit: 1,
-        ...(params.expand && {expand: params.expand}),
-      },
-    })
-    .execute();
-
-  if (response.body.count === 0) {
+  if (response.count === 0) {
     throw new Error(
       `Order with number ${params.orderNumber} not found for customer ${context.customerId}`
     );
   }
-  return response.body.results[0];
+  return response.results[0];
 };
 
 // Helper function to handle querying orders for a specific customer
-export const queryOrdersForCustomer = async (
+export const queryOrdersForCustomer = (
   apiRoot: ApiRoot,
   context: {projectKey: string; customerId?: string},
   params: {
@@ -100,46 +87,21 @@ export const queryOrdersForCustomer = async (
     expand?: string[];
   }
 ) => {
-  // Create a copy of the where conditions
+  // Create a copy of the where conditions and add customerId
   const whereConditions = [...params.where];
-
-  // Add customerId to the where conditions
   whereConditions.push(`customerId="${context.customerId}"`);
 
-  // If storeKey is provided, query from store
-  if (params.storeKey) {
-    const ordersInStore = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-      .orders()
-      .get({
-        queryArgs: {
-          where: whereConditions,
-          limit: params.limit || 10,
-          ...(params.offset && {offset: params.offset}),
-          ...(params.sort && {sort: params.sort}),
-          ...(params.expand && {expand: params.expand}),
-        },
-      })
-      .execute();
-    return ordersInStore.body;
-  }
-
-  // Query without store
-  const orders = await apiRoot
-    .withProjectKey({projectKey: context.projectKey})
-    .orders()
-    .get({
-      queryArgs: {
-        where: whereConditions,
-        limit: params.limit || 10,
-        ...(params.offset && {offset: params.offset}),
-        ...(params.sort && {sort: params.sort}),
-        ...(params.expand && {expand: params.expand}),
-      },
-    })
-    .execute();
-  return orders.body;
+  // Use the base queryOrders function
+  return queryOrders(
+    apiRoot,
+    context.projectKey,
+    whereConditions,
+    params.limit,
+    params.offset,
+    params.sort,
+    params.expand,
+    params.storeKey
+  );
 };
 
 export const readCustomerOrder = async (

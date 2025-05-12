@@ -15,9 +15,15 @@ import {
   OrderFromQuoteDraft,
 } from '@commercetools/platform-sdk';
 import {SDKError} from '../errors/sdkError';
+import {
+  readOrderById as baseReadOrderById,
+  readOrderByOrderNumber as baseReadOrderByOrderNumber,
+  updateOrderById,
+  updateOrderByOrderNumber,
+} from './base.functions';
 
 // Helper function to handle reading an order by ID without customer context
-const readOrderById = async (
+const readOrderById = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: {
@@ -25,25 +31,13 @@ const readOrderById = async (
     expand?: string[];
   }
 ) => {
-  const request = apiRoot
-    .withProjectKey({projectKey: context.projectKey})
-    .orders()
-    .withId({ID: params.id});
-
-  // Add expand if provided
-  if (params.expand) {
-    const response = await request
-      .get({
-        queryArgs: {
-          expand: params.expand,
-        },
-      })
-      .execute();
-    return response.body;
-  } else {
-    const response = await request.get().execute();
-    return response.body;
-  }
+  // Use the base function instead of reimplementing
+  return baseReadOrderById(
+    apiRoot,
+    context.projectKey,
+    params.id,
+    params.expand
+  );
 };
 
 // Helper function to handle reading an order by orderNumber without customer context
@@ -269,33 +263,21 @@ export const updateOrder = async (
   try {
     // Handle standard (non-store) updates
     if (params.id) {
-      const response = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .withId({ID: params.id})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as OrderUpdateAction[],
-          },
-        })
-        .execute();
-
-      return response.body;
+      return await updateOrderById(
+        apiRoot,
+        context.projectKey,
+        params.id,
+        params.actions as OrderUpdateAction[],
+        params.storeKey
+      );
     } else if (params.orderNumber) {
-      const response = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .withOrderNumber({orderNumber: params.orderNumber})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as OrderUpdateAction[],
-          },
-        })
-        .execute();
-
-      return response.body;
+      return await updateOrderByOrderNumber(
+        apiRoot,
+        context.projectKey,
+        params.orderNumber,
+        params.actions as OrderUpdateAction[],
+        params.storeKey
+      );
     } else {
       throw new Error('Either id or orderNumber must be provided');
     }

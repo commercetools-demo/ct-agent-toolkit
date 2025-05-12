@@ -12,6 +12,12 @@ import {
   readOrderParameters,
   updateOrderParameters,
 } from './parameters';
+import {
+  readOrderById,
+  readOrderByOrderNumber,
+  updateOrderById,
+  updateOrderByOrderNumber,
+} from './base.functions';
 
 // Helper function to handle reading an order by ID in a specific store
 export const readOrderByIdInStore = async (
@@ -216,20 +222,13 @@ export const updateOrderByIdInStore = async (
   }
 ) => {
   try {
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-      .orders()
-      .withId({ID: params.id})
-      .post({
-        body: {
-          version: params.version,
-          actions: params.actions as OrderUpdateAction[],
-        },
-      })
-      .execute();
-
-    return response.body;
+    return await updateOrderById(
+      apiRoot,
+      context.projectKey,
+      params.id,
+      params.actions as OrderUpdateAction[],
+      params.storeKey
+    );
   } catch (error: any) {
     throw new SDKError('Failed to update order by ID in store', error);
   }
@@ -245,20 +244,13 @@ export const updateOrderByOrderNumberInStore = async (
   }
 ) => {
   try {
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-      .orders()
-      .withOrderNumber({orderNumber: params.orderNumber})
-      .post({
-        body: {
-          version: params.version,
-          actions: params.actions as OrderUpdateAction[],
-        },
-      })
-      .execute();
-
-    return response.body;
+    return await updateOrderByOrderNumber(
+      apiRoot,
+      context.projectKey,
+      params.orderNumber,
+      params.actions as OrderUpdateAction[],
+      params.storeKey
+    );
   } catch (error: any) {
     throw new SDKError(
       'Failed to update order by order number in store',

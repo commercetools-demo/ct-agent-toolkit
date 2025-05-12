@@ -160,6 +160,16 @@ export const updateCartDiscountById = async (
   storeKey?: string
 ) => {
   try {
+    // First fetch the cart discount to get the latest version
+    const cartDiscount = await readCartDiscountById(
+      apiRoot,
+      projectKey,
+      id,
+      undefined,
+      storeKey
+    );
+    const currentVersion = cartDiscount.version;
+
     const projectApiRoot = apiRoot.withProjectKey({
       projectKey,
     });
@@ -173,17 +183,17 @@ export const updateCartDiscountById = async (
       apiRequest = projectApiRoot.cartDiscounts();
     }
 
-    const cartDiscount = await apiRequest
+    const updatedCartDiscount = await apiRequest
       .withId({ID: id})
       .post({
         body: {
-          version,
+          version: currentVersion,
           actions,
         },
       })
       .execute();
 
-    return cartDiscount.body;
+    return updatedCartDiscount.body;
   } catch (error: any) {
     throw new SDKError('Failed to update cart discount by ID', error);
   }
@@ -198,6 +208,16 @@ export const updateCartDiscountByKey = async (
   storeKey?: string
 ) => {
   try {
+    // First fetch the cart discount to get the latest version
+    const cartDiscount = await readCartDiscountByKey(
+      apiRoot,
+      projectKey,
+      key,
+      undefined,
+      storeKey
+    );
+    const currentVersion = cartDiscount.version;
+
     const projectApiRoot = apiRoot.withProjectKey({
       projectKey,
     });
@@ -211,17 +231,17 @@ export const updateCartDiscountByKey = async (
       apiRequest = projectApiRoot.cartDiscounts();
     }
 
-    const cartDiscount = await apiRequest
+    const updatedCartDiscount = await apiRequest
       .withKey({key})
       .post({
         body: {
-          version,
+          version: currentVersion,
           actions,
         },
       })
       .execute();
 
-    return cartDiscount.body;
+    return updatedCartDiscount.body;
   } catch (error: any) {
     throw new SDKError('Failed to update cart discount by key', error);
   }
