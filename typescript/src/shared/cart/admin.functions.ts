@@ -12,7 +12,13 @@ import {
   CartReference,
 } from '@commercetools/platform-sdk';
 import {SDKError} from '../errors/sdkError';
-import {queryCarts, readCartById, readCartByKey} from './base.functions';
+import {
+  queryCarts,
+  readCartById,
+  readCartByKey,
+  updateCartById,
+  updateCartByKey,
+} from './base.functions';
 
 export const readCart = async (
   apiRoot: ApiRoot,
@@ -161,72 +167,26 @@ export const updateCart = async (
   params: z.infer<typeof updateCartParameters>
 ) => {
   try {
-    let cart;
-
     // Handle the different combinations of id/key and store/no-store
     if (params.id) {
-      if (params.storeKey) {
-        // Using in-store endpoint with ID
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .carts()
-          .withId({ID: params.id})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as CartUpdateAction[],
-            },
-          })
-          .execute();
-      } else {
-        // Using regular endpoint with ID
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .carts()
-          .withId({ID: params.id})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as CartUpdateAction[],
-            },
-          })
-          .execute();
-      }
+      return await updateCartById(
+        apiRoot,
+        context.projectKey,
+        params.id,
+        params.actions as CartUpdateAction[],
+        params.storeKey
+      );
     } else if (params.key) {
-      if (params.storeKey) {
-        // Using in-store endpoint with key
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .carts()
-          .withKey({key: params.key})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as CartUpdateAction[],
-            },
-          })
-          .execute();
-      } else {
-        // Using regular endpoint with key
-        cart = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .carts()
-          .withKey({key: params.key})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as CartUpdateAction[],
-            },
-          })
-          .execute();
-      }
+      return await updateCartByKey(
+        apiRoot,
+        context.projectKey,
+        params.key,
+        params.actions as CartUpdateAction[],
+        params.storeKey
+      );
     } else {
       throw new Error('Either id or key must be provided');
     }
-
-    return cart.body;
   } catch (error: any) {
     throw new SDKError('Failed to update cart', error);
   }

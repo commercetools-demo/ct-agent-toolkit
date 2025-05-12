@@ -4,8 +4,17 @@ import {
   createOrderFromCart,
   createOrderFromQuote,
   updateOrder,
-} from '../admin.functions';
+} from '../functions';
 import {SDKError} from '../../errors/sdkError';
+import * as baseFunctions from '../base.functions';
+
+// Mock the base functions module
+jest.mock('../base.functions', () => ({
+  readOrderById: jest.fn(),
+  readOrderByOrderNumber: jest.fn(),
+  updateOrderById: jest.fn(),
+  updateOrderByOrderNumber: jest.fn(),
+}));
 
 // Mock the entire ApiRoot
 jest.mock('@commercetools/platform-sdk', () => ({
@@ -66,21 +75,25 @@ describe('Order Functions', () => {
         orderState: 'Open',
       };
 
-      executeFunction.mockResolvedValueOnce({
-        body: mockOrder,
-      });
+      // Mock the base function
+      (baseFunctions.readOrderById as jest.Mock).mockResolvedValueOnce(
+        mockOrder
+      );
 
-      // Call function with ID
+      // Call function
       const result = await readOrder(
         mockApiRoot,
         {projectKey: 'test-project'},
         {id: 'order-123'}
       );
 
-      // Verify API was called correctly
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
+      // Verify base function was called
+      expect(baseFunctions.readOrderById).toHaveBeenCalledWith(
+        mockApiRoot,
+        'test-project',
+        'order-123',
+        undefined
+      );
       expect(result).toEqual(mockOrder);
     });
 
@@ -177,7 +190,9 @@ describe('Order Functions', () => {
     it('should wrap errors in SDKError', async () => {
       // Setup mock to throw error
       const originalError = new Error('API error');
-      executeFunction.mockRejectedValueOnce(originalError);
+      (baseFunctions.readOrderById as jest.Mock).mockRejectedValueOnce(
+        new SDKError('Failed to read order by ID', originalError)
+      );
 
       // Call function and check for wrapped error
       await expect(
@@ -275,9 +290,10 @@ describe('Order Functions', () => {
         orderState: 'Open',
       };
 
-      executeFunction.mockResolvedValueOnce({
-        body: mockOrder,
-      });
+      // Mock base function for successful update
+      (baseFunctions.updateOrderById as jest.Mock).mockResolvedValueOnce(
+        mockOrder
+      );
 
       // Call function without store context
       const result = await updateOrder(
@@ -290,10 +306,8 @@ describe('Order Functions', () => {
         }
       );
 
-      // Verify API was called correctly
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
+      // Verify that the base function was called correctly
+      expect(baseFunctions.updateOrderById).toHaveBeenCalled();
       expect(result).toEqual(mockOrder);
     });
 
@@ -314,9 +328,10 @@ describe('Order Functions', () => {
         orderState: 'Open',
       };
 
-      executeFunction.mockResolvedValueOnce({
-        body: mockOrder,
-      });
+      // Mock base function for successful update
+      (
+        baseFunctions.updateOrderByOrderNumber as jest.Mock
+      ).mockResolvedValueOnce(mockOrder);
 
       // Call function without store context
       const result = await updateOrder(
@@ -329,10 +344,8 @@ describe('Order Functions', () => {
         }
       );
 
-      // Verify API was called correctly
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
+      // Verify that the base function was called correctly
+      expect(baseFunctions.updateOrderByOrderNumber).toHaveBeenCalled();
       expect(result).toEqual(mockOrder);
     });
   });

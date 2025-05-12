@@ -10,10 +10,19 @@ import {
   updateOrderByOrderNumberInStore,
 } from '../store.functions';
 import {SDKError} from '../../errors/sdkError';
+import * as baseFunctions from '../base.functions';
 
 // Mock the entire ApiRoot
 jest.mock('@commercetools/platform-sdk', () => ({
   ApiRoot: jest.fn(),
+}));
+
+// Mock the base functions module
+jest.mock('../base.functions', () => ({
+  readOrderById: jest.fn(),
+  readOrderByOrderNumber: jest.fn(),
+  updateOrderById: jest.fn(),
+  updateOrderByOrderNumber: jest.fn(),
 }));
 
 describe('Store Order Functions', () => {
@@ -367,9 +376,11 @@ describe('Store Order Functions', () => {
     it('should update an order by ID in a store', async () => {
       // Setup mock response
       const mockOrder = {id: 'order-123', version: 2};
-      executeFunction.mockResolvedValueOnce({
-        body: mockOrder,
-      });
+
+      // Mock base function for successful update
+      (baseFunctions.updateOrderById as jest.Mock).mockResolvedValueOnce(
+        mockOrder
+      );
 
       // Call function
       const result = await updateOrderByIdInStore(
@@ -383,15 +394,14 @@ describe('Store Order Functions', () => {
         }
       );
 
-      // Verify store was used correctly
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(
-        mockApiRoot.withProjectKey().inStoreKeyWithStoreKeyValue
-      ).toHaveBeenCalledWith({
-        storeKey: 'test-store',
-      });
+      // Verify base function was called correctly
+      expect(baseFunctions.updateOrderById).toHaveBeenCalledWith(
+        mockApiRoot,
+        'test-project',
+        'order-123',
+        [{action: 'setOrderNumber', orderNumber: 'NEW-123'}],
+        'test-store'
+      );
       expect(result).toEqual(mockOrder);
     });
   });
@@ -400,9 +410,11 @@ describe('Store Order Functions', () => {
     it('should update an order by orderNumber in a store', async () => {
       // Setup mock response
       const mockOrder = {id: 'order-123', orderNumber: 'ON-123', version: 2};
-      executeFunction.mockResolvedValueOnce({
-        body: mockOrder,
-      });
+
+      // Mock base function for successful update
+      (
+        baseFunctions.updateOrderByOrderNumber as jest.Mock
+      ).mockResolvedValueOnce(mockOrder);
 
       // Call function
       const result = await updateOrderByOrderNumberInStore(
@@ -416,15 +428,14 @@ describe('Store Order Functions', () => {
         }
       );
 
-      // Verify store was used correctly
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(
-        mockApiRoot.withProjectKey().inStoreKeyWithStoreKeyValue
-      ).toHaveBeenCalledWith({
-        storeKey: 'test-store',
-      });
+      // Verify base function was called correctly
+      expect(baseFunctions.updateOrderByOrderNumber).toHaveBeenCalledWith(
+        mockApiRoot,
+        'test-project',
+        'ON-123',
+        [{action: 'changeOrderState', orderState: 'Complete'}],
+        'test-store'
+      );
       expect(result).toEqual(mockOrder);
     });
   });
