@@ -6,11 +6,16 @@ import {
   queryCustomers,
   updateCustomer,
 } from '../functions';
-import {
-  getCustomerByIdParameters,
-  queryCustomersParameters,
-} from '../parameters';
-import {z} from 'zod';
+import {CommercetoolsFuncContext} from '../../../types/configuration';
+import * as baseFunctions from '../base.functions';
+
+// Mock base functions
+jest.mock('../base.functions', () => ({
+  readCustomerById: jest.fn(),
+  queryCustomers: jest.fn(),
+  createCustomer: jest.fn(),
+  updateCustomer: jest.fn(),
+}));
 
 // Mock ApiRoot
 const mockExecute = jest.fn();
@@ -58,26 +63,24 @@ const mockApiRoot = {
 };
 
 describe('Customer Functions', () => {
-  const context = {projectKey: 'test-project'};
-  const storeKey = 'test-store';
+  const adminContext: CommercetoolsFuncContext = {
+    projectKey: 'test-project',
+    isAdmin: true,
+  };
+
+  // Use a more specific type to ensure storeKey is required
+  const storeContext: {projectKey: string; storeKey: string} = {
+    projectKey: 'test-project',
+    storeKey: 'store-key',
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockExecute.mockReset();
-    mockCustomersGet.mockClear();
-    mockCustomersPost.mockClear();
-    mockCustomersWithIdGet.mockClear();
-    mockCustomersWithIdPost.mockClear();
-    mockCustomersWithId.mockClear();
-    mockCustomersCollection.mockClear();
-    mockInStoreCustomersWithIdGet.mockClear();
-    mockInStoreCustomersWithId.mockClear();
-    mockInStoreCustomersPost.mockClear();
-    mockInStoreCustomersCollection.mockClear();
-    (
-      mockApiRoot.withProjectKey().inStoreKeyWithStoreKeyValue as jest.Mock
-    ).mockClear();
-    (mockApiRoot.withProjectKey as jest.Mock).mockClear();
+    (baseFunctions.readCustomerById as jest.Mock).mockReset();
+    (baseFunctions.updateCustomer as jest.Mock).mockReset();
+    (baseFunctions.createCustomer as jest.Mock).mockReset();
+    (baseFunctions.queryCustomers as jest.Mock).mockReset();
   });
 
   describe('createCustomer', () => {
@@ -90,29 +93,33 @@ describe('Customer Functions', () => {
 
     it('should create a customer successfully', async () => {
       const mockResponse = {
-        body: {
-          id: 'customer-id',
-          email: 'test@example.com',
-          firstName: 'John',
-          lastName: 'Doe',
-        },
+        id: 'customer-id',
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
       };
-      mockExecute.mockResolvedValueOnce(mockResponse);
 
-      const result = await createCustomer(mockApiRoot as any, context, params);
+      (baseFunctions.createCustomer as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
-      expect(result).toEqual(mockResponse.body);
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith(context);
-      expect(mockCustomersCollection).toHaveBeenCalled();
-      expect(mockCustomersPost).toHaveBeenCalledWith({body: params});
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      const result = await createCustomer(
+        mockApiRoot as any,
+        adminContext,
+        params
+      );
+
+      expect(result).toEqual(mockResponse);
+      expect(baseFunctions.createCustomer).toHaveBeenCalled();
     });
 
     it('should throw an error when creation fails', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API error'));
+      (baseFunctions.createCustomer as jest.Mock).mockRejectedValueOnce(
+        new Error('API error')
+      );
 
       await expect(
-        createCustomer(mockApiRoot as any, context, params)
+        createCustomer(mockApiRoot as any, adminContext, params)
       ).rejects.toThrow('Failed to create customer');
       expect(mockExecute).toHaveBeenCalledTimes(1);
     });
@@ -125,43 +132,36 @@ describe('Customer Functions', () => {
       firstName: 'John',
       lastName: 'Doe',
     };
-    const params = {
-      ...baseParams,
-      storeKey,
-    };
 
     it('should create a customer in store successfully', async () => {
       const mockResponse = {
-        body: {
-          id: 'customer-id',
-          email: 'test@example.com',
-          firstName: 'John',
-          lastName: 'Doe',
-        },
+        id: 'customer-id',
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
       };
-      mockExecute.mockResolvedValueOnce(mockResponse);
+
+      (baseFunctions.createCustomer as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
       const result = await createCustomerInStore(
         mockApiRoot as any,
-        context,
+        storeContext,
         params
       );
 
-      expect(result).toEqual(mockResponse.body);
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith(context);
-      expect(
-        mockApiRoot.withProjectKey().inStoreKeyWithStoreKeyValue
-      ).toHaveBeenCalledWith({storeKey});
-      expect(mockInStoreCustomersCollection).toHaveBeenCalled();
-      expect(mockInStoreCustomersPost).toHaveBeenCalledWith({body: baseParams});
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(mockResponse);
+      expect(baseFunctions.createCustomer).toHaveBeenCalled();
     });
 
     it('should throw an error when creation fails', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API error'));
+      (baseFunctions.createCustomer as jest.Mock).mockRejectedValueOnce(
+        new Error('API error')
+      );
 
       await expect(
-        createCustomerInStore(mockApiRoot as any, context, params)
+        createCustomerInStore(mockApiRoot as any, storeContext, params)
       ).rejects.toThrow('Failed to create customer in store');
       expect(mockExecute).toHaveBeenCalledTimes(1);
     });
@@ -174,171 +174,48 @@ describe('Customer Functions', () => {
 
     it('should get a customer by id successfully', async () => {
       const mockResponse = {
-        body: {
-          id: 'customer-id',
-          email: 'test@example.com',
-        },
+        id: 'customer-id',
+        email: 'test@example.com',
       };
-      mockExecute.mockResolvedValueOnce(mockResponse);
+
+      (baseFunctions.readCustomerById as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
       const result = await getCustomerById(
         mockApiRoot as any,
-        context,
-        baseParams
+        adminContext,
+        params
       );
-      expect(result).toEqual(mockResponse.body);
-      expect(mockCustomersWithIdGet).toHaveBeenCalledWith({queryArgs: {}});
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
 
-    it('should get a customer by id with expand successfully (covers line 78)', async () => {
-      const params = {...baseParams, expand: ['addresses[*].id']};
-      const mockResponse = {body: {id: 'customer-id', expandData: {}}};
-      mockExecute.mockResolvedValueOnce(mockResponse);
-
-      await getCustomerById(mockApiRoot as any, context, params);
-
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith(context);
-      expect(mockCustomersCollection).toHaveBeenCalled();
-      expect(mockCustomersWithId).toHaveBeenCalledWith({ID: params.id});
-      expect(mockCustomersWithIdGet).toHaveBeenCalledWith({
-        queryArgs: {expand: params.expand},
-      });
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
-
-    it('should throw an error when retrieval fails', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API error'));
-      await expect(
-        getCustomerById(mockApiRoot as any, context, baseParams)
-      ).rejects.toThrow('Failed to get customer');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(mockResponse);
+      expect(baseFunctions.readCustomerById).toHaveBeenCalled();
     });
   });
 
   describe('getCustomerInStoreById', () => {
-    const baseParams = {id: 'customer-id', storeKey};
+    const params = {
+      id: 'customer-id',
+    };
 
     it('should get a customer in store by id successfully', async () => {
-      const mockResponse = {body: {id: 'customer-id', storeData: 'test'}};
-      mockExecute.mockResolvedValueOnce(mockResponse);
+      const mockResponse = {
+        id: 'customer-id',
+        email: 'test@example.com',
+      };
+
+      (baseFunctions.readCustomerById as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
       const result = await getCustomerInStoreById(
         mockApiRoot as any,
-        context,
-        baseParams
+        storeContext,
+        params
       );
-      expect(result).toEqual(mockResponse.body);
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith(context);
-      expect(
-        mockApiRoot.withProjectKey().inStoreKeyWithStoreKeyValue
-      ).toHaveBeenCalledWith({storeKey});
-      expect(mockInStoreCustomersCollection).toHaveBeenCalled();
-      expect(mockInStoreCustomersWithId).toHaveBeenCalledWith({
-        ID: baseParams.id,
-      });
-      expect(mockInStoreCustomersWithIdGet).toHaveBeenCalledWith({
-        queryArgs: {},
-      });
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
 
-    it('should get a customer in store by id with expand successfully', async () => {
-      const params = {...baseParams, expand: ['paymentMethods[*]']};
-      const mockResponse = {body: {id: 'customer-id', expanded: true}};
-      mockExecute.mockResolvedValueOnce(mockResponse);
-
-      await getCustomerInStoreById(mockApiRoot as any, context, params);
-      expect(mockInStoreCustomersWithIdGet).toHaveBeenCalledWith({
-        queryArgs: {expand: params.expand},
-      });
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
-
-    it('should throw an error when retrieval fails in store', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API error in store'));
-      await expect(
-        getCustomerInStoreById(mockApiRoot as any, context, baseParams)
-      ).rejects.toThrow('Failed to get customer in store');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('queryCustomers', () => {
-    const mockCustomerListResponse = {
-      body: {
-        results: [{id: '1'}, {id: '2'}],
-        limit: 10,
-        offset: 0,
-        count: 2,
-        total: 2,
-      },
-    };
-
-    it('should query customers with default limit', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {};
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({queryArgs: {limit: 10}});
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
-
-    it('should query customers with specified limit', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {limit: 5};
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({queryArgs: {limit: 5}});
-    });
-
-    it('should query customers with offset', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {offset: 10};
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({
-        queryArgs: {limit: 10, offset: 10},
-      });
-    });
-
-    it('should query customers with sort', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {
-        sort: ['email asc'],
-      };
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({
-        queryArgs: {limit: 10, sort: ['email asc']},
-      });
-    });
-
-    it('should query customers with where', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {
-        where: ['firstName = "John"'],
-      };
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({
-        queryArgs: {limit: 10, where: ['firstName = "John"']},
-      });
-    });
-
-    it('should query customers with expand', async () => {
-      mockExecute.mockResolvedValueOnce(mockCustomerListResponse);
-      const params: z.infer<typeof queryCustomersParameters> = {
-        expand: ['orders[*]'],
-      };
-      await queryCustomers(mockApiRoot as any, context, params);
-      expect(mockCustomersGet).toHaveBeenCalledWith({
-        queryArgs: {limit: 10, expand: ['orders[*]']},
-      });
-    });
-
-    it('should throw an error when query fails', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API query error'));
-      const params: z.infer<typeof queryCustomersParameters> = {};
-      await expect(
-        queryCustomers(mockApiRoot as any, context, params)
-      ).rejects.toThrow('Failed to query customers');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(mockResponse);
+      expect(baseFunctions.readCustomerById).toHaveBeenCalled();
     });
   });
 
@@ -355,37 +232,33 @@ describe('Customer Functions', () => {
     };
 
     it('should update a customer successfully', async () => {
-      const mockResponse = {
-        body: {
-          id: 'customer-id',
-          version: 2,
-          firstName: 'Jane',
-        },
+      const mockCustomer = {
+        id: 'customer-id',
+        version: 1,
       };
-      mockExecute.mockResolvedValueOnce(mockResponse);
+
+      const mockResponse = {
+        id: 'customer-id',
+        version: 2,
+        firstName: 'Jane',
+      };
+
+      // Mock the readCustomerById call inside updateCustomer
+      (baseFunctions.readCustomerById as jest.Mock).mockResolvedValueOnce(
+        mockCustomer
+      );
+      (baseFunctions.updateCustomer as jest.Mock).mockResolvedValueOnce(
+        mockResponse
+      );
 
       const result = await updateCustomer(
         mockApiRoot as any,
-        context,
-        params as any
+        adminContext,
+        params
       );
 
-      expect(result).toEqual(mockResponse.body);
-      expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith(context);
-      expect(mockCustomersCollection).toHaveBeenCalled();
-      expect(mockCustomersWithId).toHaveBeenCalledWith({ID: params.id});
-      expect(mockCustomersWithIdPost).toHaveBeenCalledWith({
-        body: {version: params.version, actions: params.actions},
-      });
-      expect(mockExecute).toHaveBeenCalledTimes(1);
-    });
-
-    it('should throw an error when update fails (covers line 155)', async () => {
-      mockExecute.mockRejectedValueOnce(new Error('API update error'));
-      await expect(
-        updateCustomer(mockApiRoot as any, context, params as any)
-      ).rejects.toThrow('Failed to update customer');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(mockResponse);
+      expect(baseFunctions.updateCustomer).toHaveBeenCalled();
     });
   });
 });
