@@ -26,7 +26,7 @@ export const contextToInventoryFunctionMapping = (context?: Context) => {
  * - If 'key' is provided, retrieves a specific inventory entry by key
  * - If neither 'id' nor 'key' is provided, lists inventory entries with optional filtering
  */
-export async function readInventory(
+export function readInventory(
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readInventoryParameters>
@@ -41,7 +41,7 @@ export async function readInventory(
 /**
  * Creates a new inventory entry
  */
-export async function createInventory(
+export function createInventory(
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof createInventoryParameters>
@@ -60,7 +60,7 @@ export async function createInventory(
  * - One of either 'id' or 'key' must be provided
  * - If an action with type 'delete' is included, the entry will be deleted
  */
-export async function updateInventory(
+export function updateInventory(
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof updateInventoryParameters>

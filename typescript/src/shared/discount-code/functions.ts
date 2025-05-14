@@ -23,7 +23,7 @@ export const contextToDiscountCodeFunctionMapping = (context?: Context) => {
 };
 
 // Legacy function exports to maintain backward compatibility
-export const readDiscountCode = async (
+export const readDiscountCode = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readDiscountCodeParameters>
@@ -35,7 +35,7 @@ export const readDiscountCode = async (
   );
 };
 
-export const listDiscountCodes = async (
+export const listDiscountCodes = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof listDiscountCodesParameters>
@@ -47,7 +47,7 @@ export const listDiscountCodes = async (
   );
 };
 
-export const createDiscountCode = async (
+export const createDiscountCode = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof createDiscountCodeParameters>
@@ -59,7 +59,7 @@ export const createDiscountCode = async (
   );
 };
 
-export const updateDiscountCode = async (
+export const updateDiscountCode = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof updateDiscountCodeParameters>

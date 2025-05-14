@@ -13,7 +13,7 @@ import {
 /**
  * Reads a customer group based on provided parameters
  */
-export async function readCustomerGroup(
+export function readCustomerGroup(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params:
@@ -33,7 +33,7 @@ export async function readCustomerGroup(
 /**
  * Updates a customer group based on provided parameters
  */
-export async function updateCustomerGroup(
+export function updateCustomerGroup(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: UpdateCustomerGroupByIdParameters | UpdateCustomerGroupByKeyParameters
@@ -52,7 +52,7 @@ export async function updateCustomerGroup(
 /**
  * Fetches a customer group by its ID
  */
-export async function readCustomerGroupById(
+export function readCustomerGroupById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: ReadCustomerGroupByIdParameters
@@ -63,7 +63,7 @@ export async function readCustomerGroupById(
 /**
  * Fetches a customer group by its key
  */
-export async function readCustomerGroupByKey(
+export function readCustomerGroupByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: ReadCustomerGroupByKeyParameters
@@ -74,7 +74,7 @@ export async function readCustomerGroupByKey(
 /**
  * Queries customer groups based on provided parameters
  */
-export async function queryCustomerGroups(
+export function queryCustomerGroups(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: QueryCustomerGroupsParameters
@@ -85,7 +85,7 @@ export async function queryCustomerGroups(
 /**
  * Creates a new customer group
  */
-export async function createCustomerGroup(
+export function createCustomerGroup(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: CreateCustomerGroupParameters
@@ -96,7 +96,7 @@ export async function createCustomerGroup(
 /**
  * Updates a customer group by its ID
  */
-export async function updateCustomerGroupById(
+export function updateCustomerGroupById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: UpdateCustomerGroupByIdParameters
@@ -107,7 +107,7 @@ export async function updateCustomerGroupById(
 /**
  * Updates a customer group by its key
  */
-export async function updateCustomerGroupByKey(
+export function updateCustomerGroupByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   parameters: UpdateCustomerGroupByKeyParameters
