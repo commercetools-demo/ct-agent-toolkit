@@ -10,7 +10,7 @@ import {CommercetoolsFuncContext} from '../../types/configuration';
 import * as base from './base.functions';
 import {SDKError} from '../errors/sdkError';
 
-export const readDiscountCode = async (
+export const readDiscountCode = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof readDiscountCodeParameters>
@@ -33,7 +33,7 @@ export const readDiscountCode = async (
   }
 };
 
-export const readDiscountCodeById = async (
+export const readDiscountCodeById = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; expand?: string[]}
@@ -41,7 +41,7 @@ export const readDiscountCodeById = async (
   return base.readDiscountCodeById(apiRoot, context.projectKey, params);
 };
 
-export const readDiscountCodeByKey = async (
+export const readDiscountCodeByKey = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; expand?: string[]}
@@ -49,7 +49,7 @@ export const readDiscountCodeByKey = async (
   return base.readDiscountCodeByKey(apiRoot, context.projectKey, params);
 };
 
-export const listDiscountCodes = async (
+export const listDiscountCodes = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof listDiscountCodesParameters>
@@ -57,7 +57,7 @@ export const listDiscountCodes = async (
   return base.queryDiscountCodes(apiRoot, context.projectKey, params);
 };
 
-export const createDiscountCode = async (
+export const createDiscountCode = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof createDiscountCodeParameters>
@@ -65,7 +65,7 @@ export const createDiscountCode = async (
   return base.createDiscountCode(apiRoot, context.projectKey, params);
 };
 
-export const updateDiscountCode = async (
+export const updateDiscountCode = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateDiscountCodeParameters>
@@ -90,7 +90,7 @@ export const updateDiscountCode = async (
   }
 };
 
-export const updateDiscountCodeById = async (
+export const updateDiscountCodeById = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; version: number; actions: any[]}
@@ -98,7 +98,7 @@ export const updateDiscountCodeById = async (
   return base.updateDiscountCodeById(apiRoot, context.projectKey, params);
 };
 
-export const updateDiscountCodeByKey = async (
+export const updateDiscountCodeByKey = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; version: number; actions: any[]}

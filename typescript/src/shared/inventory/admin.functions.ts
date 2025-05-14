@@ -12,7 +12,7 @@ import {SDKError} from '../errors/sdkError';
 /**
  * Reads inventory entries based on provided parameters
  */
-export async function readInventory(
+export function readInventory(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof readInventoryParameters>
@@ -50,7 +50,7 @@ export async function readInventory(
 /**
  * Reads an inventory entry by ID
  */
-export async function readInventoryById(
+export function readInventoryById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; expand?: string[]}
@@ -61,7 +61,7 @@ export async function readInventoryById(
 /**
  * Reads an inventory entry by key
  */
-export async function readInventoryByKey(
+export function readInventoryByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; expand?: string[]}
@@ -72,7 +72,7 @@ export async function readInventoryByKey(
 /**
  * Lists inventory entries
  */
-export async function queryInventory(
+export function queryInventory(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {
@@ -89,7 +89,7 @@ export async function queryInventory(
 /**
  * Creates a new inventory entry
  */
-export async function createInventory(
+export function createInventory(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof createInventoryParameters>
@@ -100,7 +100,7 @@ export async function createInventory(
 /**
  * Updates or deletes an inventory entry based on provided parameters
  */
-export async function updateInventory(
+export function updateInventory(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateInventoryParameters>
@@ -141,7 +141,7 @@ export async function updateInventory(
 /**
  * Updates an inventory entry by ID
  */
-export async function updateInventoryById(
+export function updateInventoryById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; version: number; actions: any[]}
@@ -152,7 +152,7 @@ export async function updateInventoryById(
 /**
  * Updates an inventory entry by key
  */
-export async function updateInventoryByKey(
+export function updateInventoryByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; version: number; actions: any[]}
