@@ -11,6 +11,7 @@ import {contextToOrderFunctionMapping} from './order/functions';
 import {contextToCartFunctionMapping} from './cart/functions';
 import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
 import {
+  contextToCustomerFunctionMapping,
   createCustomer,
   createCustomerInStore,
   getCustomerById,
@@ -60,6 +61,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCartFunctionMapping(context),
     ...contextToCartDiscountFunctionMapping(context),
     ...contextToCategoryFunctionMapping(context),
+    ...contextToCustomerFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -68,12 +70,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     read_product_selection: readProductSelection,
     create_product_selection: createProductSelection,
     update_product_selection: updateProductSelection,
-    create_customer: createCustomer,
-    create_customer_in_store: createCustomerInStore,
-    get_customer_by_id: getCustomerById,
-    get_customer_in_store_by_id: getCustomerInStoreById,
-    query_customers: queryCustomers,
-    update_customer: updateCustomer,
     read_customer_group: getCustomerGroup,
     create_customer_group: createCustomerGroup,
     update_customer_group: updateCustomerGroup,
