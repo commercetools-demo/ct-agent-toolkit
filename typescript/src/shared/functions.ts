@@ -1,51 +1,33 @@
-import {listProducts, createProduct, updateProduct} from './products/functions';
-import {readProject} from './project/functions';
-import {searchProducts} from './product-search/functions';
+import {Context} from '../types/configuration';
+import {bulkCreate, bulkUpdate} from './bulk/functions';
+import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
+import {contextToCartFunctionMapping} from './cart/functions';
 import {contextToCategoryFunctionMapping} from './category/functions';
+import {contextToCustomerGroupFunctionMapping} from './customer-group/functions';
+import {contextToCustomerFunctionMapping} from './customer/functions';
+import {contextToDiscountCodeFunctionMapping} from './discount-code/functions';
+import {contextToInventoryFunctionMapping} from './inventory/functions';
+import {contextToOrderFunctionMapping} from './order/functions';
+import {contextToProductDiscountFunctionMapping} from './product-discount/functions';
+import {searchProducts} from './product-search/functions';
 import {
-  readProductSelection,
   createProductSelection,
+  readProductSelection,
   updateProductSelection,
 } from './product-selection/functions';
-import {contextToOrderFunctionMapping} from './order/functions';
-import {contextToCartFunctionMapping} from './cart/functions';
-import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
 import {
-  contextToCustomerFunctionMapping,
-  createCustomer,
-  createCustomerInStore,
-  getCustomerById,
-  getCustomerInStoreById,
-  queryCustomers,
-  updateCustomer,
-} from './customer/functions';
-import {
-  contextToCustomerGroupFunctionMapping,
-  getCustomerGroup,
-  createCustomerGroup,
-  updateCustomerGroup,
-} from './customer-group/functions';
-import {
-  readStandalonePrice,
-  createStandalonePrice,
-  updateStandalonePrice,
-} from './standalone-price/functions';
-import {
-  readProductDiscount,
-  createProductDiscount,
-  updateProductDiscount,
-} from './product-discount/functions';
-import {contextToDiscountCodeFunctionMapping} from './discount-code/functions';
-import {
-  readProductType,
-  listProductTypes,
   createProductType,
+  listProductTypes,
+  readProductType,
   updateProductType,
 } from './product-type/functions';
-import {bulkCreate, bulkUpdate} from './bulk/functions';
-import {contextToInventoryFunctionMapping} from './inventory/functions';
-import {ApiRoot} from '@commercetools/platform-sdk';
-import {Context} from '../types/configuration';
+import {createProduct, listProducts, updateProduct} from './products/functions';
+import {readProject} from './project/functions';
+import {
+  createStandalonePrice,
+  readStandalonePrice,
+  updateStandalonePrice,
+} from './standalone-price/functions';
 
 export const contextToFunctionMapping = (context?: Context) => {
   return {
@@ -57,6 +39,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCustomerGroupFunctionMapping(context),
     ...contextToDiscountCodeFunctionMapping(context),
     ...contextToInventoryFunctionMapping(context),
+    ...contextToProductDiscountFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -68,9 +51,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     read_standalone_price: readStandalonePrice,
     create_standalone_price: createStandalonePrice,
     update_standalone_price: updateStandalonePrice,
-    read_product_discount: readProductDiscount,
-    create_product_discount: createProductDiscount,
-    update_product_discount: updateProductDiscount,
     read_product_type: readProductType,
     list_product_types: listProductTypes,
     create_product_type: createProductType,
