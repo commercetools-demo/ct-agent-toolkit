@@ -1,243 +1,117 @@
 import {ApiRoot} from '@commercetools/platform-sdk';
-import {
-  CreateCustomerGroupParameters,
-  CustomerGroupUpdateAction,
-  QueryCustomerGroupsParameters,
-  ReadCustomerGroupByIdParameters,
-  ReadCustomerGroupByKeyParameters,
-  UpdateCustomerGroupByIdParameters,
-  UpdateCustomerGroupByKeyParameters,
-} from './parameters';
-import {SDKError} from '../errors/sdkError';
+import * as admin from './admin.functions';
+import {Context} from '../../types/configuration';
+import {CustomerGroupUpdateAction} from './base.functions';
 
-// Export the CustomerGroupUpdateAction type for use in tests
+// Re-export the CustomerGroupUpdateAction type for use in tests
 export {CustomerGroupUpdateAction};
 
-export const getCustomerGroup = (apiRoot: any, context: any, params: any) => {
-  if (params.id) {
-    return getCustomerGroupById(apiRoot, context, {
-      id: params.id,
-      expand: params.expand,
-    });
-  } else if (params.key) {
-    return getCustomerGroupByKey(apiRoot, context, {
-      key: params.key,
-      expand: params.expand,
-    });
-  } else {
-    return queryCustomerGroups(apiRoot, context, params);
+export const contextToCustomerGroupFunctionMapping = (context?: Context) => {
+  if (context?.isAdmin) {
+    return {
+      read_customer_group: admin.readCustomerGroup,
+      create_customer_group: admin.createCustomerGroup,
+      update_customer_group: admin.updateCustomerGroup,
+    };
   }
+
+  return {};
 };
 
-export const updateCustomerGroup = (
-  apiRoot: any,
+// Legacy function exports to maintain backward compatibility
+export const getCustomerGroup = (
+  apiRoot: ApiRoot,
   context: any,
   params: any
 ) => {
-  if (params.id) {
-    return updateCustomerGroupById(apiRoot, context, params);
-  } else if (params.key) {
-    return updateCustomerGroupByKey(apiRoot, context, params);
-  } else {
-    throw new Error(
-      'Either id or key must be provided to update a customer group'
-    );
-  }
+  return admin.readCustomerGroup(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
-/**
- * Fetches a customer group by its ID
- */
-export async function getCustomerGroupById(
+
+export const createCustomerGroup = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: ReadCustomerGroupByIdParameters
-) {
-  try {
-    const {id, expand = []} = parameters;
-    const request = apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .withId({ID: id});
+  context: any,
+  params: any
+) => {
+  return admin.createCustomerGroup(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    // Add expansions if provided
-    if (expand.length > 0) {
-      const response = await request
-        .get({
-          queryArgs: {
-            expand,
-          },
-        })
-        .execute();
-      return response.body;
-    } else {
-      const response = await request.get().execute();
-      return response.body;
-    }
-  } catch (error) {
-    throw new SDKError('Error fetching customer group by ID', error);
-  }
-}
-
-/**
- * Fetches a customer group by its key
- */
-export async function getCustomerGroupByKey(
+export const updateCustomerGroup = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: ReadCustomerGroupByKeyParameters
-) {
-  try {
-    const {key, expand = []} = parameters;
-    const request = apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .withKey({key});
+  context: any,
+  params: any
+) => {
+  return admin.updateCustomerGroup(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    // Add expansions if provided
-    if (expand.length > 0) {
-      const response = await request
-        .get({
-          queryArgs: {
-            expand,
-          },
-        })
-        .execute();
-      return response.body;
-    } else {
-      const response = await request.get().execute();
-      return response.body;
-    }
-  } catch (error) {
-    throw new SDKError('Error fetching customer group by key', error);
-  }
-}
-
-/**
- * Queries customer groups based on provided parameters
- */
-export async function queryCustomerGroups(
+// These functions are used directly by tests, so we need to export them
+export const getCustomerGroupById = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: QueryCustomerGroupsParameters
-) {
-  try {
-    const {where = [], sort = [], limit, offset, expand = []} = parameters;
+  context: any,
+  params: any
+) => {
+  return admin.readCustomerGroupById(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    const queryArgs: Record<string, any> = {};
-
-    if (where.length > 0) {
-      queryArgs.where = where;
-    }
-
-    if (sort.length > 0) {
-      queryArgs.sort = sort;
-    }
-
-    if (limit !== undefined) {
-      queryArgs.limit = limit;
-    }
-
-    if (offset !== undefined) {
-      queryArgs.offset = offset;
-    }
-
-    if (expand.length > 0) {
-      queryArgs.expand = expand;
-    }
-
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .get({
-        queryArgs,
-      })
-      .execute();
-
-    return response.body;
-  } catch (error) {
-    throw new SDKError('Error querying customer groups', error);
-  }
-}
-
-/**
- * Creates a new customer group
- */
-export async function createCustomerGroup(
+export const getCustomerGroupByKey = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: CreateCustomerGroupParameters
-) {
-  try {
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .post({
-        body: {
-          ...parameters,
-        },
-      })
-      .execute();
+  context: any,
+  params: any
+) => {
+  return admin.readCustomerGroupByKey(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    return response.body;
-  } catch (error) {
-    throw new SDKError('Error creating customer group', error);
-  }
-}
-
-/**
- * Updates a customer group by its ID
- */
-export async function updateCustomerGroupById(
+export const queryCustomerGroups = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: UpdateCustomerGroupByIdParameters
-) {
-  try {
-    const {id, version, actions} = parameters;
+  context: any,
+  params: any
+) => {
+  return admin.queryCustomerGroups(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .withId({ID: id})
-      .post({
-        body: {
-          version,
-          actions,
-        },
-      })
-      .execute();
-
-    return response.body;
-  } catch (error) {
-    throw new SDKError('Error updating customer group by ID', error);
-  }
-}
-
-/**
- * Updates a customer group by its key
- */
-export async function updateCustomerGroupByKey(
+export const updateCustomerGroupById = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  parameters: UpdateCustomerGroupByKeyParameters
-) {
-  try {
-    const {key, version, actions} = parameters;
+  context: any,
+  params: any
+) => {
+  return admin.updateCustomerGroupById(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};
 
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .customerGroups()
-      .withKey({key})
-      .post({
-        body: {
-          version,
-          actions,
-        },
-      })
-      .execute();
-
-    return response.body;
-  } catch (error) {
-    throw new SDKError('Error updating customer group by key', error);
-  }
-}
+export const updateCustomerGroupByKey = (
+  apiRoot: ApiRoot,
+  context: any,
+  params: any
+) => {
+  return admin.updateCustomerGroupByKey(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
+};

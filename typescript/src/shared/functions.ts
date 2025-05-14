@@ -20,6 +20,7 @@ import {
   updateCustomer,
 } from './customer/functions';
 import {
+  contextToCustomerGroupFunctionMapping,
   getCustomerGroup,
   createCustomerGroup,
   updateCustomerGroup,
@@ -62,6 +63,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCartDiscountFunctionMapping(context),
     ...contextToCategoryFunctionMapping(context),
     ...contextToCustomerFunctionMapping(context),
+    ...contextToCustomerGroupFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -70,9 +72,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     read_product_selection: readProductSelection,
     create_product_selection: createProductSelection,
     update_product_selection: updateProductSelection,
-    read_customer_group: getCustomerGroup,
-    create_customer_group: createCustomerGroup,
-    update_customer_group: updateCustomerGroup,
     read_standalone_price: readStandalonePrice,
     create_standalone_price: createStandalonePrice,
     update_standalone_price: updateStandalonePrice,
