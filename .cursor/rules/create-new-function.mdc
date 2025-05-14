@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Creating a New tool Function in @commercetools-demo/ct-agent-toolkit
 globs: 
 alwaysApply: false

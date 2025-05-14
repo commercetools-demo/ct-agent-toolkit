@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Description: Steps to add or update parameters passed into a function
 globs: 
 alwaysApply: false

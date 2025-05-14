@@ -5,6 +5,20 @@ import {
   readInventoryParameters,
   updateInventoryParameters,
 } from './parameters';
+import * as admin from './admin.functions';
+import {Context} from '../../types/configuration';
+
+export const contextToInventoryFunctionMapping = (context?: Context) => {
+  if (context?.isAdmin) {
+    return {
+      read_inventory: admin.readInventory,
+      create_inventory: admin.createInventory,
+      update_inventory: admin.updateInventory,
+    };
+  }
+
+  return {};
+};
 
 /**
  * Reads inventory entries based on provided parameters:
@@ -17,54 +31,11 @@ export async function readInventory(
   context: {projectKey: string},
   params: z.infer<typeof readInventoryParameters>
 ) {
-  const {id, key, limit, offset, sort, where, expand} = params;
-
-  if (id) {
-    // Get inventory entry by ID
-    const inventoryRequest = apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inventory()
-      .withId({ID: id})
-      .get({
-        queryArgs: {
-          expand,
-        },
-      });
-
-    const response = await inventoryRequest.execute();
-    return response.body;
-  } else if (key) {
-    // Get inventory entry by key
-    const inventoryRequest = apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inventory()
-      .withKey({key})
-      .get({
-        queryArgs: {
-          expand,
-        },
-      });
-
-    const response = await inventoryRequest.execute();
-    return response.body;
-  } else {
-    // List inventory entries
-    const inventoryRequest = apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inventory()
-      .get({
-        queryArgs: {
-          limit,
-          offset,
-          sort,
-          where,
-          expand,
-        },
-      });
-
-    const response = await inventoryRequest.execute();
-    return response.body;
-  }
+  return admin.readInventory(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 }
 
 /**
@@ -75,25 +46,11 @@ export async function createInventory(
   context: {projectKey: string},
   params: z.infer<typeof createInventoryParameters>
 ) {
-  const inventoryDraft = {
-    key: params.key,
-    sku: params.sku,
-    supplyChannel: params.supplyChannel,
-    quantityOnStock: params.quantityOnStock,
-    restockableInDays: params.restockableInDays,
-    expectedDelivery: params.expectedDelivery,
-    custom: params.custom,
-  };
-
-  const inventoryRequest = apiRoot
-    .withProjectKey({projectKey: context.projectKey})
-    .inventory()
-    .post({
-      body: inventoryDraft,
-    });
-
-  const response = await inventoryRequest.execute();
-  return response.body;
+  return admin.createInventory(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 }
 
 /**
@@ -108,84 +65,9 @@ export async function updateInventory(
   context: {projectKey: string},
   params: z.infer<typeof updateInventoryParameters>
 ) {
-  const {id, key, version, actions} = params;
-
-  // Check if we're deleting the inventory entry
-  if (actions.some((action) => action.action === 'delete')) {
-    if (id) {
-      // Delete by ID
-      const deleteRequest = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inventory()
-        .withId({ID: id})
-        .delete({
-          queryArgs: {
-            version,
-          },
-        });
-
-      const response = await deleteRequest.execute();
-      return response.body;
-    } else if (key) {
-      // Delete by key
-      const deleteRequest = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inventory()
-        .withKey({key})
-        .delete({
-          queryArgs: {
-            version,
-          },
-        });
-
-      const response = await deleteRequest.execute();
-      return response.body;
-    } else {
-      throw new Error(
-        'Either id or key must be provided for deleting an inventory entry'
-      );
-    }
-  } else {
-    // We're updating the inventory entry
-    // Filter out any 'delete' actions
-    const updateActions = actions.filter(
-      (action) => action.action !== 'delete'
-    );
-
-    if (id) {
-      // Update by ID
-      const updateRequest = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inventory()
-        .withId({ID: id})
-        .post({
-          body: {
-            version,
-            actions: updateActions,
-          },
-        });
-
-      const response = await updateRequest.execute();
-      return response.body;
-    } else if (key) {
-      // Update by key
-      const updateRequest = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inventory()
-        .withKey({key})
-        .post({
-          body: {
-            version,
-            actions: updateActions,
-          },
-        });
-
-      const response = await updateRequest.execute();
-      return response.body;
-    } else {
-      throw new Error(
-        'Either id or key must be provided for updating an inventory entry'
-      );
-    }
-  }
+  return admin.updateInventory(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 }

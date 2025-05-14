@@ -1,10 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
-description: 
+description: Writing tests
 globs: 
 alwaysApply: true
 ---
