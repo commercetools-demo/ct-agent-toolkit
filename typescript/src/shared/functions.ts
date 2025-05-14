@@ -35,12 +35,7 @@ import {
   createProductDiscount,
   updateProductDiscount,
 } from './product-discount/functions';
-import {
-  readDiscountCode,
-  listDiscountCodes,
-  createDiscountCode,
-  updateDiscountCode,
-} from './discount-code/functions';
+import {contextToDiscountCodeFunctionMapping} from './discount-code/functions';
 import {
   readProductType,
   listProductTypes,
@@ -64,6 +59,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCategoryFunctionMapping(context),
     ...contextToCustomerFunctionMapping(context),
     ...contextToCustomerGroupFunctionMapping(context),
+    ...contextToDiscountCodeFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -78,10 +74,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     read_product_discount: readProductDiscount,
     create_product_discount: createProductDiscount,
     update_product_discount: updateProductDiscount,
-    read_discount_code: readDiscountCode,
-    list_discount_codes: listDiscountCodes,
-    create_discount_code: createDiscountCode,
-    update_discount_code: updateDiscountCode,
     read_product_type: readProductType,
     list_product_types: listProductTypes,
     create_product_type: createProductType,

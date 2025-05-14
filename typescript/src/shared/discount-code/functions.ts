@@ -5,51 +5,34 @@ import {
   createDiscountCodeParameters,
   updateDiscountCodeParameters,
 } from './parameters';
-import {
-  ApiRoot,
-  DiscountCodeDraft,
-  DiscountCodeUpdateAction,
-} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
+import {ApiRoot} from '@commercetools/platform-sdk';
+import * as admin from './admin.functions';
+import {Context} from '../../types/configuration';
 
+export const contextToDiscountCodeFunctionMapping = (context?: Context) => {
+  if (context?.isAdmin) {
+    return {
+      read_discount_code: admin.readDiscountCode,
+      list_discount_codes: admin.listDiscountCodes,
+      create_discount_code: admin.createDiscountCode,
+      update_discount_code: admin.updateDiscountCode,
+    };
+  }
+
+  return {};
+};
+
+// Legacy function exports to maintain backward compatibility
 export const readDiscountCode = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readDiscountCodeParameters>
 ) => {
-  try {
-    if (params.id) {
-      const discountCode = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .discountCodes()
-        .withId({ID: params.id})
-        .get({
-          queryArgs: {
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-
-      return discountCode.body;
-    } else if (params.key) {
-      const discountCode = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .discountCodes()
-        .withKey({key: params.key})
-        .get({
-          queryArgs: {
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-
-      return discountCode.body;
-    } else {
-      throw new Error('Either id or key must be provided');
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to read discount code', error);
-  }
+  return admin.readDiscountCode(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
 
 export const listDiscountCodes = async (
@@ -57,25 +40,11 @@ export const listDiscountCodes = async (
   context: {projectKey: string},
   params: z.infer<typeof listDiscountCodesParameters>
 ) => {
-  try {
-    const discountCodes = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .discountCodes()
-      .get({
-        queryArgs: {
-          limit: params.limit || 10,
-          ...(params.offset && {offset: params.offset}),
-          ...(params.sort && {sort: params.sort}),
-          ...(params.where && {where: params.where}),
-          ...(params.expand && {expand: params.expand}),
-        },
-      })
-      .execute();
-
-    return discountCodes.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to list discount codes', error);
-  }
+  return admin.listDiscountCodes(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
 
 export const createDiscountCode = async (
@@ -83,19 +52,11 @@ export const createDiscountCode = async (
   context: {projectKey: string},
   params: z.infer<typeof createDiscountCodeParameters>
 ) => {
-  try {
-    const discountCode = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .discountCodes()
-      .post({
-        body: params as DiscountCodeDraft,
-      })
-      .execute();
-
-    return discountCode.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to create discount code', error);
-  }
+  return admin.createDiscountCode(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
 
 export const updateDiscountCode = async (
@@ -103,39 +64,9 @@ export const updateDiscountCode = async (
   context: {projectKey: string},
   params: z.infer<typeof updateDiscountCodeParameters>
 ) => {
-  try {
-    if (params.id) {
-      const discountCode = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .discountCodes()
-        .withId({ID: params.id})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as DiscountCodeUpdateAction[],
-          },
-        })
-        .execute();
-
-      return discountCode.body;
-    } else if (params.key) {
-      const discountCode = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .discountCodes()
-        .withKey({key: params.key})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as DiscountCodeUpdateAction[],
-          },
-        })
-        .execute();
-
-      return discountCode.body;
-    } else {
-      throw new Error('Either id or key must be provided');
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to update discount code', error);
-  }
+  return admin.updateDiscountCode(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
