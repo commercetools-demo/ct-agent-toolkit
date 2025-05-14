@@ -43,11 +43,7 @@ import {
   updateProductType,
 } from './product-type/functions';
 import {bulkCreate, bulkUpdate} from './bulk/functions';
-import {
-  readInventory,
-  createInventory,
-  updateInventory,
-} from './inventory/functions';
+import {contextToInventoryFunctionMapping} from './inventory/functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {Context} from '../types/configuration';
 
@@ -60,6 +56,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCustomerFunctionMapping(context),
     ...contextToCustomerGroupFunctionMapping(context),
     ...contextToDiscountCodeFunctionMapping(context),
+    ...contextToInventoryFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -80,8 +77,5 @@ export const contextToFunctionMapping = (context?: Context) => {
     update_product_type: updateProductType,
     bulk_create: bulkCreate,
     bulk_update: bulkUpdate,
-    read_inventory: readInventory,
-    create_inventory: createInventory,
-    update_inventory: updateInventory,
   };
 };
