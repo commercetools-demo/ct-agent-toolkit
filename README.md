@@ -2,11 +2,11 @@
 
 # Agent Toolkit
 
-The commercetools Agent Toolkit enables popular agent frameworks including LangChain,
-CrewAI, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with APIs through function calling. The
-library is not exhaustive of the entire commercetools API. It includes support for both Python and TypeScript and is built directly on top of the [Python][python-sdk] and [Node][node-sdk] SDKs.
+The commercetools Agent Toolkit enables popular agent frameworks including <span style="color:red">LangChain</span>,
+<span style="color:red">CrewAI</span>, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with APIs through function calling. The
+library is not exhaustive of the entire commercetools API. It includes support for TypeScript and is built directly on top of the [Node][node-sdk] SDK.
 
-Included below are basic instructions, but refer to the [Python](/python) and [TypeScript](/typescript) packages for more information.
+Included below are basic instructions, but refer to the [TypeScript](/typescript) package for more information.
 
 ## TypeScript
 
@@ -25,7 +25,9 @@ npm install @commercetools-demo/ct-agent-toolkit
 
 ### Usage
 
-The library needs to be configured with your commercetools project API client credentials which is available in your [Merchant center](https://docs.commercetools.com/getting-started/create-api-client). Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
+The library needs to be configured with your commercetools project API client credentials which is available in your [Merchant center](https://docs.commercetools.com/getting-started/create-api-client). 
+**Important**: Ensure that the API client credentials have the necessary scopes aligned with the actions you configure in the toolkit. For example, if you configure `products: { read: true }`, your API client must have the `view_products` scope.
+Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
 
 ```typescript
 import { CommercetoolsAgentToolkit } from "@commercetools-demo/commercetools-agent-toolkit/langchain";
@@ -61,7 +63,7 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 
 #### Tools
 
-The toolkit works with LangChain and Vercel's AI SDK and can be passed as a list of tools. For example:
+The toolkit works with <span style="color:red">LangChain</span> and Vercel's AI SDK and can be passed as a list of tools. For example:
 
 ```typescript
 import { AgentExecutor, createStructuredChatAgent } from "langchain/agents";
@@ -81,8 +83,8 @@ const agentExecutor = new AgentExecutor({
 ```
 
 #### Context
-
-In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts](https://docs.stripe.com/connect/authentication).
+<span style="color:red">Is this needed in this case?</span>
+In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts].
 
 ```typescript
 const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({

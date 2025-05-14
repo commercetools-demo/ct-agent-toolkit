@@ -10,7 +10,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^0.0.63",
     "@commercetools-demo/ct-agent-toolkit": "latest",
-    "ai": "^3.4.7 || ^4.0.0",
+    "ai": "^4.1.54",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
