@@ -4,6 +4,11 @@ globs:
 alwaysApply: false
 ---
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: project structure
 globs: 
 alwaysApply: false
@@ -42,11 +47,17 @@ This document provides an overview of the directory structure for this repositor
 │   └── tsconfig.json            # TypeScript compiler options for this package
 ├── typescript/                  # TypeScript specific implementations or toolkits using the protocol
 │   ├── examples/                # Example usage of the TypeScript toolkit
-│   │   └── ai-sdk/              # Example using the AI SDK integration
+│   │   ├── ai-sdk/              # Example using the AI SDK integration
+│   │   │   ├── .env.template    # Template for environment variables
+│   │   │   ├── index.ts         # Example script demonstrating usage
+│   │   │   ├── package.json     # Dependencies for the example
+│   │   │   ├── README.md        # README for the ai-sdk example
+│   │   │   └── tsconfig.json    # TypeScript configuration for the example
+│   │   └── langchain/           # Example using the Langchain integration
 │   │       ├── .env.template    # Template for environment variables
 │   │       ├── index.ts         # Example script demonstrating usage
 │   │       ├── package.json     # Dependencies for the example
-│   │       ├── README.md        # README for the ai-sdk example
+│   │       ├── README.md        # README for the langchain example
 │   │       └── tsconfig.json    # TypeScript configuration for the example
 │   ├── node_modules/            # Project dependencies (managed by npm/pnpm/yarn)
 │   ├── scripts/                 # Utility scripts for the TypeScript packages/workspace
@@ -55,6 +66,9 @@ This document provides an overview of the directory structure for this repositor
 │   │   ├── ai-sdk/              # Integration layer for the AI SDK
 │   │   │   ├── index.ts         # Entry point for the AI SDK integration
 │   │   │   └── toolkit.ts       # Toolkit implementation specific to AI SDK
+│   │   ├── langchain/           # Integration layer for Langchain
+│   │   │   ├── index.ts         # Entry point for the Langchain integration
+│   │   │   └── toolkit.ts       # Toolkit implementation specific to Langchain
 │   │   ├── modelcontextprotocol/# Re-export or specific implementation related to the core protocol
 │   │   │   ├── index.ts         # Entry point
 │   │   │   └── toolkit.ts       # Toolkit implementation

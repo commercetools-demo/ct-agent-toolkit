@@ -2,8 +2,7 @@
 
 # Agent Toolkit
 
-The commercetools Agent Toolkit enables popular agent frameworks including <span style="color:red">LangChain</span>,
-<span style="color:red">CrewAI</span>, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with APIs through function calling. The
+The commercetools Agent Toolkit enables popular agent frameworks including LangChain, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with APIs through function calling. The
 library is not exhaustive of the entire commercetools API. It includes support for TypeScript and is built directly on top of the [Node][node-sdk] SDK.
 
 Included below are basic instructions, but refer to the [TypeScript](/typescript) package for more information.
@@ -63,7 +62,7 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 
 #### Tools
 
-The toolkit works with <span style="color:red">LangChain</span> and Vercel's AI SDK and can be passed as a list of tools. For example:
+The toolkit works with LangChain and Vercel's AI SDK and can be passed as a list of tools. For example:
 
 ```typescript
 import { AgentExecutor, createStructuredChatAgent } from "langchain/agents";
@@ -105,7 +104,14 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 
 The commercetools Agent Toolkit also supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.com/).
 
-To run the commercetools MCP server using npx, use the following command:
+If you prefer to install the MCP package directly (for example, to run it via a script or manage it as a project dependency), you can use:
+
+```bash
+npm install @commercetools-demo/mcp
+```
+Then, you might need to configure your PATH or use `npx @commercetools-demo/mcp ...` to run it.
+
+To run the commercetools MCP server directly using npx (which handles downloading the package if needed), use the following command:
 
 ```bash
 npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
