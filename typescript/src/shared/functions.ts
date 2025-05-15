@@ -9,7 +9,7 @@ import {contextToDiscountCodeFunctionMapping} from './discount-code/functions';
 import {contextToInventoryFunctionMapping} from './inventory/functions';
 import {contextToOrderFunctionMapping} from './order/functions';
 import {contextToProductDiscountFunctionMapping} from './product-discount/functions';
-import {searchProducts} from './product-search/functions';
+import {contextToProductSearchFunctionMapping} from './product-search/functions';
 import {
   createProductSelection,
   readProductSelection,
@@ -40,11 +40,11 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToDiscountCodeFunctionMapping(context),
     ...contextToInventoryFunctionMapping(context),
     ...contextToProductDiscountFunctionMapping(context),
+    ...contextToProductSearchFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
     read_project: readProject,
-    search_products: searchProducts,
     read_product_selection: readProductSelection,
     create_product_selection: createProductSelection,
     update_product_selection: updateProductSelection,
