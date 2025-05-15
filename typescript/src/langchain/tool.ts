@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import { DynamicStructuredTool } from '@langchain/core/tools';
+import {DynamicStructuredTool} from '@langchain/core/tools';
 import {CallbackManagerForToolRun} from '@langchain/core/callbacks/manager';
 import {RunnableConfig} from '@langchain/core/runnables';
 import CommercetoolsAPI from '../shared/api';

@@ -44,18 +44,17 @@ class CommercetoolsAgentToolkit implements BaseToolkit {
 
     const toolDefinitions: ToolDefinition[] = sharedTools;
 
-    const filteredToolDefinitions = toolDefinitions.filter((tool: ToolDefinition) =>
-      isToolAllowed(tool, configuration)
+    const filteredToolDefinitions = toolDefinitions.filter(
+      (tool: ToolDefinition) => isToolAllowed(tool, configuration)
     );
 
-    this.tools = filteredToolDefinitions.map(
-      (toolDef: ToolDefinition) =>
-        CommercetoolsTool(
-          this._commercetools,
-          toolDef.method,
-          toolDef.description,
-          toolDef.parameters
-        )
+    this.tools = filteredToolDefinitions.map((toolDef: ToolDefinition) =>
+      CommercetoolsTool(
+        this._commercetools,
+        toolDef.method,
+        toolDef.description,
+        toolDef.parameters
+      )
     );
   }
 
