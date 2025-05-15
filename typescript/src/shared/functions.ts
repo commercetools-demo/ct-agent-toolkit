@@ -10,11 +10,7 @@ import {contextToInventoryFunctionMapping} from './inventory/functions';
 import {contextToOrderFunctionMapping} from './order/functions';
 import {contextToProductDiscountFunctionMapping} from './product-discount/functions';
 import {contextToProductSearchFunctionMapping} from './product-search/functions';
-import {
-  createProductSelection,
-  readProductSelection,
-  updateProductSelection,
-} from './product-selection/functions';
+import {contextToProductSelectionFunctionMapping} from './product-selection/functions';
 import {
   createProductType,
   listProductTypes,
@@ -41,13 +37,11 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToInventoryFunctionMapping(context),
     ...contextToProductDiscountFunctionMapping(context),
     ...contextToProductSearchFunctionMapping(context),
+    ...contextToProductSelectionFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
     read_project: readProject,
-    read_product_selection: readProductSelection,
-    create_product_selection: createProductSelection,
-    update_product_selection: updateProductSelection,
     read_standalone_price: readStandalonePrice,
     create_standalone_price: createStandalonePrice,
     update_standalone_price: updateStandalonePrice,
