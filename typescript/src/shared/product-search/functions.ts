@@ -1,37 +1,25 @@
-import {z} from 'zod';
-import {searchProductsParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
+import {z} from 'zod';
+import {Context} from '../../types/configuration';
+import * as admin from './admin.functions';
+import {searchProductsParameters} from './parameters';
 
-export const searchProducts = async (
+export const contextToProductSearchFunctionMapping = (context?: Context) => {
+  // Product search is available to all contexts (customer, store, admin)
+  return {
+    search_products: admin.searchProducts,
+  };
+};
+
+// Legacy function export to maintain backward compatibility
+export const searchProducts = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof searchProductsParameters>
 ) => {
-  try {
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .products()
-      .search()
-      .post({
-        body: {
-          query: params.query,
-          ...(params.sort && {sort: params.sort}),
-          ...(params.limit !== undefined && {limit: params.limit}),
-          ...(params.offset !== undefined && {offset: params.offset}),
-          ...(params.markMatchingVariants !== undefined && {
-            markMatchingVariants: params.markMatchingVariants,
-          }),
-          ...(params.productProjectionParameters && {
-            productProjectionParameters: params.productProjectionParameters,
-          }),
-          ...(params.facets && {facets: params.facets}),
-        },
-      })
-      .execute();
-
-    return response.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to search products', error);
-  }
+  return admin.searchProducts(
+    apiRoot,
+    {...context, projectKey: context.projectKey},
+    params
+  );
 };
