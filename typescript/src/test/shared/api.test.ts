@@ -15,11 +15,18 @@ jest.mock('../../shared/project/functions', () => ({
   readProject: jest.fn().mockResolvedValue({result: 'read-project-success'}),
 }));
 
-jest.mock('../../shared/product-search/functions', () => ({
-  searchProducts: jest
+jest.mock('../../shared/product-search/functions', () => {
+  // Create function inside the mock
+  const searchProductsFn = jest
     .fn()
-    .mockResolvedValue({result: 'search-products-success'}),
-}));
+    .mockResolvedValue({result: 'search-products-success'});
+  return {
+    searchProducts: searchProductsFn,
+    contextToProductSearchFunctionMapping: jest.fn().mockReturnValue({
+      search_products: searchProductsFn,
+    }),
+  };
+});
 
 // Mock the client construction
 jest.mock('@commercetools/ts-client', () => {
@@ -130,6 +137,7 @@ describe('CommercetoolsAPI', () => {
       const result = await api.run('search_products', searchParams);
       expect(result).toBe(JSON.stringify({result: 'search-products-success'}));
 
+      // Get the mock function from the module
       const {searchProducts} = require('../../shared/product-search/functions');
       expect(searchProducts).toHaveBeenCalledWith(
         'mock-api-root',
