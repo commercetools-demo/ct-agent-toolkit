@@ -67,6 +67,10 @@ const model = openai('gpt-4o');
   // Task 2 & 3: Take product type and create a fake product
   const productTypeName = `Auto-Created Product Type ${Math.floor(Date.now() / 1000)}`;
   const productTypeKey = `auto_created_pt_${Math.random().toString(36).substring(2, 9)}`;
+  const productName = `Automated Test Product ${Math.floor(Date.now() / 1000)}`;
+  const productKey = `ATPK-${Math.random().toString(36).substring(2, 11).toUpperCase()}`;
+  const productSku = `ATP-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+  const productSlug = productName.toLowerCase().replace(/\s+/g, '-');
 
   const prompt2 = `Context from previous step (listing product types): "${result1.text}".\n\nBased on the list of product types you (may have) provided in the previous step (see context above), check if any product types were returned.
 
@@ -80,9 +84,10 @@ Please create a new product type with the following details:
 - Description: "This product type was automatically created because no existing types were found."
 
 After you have either selected the first existing product type OR created a new one, please use that product type to create a new product with the following details:
-- Name: "Automated Test Product ${Math.floor(Date.now() / 1000)}"
-- Key: "ATPK-${Math.random().toString(36).substring(2, 11).toUpperCase()}"
-- SKU: "ATP-${Math.random().toString(36).substring(2, 9).toUpperCase()}"
+- Name: "${productName}"
+- Key: "${productKey}"
+- Slug (en): "${productSlug}"
+- SKU: "${productSku}"
 - Description: "This product was created automatically by an AI agent using an available or auto-created product type."
 - Ensure the product is published if possible during creation.
 
@@ -131,7 +136,7 @@ I will need the ID of this newly created product AND the ID or key of the produc
   );
 
   // Task 6: Publish the product (after update)
-  const prompt5 = `Context from previous step (updating the product): "${result4.text}".\n\nUsing the ID of the product that was just updated in the previous step (details in context above), please publish this product. If it was already published, confirm its published state.`;
+  const prompt5 = `Context from a previous step (reading the product): "${result3.text}".\n\nUsing the ID of the product that was just updated in the previous step (details in context above), please publish this product. If it was already published, confirm its published state.`;
   console.log(`\\nExecuting: ${prompt5}`);
   const result5 = await generateText({
     model: model,
