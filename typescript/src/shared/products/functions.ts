@@ -4,79 +4,56 @@ import {
   createProductParameters,
   updateProductParameters,
 } from './parameters';
-import {
-  ApiRoot,
-  ProductDraft,
-  ProductUpdateAction,
-} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
+import {ApiRoot} from '@commercetools/platform-sdk';
+import {Context, CommercetoolsFuncContext} from '../../types/configuration';
+import * as admin from './admin.functions';
 
-export const listProducts = async (
+/**
+ * Maps context to product functions
+ */
+export const contextToProductFunctionMapping = (context?: Context) => {
+  if (context?.isAdmin) {
+    return {
+      list_products: admin.listProducts,
+      read_product: admin.readProduct,
+      create_product: admin.createProduct,
+      update_product: admin.updateProduct,
+    };
+  }
+  return {
+    list_products: admin.listProducts,
+    read_product: admin.readProduct,
+  };
+};
+
+export const listProducts = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof listProductsParameters>
 ) => {
-  try {
-    const products = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .products()
-      .get({
-        queryArgs: {
-          limit: params.limit || 10,
-          ...(params.offset && {offset: params.offset}),
-          ...(params.sort && {sort: params.sort}),
-          ...(params.where && {where: params.where}),
-          ...(params.expand && {expand: params.expand}),
-        },
-      })
-      .execute();
-
-    return products.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to list products', error);
-  }
+  return admin.listProducts(apiRoot, context, params);
 };
 
-export const createProduct = async (
+export const readProduct = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: CommercetoolsFuncContext,
+  params: {id: string; expand?: string[]}
+) => {
+  return admin.readProduct(apiRoot, context, params);
+};
+
+export const createProduct = (
+  apiRoot: ApiRoot,
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof createProductParameters>
 ) => {
-  try {
-    const product = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .products()
-      .post({
-        body: params as ProductDraft,
-      })
-      .execute();
-
-    return product.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to create product', error);
-  }
+  return admin.createProduct(apiRoot, context, params);
 };
 
-export const updateProduct = async (
+export const updateProduct = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof updateProductParameters>
 ) => {
-  try {
-    const product = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .products()
-      .withId({ID: params.id})
-      .post({
-        body: {
-          version: params.version,
-          actions: params.actions as ProductUpdateAction[],
-        },
-      })
-      .execute();
-
-    return product.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to update product', error);
-  }
+  return admin.updateProduct(apiRoot, context, params);
 };

@@ -4,17 +4,15 @@ import * as customer from '../customer.functions';
 import {Context} from '../../../types/configuration';
 
 describe('Category Context Mapping', () => {
-  it('should return admin functions when no context is provided', () => {
+  it('should return customer read function when no context is provided', () => {
     const mapping = contextToCategoryFunctionMapping();
 
     expect(mapping).toEqual({
-      read_category: admin.readCategory,
-      create_category: admin.createCategory,
-      update_category: admin.updateCategory,
+      read_category: customer.readCategory,
     });
   });
 
-  it('should return admin functions when context has no customerId', () => {
+  it('should return admin functions when context has isAdmin flag', () => {
     const context: Context = {
       isAdmin: true,
     };

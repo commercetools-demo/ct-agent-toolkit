@@ -4,14 +4,10 @@ import * as store from '../store.functions';
 import {Context} from '../../../types/configuration';
 
 describe('Cart Discount Context Mapping', () => {
-  it('should return admin functions when no context is provided', () => {
+  it('should return an empty object when no context is provided', () => {
     const mapping = contextToCartDiscountFunctionMapping();
 
-    expect(mapping).toEqual({
-      read_cart_discount: admin.readCartDiscount,
-      create_cart_discount: admin.createCartDiscount,
-      update_cart_discount: admin.updateCartDiscount,
-    });
+    expect(mapping).toEqual({});
   });
 
   it('should return admin functions when context has no storeKey', () => {

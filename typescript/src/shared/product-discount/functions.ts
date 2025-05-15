@@ -21,7 +21,7 @@ export const contextToProductDiscountFunctionMapping = (context?: Context) => {
 };
 
 // Legacy function exports to maintain backward compatibility
-export const readProductDiscount = async (
+export const readProductDiscount = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readProductDiscountParameters>
@@ -33,7 +33,7 @@ export const readProductDiscount = async (
   );
 };
 
-export const createProductDiscount = async (
+export const createProductDiscount = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof createProductDiscountParameters>
@@ -45,7 +45,7 @@ export const createProductDiscount = async (
   );
 };
 
-export const updateProductDiscount = async (
+export const updateProductDiscount = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof updateProductDiscountParameters>

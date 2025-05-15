@@ -96,10 +96,7 @@ describe('Cart Function Context Mapping', () => {
     it('returns admin functions when neither customerId nor storeKey is provided', () => {
       const functionMap = contextToCartFunctionMapping({});
 
-      expect(functionMap.read_cart).toBe(admin.readCart);
-      expect(functionMap.create_cart).toBe(admin.createCart);
-      expect(functionMap.update_cart).toBe(admin.updateCart);
-      expect(functionMap.replicate_cart).toBe(admin.replicateCart);
+      expect(functionMap).toEqual({});
     });
 
     it('prioritizes customerId over storeKey when both are provided', () => {
