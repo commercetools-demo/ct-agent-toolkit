@@ -67,7 +67,6 @@ export async function readInventory(
       return response.body;
     }
   } catch (error) {
-    console.error('Error reading inventory:', error);
     throw error;
   }
 }
@@ -101,7 +100,6 @@ export async function createInventory(
     const response = await inventoryRequest.execute();
     return response.body;
   } catch (error) {
-    console.error('Error creating inventory entry:', error);
     throw error;
   }
 }
@@ -200,7 +198,6 @@ export async function updateInventory(
       }
     }
   } catch (error) {
-    console.error('Error updating inventory entry:', error);
     throw error;
   }
 }

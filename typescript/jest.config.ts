@@ -4,8 +4,19 @@ const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
-  testMatch: ['**/test/**/*.ts?(x)'],
+  testMatch: ['**/__tests__/**/*.ts?(x)', '**/test/**/*.ts?(x)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/__tests__/**/*.ts',
+    '!src/**/test/**/*.ts',
+    '!src/**/*.d.ts',
+  ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+  ],
 };
 
 export default config;
