@@ -14,11 +14,7 @@ import {contextToProductSelectionFunctionMapping} from './product-selection/func
 import {contextToProductTypeFunctionMapping} from './product-type/functions';
 import {contextToProductFunctionMapping} from './products/functions';
 import {contextToProjectFunctionMapping} from './project/functions';
-import {
-  createStandalonePrice,
-  readStandalonePrice,
-  updateStandalonePrice,
-} from './standalone-price/functions';
+import {contextToStandalonePriceFunctionMapping} from './standalone-price/functions';
 
 export const contextToFunctionMapping = (context?: Context) => {
   return {
@@ -36,9 +32,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToProductTypeFunctionMapping(context),
     ...contextToProductFunctionMapping(context),
     ...contextToProjectFunctionMapping(context),
-    read_standalone_price: readStandalonePrice,
-    create_standalone_price: createStandalonePrice,
-    update_standalone_price: updateStandalonePrice,
+    ...contextToStandalonePriceFunctionMapping(context),
     bulk_create: bulkCreate,
     bulk_update: bulkUpdate,
   };
