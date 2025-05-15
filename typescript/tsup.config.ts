@@ -15,4 +15,11 @@ export default defineConfig([
     dts: true,
     sourcemap: true,
   },
+  {
+    entry: ['src/langchain/index.ts'],
+    outDir: 'langchain',
+    format: ['cjs', 'esm'],
+    dts: true,
+    sourcemap: true,
+  },
 ]);
