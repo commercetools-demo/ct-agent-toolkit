@@ -15,7 +15,6 @@ describe('contextToCustomerFunctionMapping', () => {
 
     expect(mapping).toEqual({
       read_customer: customer.readCustomerProfile,
-      query_customers: customer.queryCurrentCustomer,
     });
   });
 

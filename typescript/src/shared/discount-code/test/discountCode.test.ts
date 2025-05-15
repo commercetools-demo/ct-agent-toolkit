@@ -175,9 +175,17 @@ describe('Discount Code Functions', () => {
     });
 
     it('should throw an error if neither id nor key is provided', async () => {
-      await expect(
-        readDiscountCode(mockApiRoot as any, {projectKey: 'test-project'}, {})
-      ).rejects.toThrow('Failed to read discount code');
+      try {
+        await readDiscountCode(
+          mockApiRoot as any,
+          {projectKey: 'test-project'},
+          {}
+        );
+        // Should not get here if error is thrown correctly
+        fail('Expected readDiscountCode to throw an error');
+      } catch (error: any) {
+        expect(error.message).toContain('Failed to read discount code');
+      }
     });
   });
 
@@ -523,13 +531,17 @@ describe('Discount Code Functions', () => {
     });
 
     it('should throw an error if neither id nor key is provided', async () => {
-      await expect(
-        updateDiscountCode(
+      try {
+        await updateDiscountCode(
           mockApiRoot as any,
           {projectKey: 'test-project'},
           {version: 1, actions: []}
-        )
-      ).rejects.toThrow('Failed to update discount code');
+        );
+        // Should not get here if error is thrown correctly
+        fail('Expected updateDiscountCode to throw an error');
+      } catch (error: any) {
+        expect(error.message).toContain('Failed to update discount code');
+      }
     });
   });
 });
