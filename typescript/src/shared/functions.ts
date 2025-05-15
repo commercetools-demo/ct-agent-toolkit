@@ -11,12 +11,7 @@ import {contextToOrderFunctionMapping} from './order/functions';
 import {contextToProductDiscountFunctionMapping} from './product-discount/functions';
 import {contextToProductSearchFunctionMapping} from './product-search/functions';
 import {contextToProductSelectionFunctionMapping} from './product-selection/functions';
-import {
-  createProductType,
-  listProductTypes,
-  readProductType,
-  updateProductType,
-} from './product-type/functions';
+import {contextToProductTypeFunctionMapping} from './product-type/functions';
 import {createProduct, listProducts, updateProduct} from './products/functions';
 import {readProject} from './project/functions';
 import {
@@ -38,6 +33,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToProductDiscountFunctionMapping(context),
     ...contextToProductSearchFunctionMapping(context),
     ...contextToProductSelectionFunctionMapping(context),
+    ...contextToProductTypeFunctionMapping(context),
     list_products: listProducts,
     create_product: createProduct,
     update_product: updateProduct,
@@ -45,10 +41,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     read_standalone_price: readStandalonePrice,
     create_standalone_price: createStandalonePrice,
     update_standalone_price: updateStandalonePrice,
-    read_product_type: readProductType,
-    list_product_types: listProductTypes,
-    create_product_type: createProductType,
-    update_product_type: updateProductType,
     bulk_create: bulkCreate,
     bulk_update: bulkUpdate,
   };
