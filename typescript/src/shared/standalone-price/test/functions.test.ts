@@ -3,6 +3,8 @@ import {
   createStandalonePrice,
   updateStandalonePrice,
 } from '../functions';
+import {contextToStandalonePriceFunctionMapping} from '../functions';
+import * as admin from '../admin.functions';
 
 describe('StandalonePrice Functions', () => {
   const mockApiRoot = {
@@ -165,5 +167,35 @@ describe('StandalonePrice Functions', () => {
         })
       ).rejects.toThrow('Failed to update standalone price');
     });
+  });
+});
+
+describe('contextToStandalonePriceFunctionMapping', () => {
+  it('should return admin functions when isAdmin is true', () => {
+    const context = {isAdmin: true};
+    const functionMapping = contextToStandalonePriceFunctionMapping(context);
+
+    expect(functionMapping.read_standalone_price).toBe(
+      admin.readStandalonePrice
+    );
+    expect(functionMapping.create_standalone_price).toBe(
+      admin.createStandalonePrice
+    );
+    expect(functionMapping.update_standalone_price).toBe(
+      admin.updateStandalonePrice
+    );
+  });
+
+  it('should return an empty object if no context is provided', () => {
+    const functionMapping = contextToStandalonePriceFunctionMapping();
+
+    expect(functionMapping).toEqual({});
+  });
+
+  it('should return an empty object if isAdmin is not true', () => {
+    const context = {customerId: 'someCustomerId'};
+    const functionMapping = contextToStandalonePriceFunctionMapping(context);
+
+    expect(functionMapping).toEqual({});
   });
 });
