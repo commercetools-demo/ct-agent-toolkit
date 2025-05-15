@@ -23,7 +23,7 @@ export type ProjectContext = {
   isAdmin?: boolean;
 };
 
-export const readProductSelection = async (
+export const readProductSelection = (
   apiRoot: ApiRoot,
   context: ProjectContext,
   params: z.infer<typeof readProductSelectionParameters>
@@ -74,7 +74,7 @@ export const readProductSelection = async (
   }
 };
 
-export const createProductSelection = async (
+export const createProductSelection = (
   apiRoot: ApiRoot,
   context: ProjectContext,
   params: z.infer<typeof createProductSelectionParameters>
@@ -89,7 +89,7 @@ export const createProductSelection = async (
   return createProductSelectionBase(apiRoot, context.projectKey, params);
 };
 
-export const updateProductSelection = async (
+export const updateProductSelection = (
   apiRoot: ApiRoot,
   context: ProjectContext,
   params: z.infer<typeof updateProductSelectionParameters>

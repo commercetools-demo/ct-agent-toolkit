@@ -22,7 +22,7 @@ export const contextToProductSelectionFunctionMapping = (context?: any) => {
 };
 
 // For backwards compatibility
-export const readProductSelection = async (
+export const readProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readProductSelectionParameters>
@@ -30,7 +30,7 @@ export const readProductSelection = async (
   return admin.readProductSelection(apiRoot, context, params);
 };
 
-export const createProductSelection = async (
+export const createProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof createProductSelectionParameters>
@@ -38,7 +38,7 @@ export const createProductSelection = async (
   return admin.createProductSelection(apiRoot, context, params);
 };
 
-export const updateProductSelection = async (
+export const updateProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof updateProductSelectionParameters>

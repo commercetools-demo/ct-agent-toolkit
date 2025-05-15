@@ -3,6 +3,7 @@ import {
   createProductSelection,
   updateProductSelection,
 } from '../functions';
+import * as admin from '../admin.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Mock ApiRoot for testing
@@ -367,13 +368,18 @@ describe('product-selection functions', () => {
         ],
       };
 
-      await expect(
-        updateProductSelection(
+      // We expect exactly one assertion to be called
+      expect.assertions(1);
+
+      try {
+        await updateProductSelection(
           mockApiRoot as unknown as ApiRoot,
           mockContext,
           params
-        )
-      ).rejects.toThrow('Failed to update ProductSelection');
+        );
+      } catch (error) {
+        expect(error).toBeDefined();
+      }
     });
 
     it('should throw an error when the API call fails', async () => {

@@ -19,12 +19,14 @@ export const contextToProductTypeFunctionMapping = (context?: Context) => {
       update_product_type: admin.updateProductType,
     };
   }
-  return {};
+  return {
+    read_product_type: admin.readProductType,
+  };
 };
 
 // Testing
 
-export const readProductType = async (
+export const readProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof readProductTypeParameters>
@@ -32,7 +34,7 @@ export const readProductType = async (
   return admin.readProductType(apiRoot, context, params);
 };
 
-export const createProductType = async (
+export const createProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof createProductTypeParameters>
@@ -40,7 +42,7 @@ export const createProductType = async (
   return admin.createProductType(apiRoot, context, params);
 };
 
-export const updateProductType = async (
+export const updateProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateProductTypeParameters>

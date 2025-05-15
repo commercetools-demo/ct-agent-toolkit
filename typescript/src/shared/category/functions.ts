@@ -16,11 +16,15 @@ export const contextToCategoryFunctionMapping = (context?: Context) => {
       read_category: customer.readCategory,
     };
   }
-
+  if (context?.isAdmin) {
+    return {
+      read_category: admin.readCategory,
+      create_category: admin.createCategory,
+      update_category: admin.updateCategory,
+    };
+  }
   return {
-    read_category: admin.readCategory,
-    create_category: admin.createCategory,
-    update_category: admin.updateCategory,
+    read_category: customer.readCategory,
   };
 };
 

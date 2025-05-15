@@ -12,13 +12,13 @@ import {
 import * as base from './base.functions';
 import {CommercetoolsFuncContext} from '../../types/configuration';
 
-export const readProductType = async (
+export const readProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof readProductTypeParameters>
 ) => {
   if (params.id) {
-    return await base.readProductTypeById(
+    return base.readProductTypeById(
       apiRoot,
       context.projectKey,
       params.id,
@@ -34,27 +34,27 @@ export const readProductType = async (
     ...(params.expand && {expand: params.expand}),
   };
 
-  return await base.queryProductTypes(apiRoot, context.projectKey, queryArgs);
+  return base.queryProductTypes(apiRoot, context.projectKey, queryArgs);
 };
 
-export const createProductType = async (
+export const createProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof createProductTypeParameters>
 ) => {
-  return await base.createProductTypeBase(
+  return base.createProductTypeBase(
     apiRoot,
     context.projectKey,
     params as ProductTypeDraft
   );
 };
 
-export const updateProductType = async (
+export const updateProductType = (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateProductTypeParameters>
 ) => {
-  return await base.updateProductTypeBase(
+  return base.updateProductTypeBase(
     apiRoot,
     context.projectKey,
     params.id,

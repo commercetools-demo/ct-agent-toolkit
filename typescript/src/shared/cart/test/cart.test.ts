@@ -149,7 +149,7 @@ describe('Cart Functions', () => {
       expect(baseFunctions.queryCarts).toHaveBeenCalled();
     });
 
-    it('should throw an error when no parameters are provided', async () => {
+    it('should throw an error when no parameters are provided and context has no customerId or storeKey', async () => {
       const params = {} as z.infer<typeof readCartParameters>;
       await expect(
         readCart(mockApiRoot as any, context, params)

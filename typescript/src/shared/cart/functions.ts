@@ -29,12 +29,15 @@ export const contextToCartFunctionMapping = (context?: Context) => {
       replicate_cart: store.replicateCart,
     };
   }
-  return {
-    read_cart: admin.readCart,
-    create_cart: admin.createCart,
-    update_cart: admin.updateCart,
-    replicate_cart: admin.replicateCart,
-  };
+  if (context?.isAdmin) {
+    return {
+      read_cart: admin.readCart,
+      create_cart: admin.createCart,
+      update_cart: admin.updateCart,
+      replicate_cart: admin.replicateCart,
+    };
+  }
+  return {};
 };
 
 // Export the individual CRUD functions for direct use in tests

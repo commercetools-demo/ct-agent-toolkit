@@ -18,11 +18,14 @@ export const contextToCartDiscountFunctionMapping = (context?: Context) => {
       update_cart_discount: store.updateCartDiscount,
     };
   }
-  return {
-    read_cart_discount: admin.readCartDiscount,
-    create_cart_discount: admin.createCartDiscount,
-    update_cart_discount: admin.updateCartDiscount,
-  };
+  if (context?.isAdmin) {
+    return {
+      read_cart_discount: admin.readCartDiscount,
+      create_cart_discount: admin.createCartDiscount,
+      update_cart_discount: admin.updateCartDiscount,
+    };
+  }
+  return {};
 };
 
 // Export the individual CRUD functions for direct use

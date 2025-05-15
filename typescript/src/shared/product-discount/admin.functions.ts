@@ -15,7 +15,7 @@ import {SDKError} from '../errors/sdkError';
 /**
  * Reads a product discount based on provided parameters
  */
-export async function readProductDiscount(
+export function readProductDiscount(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof readProductDiscountParameters>
@@ -53,7 +53,7 @@ export async function readProductDiscount(
 /**
  * Reads a product discount by ID
  */
-export async function readProductDiscountById(
+export function readProductDiscountById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; expand?: string[]}
@@ -64,7 +64,7 @@ export async function readProductDiscountById(
 /**
  * Reads a product discount by key
  */
-export async function readProductDiscountByKey(
+export function readProductDiscountByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; expand?: string[]}
@@ -75,7 +75,7 @@ export async function readProductDiscountByKey(
 /**
  * Queries product discounts based on provided parameters
  */
-export async function queryProductDiscounts(
+export function queryProductDiscounts(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {
@@ -92,7 +92,7 @@ export async function queryProductDiscounts(
 /**
  * Creates a new product discount
  */
-export async function createProductDiscount(
+export function createProductDiscount(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof createProductDiscountParameters>
@@ -103,7 +103,7 @@ export async function createProductDiscount(
 /**
  * Updates a product discount based on provided parameters
  */
-export async function updateProductDiscount(
+export function updateProductDiscount(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateProductDiscountParameters>
@@ -142,7 +142,7 @@ export async function updateProductDiscount(
 /**
  * Updates a product discount by ID
  */
-export async function updateProductDiscountById(
+export function updateProductDiscountById(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {id: string; version: number; actions: ProductDiscountUpdateAction[]}
@@ -153,7 +153,7 @@ export async function updateProductDiscountById(
 /**
  * Updates a product discount by key
  */
-export async function updateProductDiscountByKey(
+export function updateProductDiscountByKey(
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: {key: string; version: number; actions: ProductDiscountUpdateAction[]}
