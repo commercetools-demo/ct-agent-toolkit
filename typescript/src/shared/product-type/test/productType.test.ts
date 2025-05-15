@@ -1,6 +1,5 @@
 import {
   readProductType,
-  listProductTypes,
   createProductType,
   updateProductType,
 } from '../functions';
@@ -117,7 +116,7 @@ describe('Product Type Functions', () => {
         }),
       };
 
-      const result = await listProductTypes(
+      const result = await readProductType(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         {}
@@ -173,7 +172,7 @@ describe('Product Type Functions', () => {
         }),
       };
 
-      const result = await listProductTypes(
+      const result = await readProductType(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         mockParams
@@ -207,7 +206,7 @@ describe('Product Type Functions', () => {
 
       // Assert that the proper error is thrown
       await expect(
-        listProductTypes(
+        readProductType(
           mockApiRoot as any,
           {projectKey: 'test-project'},
           {sort: ['invalid sort']}

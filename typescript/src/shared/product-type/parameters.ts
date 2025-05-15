@@ -1,16 +1,13 @@
 import {z} from 'zod';
 
 export const readProductTypeParameters = z.object({
-  id: z.string().describe('The ID of the product type to retrieve'),
+  id: z.string().describe('The ID of the product type to retrieve').optional(),
   expand: z
     .array(z.string())
     .optional()
     .describe(
       'An array of field paths to expand. Example: ["attributes[*].type"]'
     ),
-});
-
-export const listProductTypesParameters = z.object({
   limit: z
     .number()
     .int()
@@ -39,12 +36,6 @@ export const listProductTypesParameters = z.object({
     .optional()
     .describe(
       'Query predicates specified as strings. Example: ["name = \\"Standard product type\\""]'
-    ),
-  expand: z
-    .array(z.string())
-    .optional()
-    .describe(
-      'An array of field paths to expand. Example: ["attributes[*].type"]'
     ),
 });
 
