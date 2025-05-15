@@ -3,7 +3,7 @@ import {bulkCreateParameters, bulkUpdateParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {createProduct} from '../products/functions';
 import {createCustomer} from '../customer/functions';
-import {createCart} from '../cart/functions';
+// import {createCart} from '../cart/functions';
 import {createCategory} from '../category/functions';
 import {createDiscountCode} from '../discount-code/functions';
 import {createCartDiscount} from '../cart-discount/functions';
@@ -15,16 +15,16 @@ import {
   createOrderFromCart,
   createOrderFromQuote,
   createOrderByImport,
-} from '../order/functions';
+} from '../order/admin.functions';
 
-import {updateCart} from '../cart/functions';
+// import {updateCart} from '../cart/functions';
 import {updateCartDiscount} from '../cart-discount/functions';
 import {updateCategory} from '../category/functions';
 import {updateCustomer} from '../customer/functions';
 import {updateCustomerGroup} from '../customer-group/functions';
 import {updateDiscountCode} from '../discount-code/functions';
 import {updateInventory} from '../inventory/functions';
-import {updateOrder} from '../order/functions';
+import {updateOrder} from '../order/admin.functions';
 import {updateProduct} from '../products/functions';
 import {updateProductDiscount} from '../product-discount/functions';
 import {updateProductSelection} from '../product-selection/functions';
@@ -61,7 +61,7 @@ const createOrder = (
 
 // Map entity types to their respective create functions
 const entityFunctionMap: EntityFunctionMap = {
-  cart: createCart,
+  // cart: createCart,
   'cart-discount': createCartDiscount,
   category: createCategory,
   customer: createCustomer,
@@ -76,7 +76,7 @@ const entityFunctionMap: EntityFunctionMap = {
 
 // Map entity types to their respective update functions
 const entityUpdateFunctionMap: EntityFunctionMap = {
-  cart: updateCart,
+  // cart: updateCart,
   'cart-discount': updateCartDiscount,
   category: updateCategory,
   customer: updateCustomer,

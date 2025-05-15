@@ -1,13 +1,11 @@
 import {
   readProductTypePrompt,
-  listProductTypesPrompt,
   createProductTypePrompt,
   updateProductTypePrompt,
 } from './prompts';
 
 import {
   readProductTypeParameters,
-  listProductTypesParameters,
   createProductTypeParameters,
   updateProductTypeParameters,
 } from './parameters';
@@ -19,17 +17,6 @@ const tools: Tool[] = [
     name: 'Read Product Type',
     description: readProductTypePrompt,
     parameters: readProductTypeParameters,
-    actions: {
-      'product-type': {
-        read: true,
-      },
-    },
-  },
-  {
-    method: 'list_product_types',
-    name: 'List Product Types',
-    description: listProductTypesPrompt,
-    parameters: listProductTypesParameters,
     actions: {
       'product-type': {
         read: true,

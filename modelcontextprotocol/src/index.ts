@@ -10,6 +10,9 @@ import {red, yellow} from 'colors';
 
 type Options = {
   tools?: string[];
+  customerId?: string;
+  cartId?: string;
+  isAdmin?: boolean;
 };
 
 type EnvVars = {
@@ -27,6 +30,8 @@ const ACCEPTED_ARGS = [
   'authUrl',
   'projectKey',
   'apiUrl',
+  'customerId',
+  'isAdmin',
 ];
 const ACCEPTED_TOOLS = [
   'products.read',
@@ -94,6 +99,12 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
         env.projectKey = value;
       } else if (key == 'apiUrl') {
         env.apiUrl = value;
+      } else if (key == 'customerId') {
+        options.customerId = value;
+      } else if (key == 'isAdmin') {
+        options.isAdmin = value === 'true';
+      } else if (key == 'cartId') {
+        options.cartId = value;
       } else {
         throw new Error(
           `Invalid argument: ${key}. Accepted arguments are: ${ACCEPTED_ARGS.join(
@@ -156,7 +167,14 @@ export async function main() {
 
   // Create the CommercetoolsAgentToolkit instance
   const selectedTools = options.tools!;
-  const configuration: Configuration = {actions: {}};
+  const configuration: Configuration = {
+    actions: {},
+    context: {
+      customerId: options.customerId,
+      isAdmin: options.isAdmin,
+      cartId: options.cartId,
+    },
+  };
 
   if (selectedTools.includes('all')) {
     ACCEPTED_TOOLS.forEach((tool) => {
@@ -193,6 +211,11 @@ export async function main() {
   });
 
   const transport = new StdioServerTransport();
+  if (options.customerId) {
+    await server.authenticateCustomer();
+  } else if (options.isAdmin) {
+    await server.authenticateAdmin();
+  }
   await server.connect(transport);
 }
 
