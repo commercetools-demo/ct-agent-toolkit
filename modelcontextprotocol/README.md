@@ -57,6 +57,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `category.read`            | Read category information               |
 | `category.create`          | Create category information             |
 | `category.update`          | Update category information             |
+| `channel.read`             | Read channel information                |
+| `channel.create`           | Create channel                          |
+| `channel.update`           | Update channel information              |
 | `product-selection.read`   | Read product selection information      |
 | `product-selection.create` | Create product selection information    |
 | `product-selection.update` | Update product selection information    |

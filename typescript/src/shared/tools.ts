@@ -2,6 +2,7 @@ import productTools from './products/tools';
 import projectTools from './project/tools';
 import productSearchTools from './product-search/tools';
 import categoryTools from './category/tools';
+import channelTools from './channel/tools';
 import productSelectionTools from './product-selection/tools';
 import orderTools from './order/tools';
 import cartTools from './cart/tools';
@@ -20,6 +21,7 @@ export default [
   ...projectTools,
   ...productSearchTools,
   ...categoryTools,
+  ...channelTools,
   ...productSelectionTools,
   ...orderTools,
   ...cartTools,

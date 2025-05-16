@@ -5,6 +5,7 @@ import {createProduct} from '../products/functions';
 import {createCustomer} from '../customer/functions';
 // import {createCart} from '../cart/functions';
 import {createCategory} from '../category/functions';
+import {createChannel} from '../channel/functions';
 import {createDiscountCode} from '../discount-code/functions';
 import {createCartDiscount} from '../cart-discount/functions';
 import {createProductDiscount} from '../product-discount/functions';
@@ -20,6 +21,7 @@ import {
 // import {updateCart} from '../cart/functions';
 import {updateCartDiscount} from '../cart-discount/functions';
 import {updateCategory} from '../category/functions';
+import {updateChannel} from '../channel/functions';
 import {updateCustomer} from '../customer/functions';
 import {updateCustomerGroup} from '../customer-group/functions';
 import {updateDiscountCode} from '../discount-code/functions';
@@ -64,6 +66,7 @@ const entityFunctionMap: EntityFunctionMap = {
   // cart: createCart,
   'cart-discount': createCartDiscount,
   category: createCategory,
+  channel: createChannel,
   customer: createCustomer,
   'customer-group': createCustomerGroup,
   'discount-code': createDiscountCode,
@@ -79,6 +82,7 @@ const entityUpdateFunctionMap: EntityFunctionMap = {
   // cart: updateCart,
   'cart-discount': updateCartDiscount,
   category: updateCategory,
+  channel: updateChannel,
   customer: updateCustomer,
   'customer-group': updateCustomerGroup,
   'discount-code': updateDiscountCode,
