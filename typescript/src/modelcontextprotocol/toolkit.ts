@@ -45,7 +45,11 @@ class CommercetoolsAgentToolkit extends McpServer {
         tool.method,
         tool.description,
         tool.parameters.shape,
-        async (arg: any, _extra: RequestHandlerExtra) => {
+        async (
+          arg: any,
+          // @ts-ignore // If TS in IDE is wrong, but build is right with non-generic
+          _extra: RequestHandlerExtra
+        ) => {
           const result = await this._commercetools.run(tool.method, arg);
           return {
             content: [
