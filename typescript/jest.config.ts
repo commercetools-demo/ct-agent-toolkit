@@ -14,9 +14,7 @@ const config: Config = {
     '!src/**/test/**/*.ts',
     '!src/**/*.d.ts',
   ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/'],
 };
 
 export default config;

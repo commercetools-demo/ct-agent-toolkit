@@ -1,4 +1,4 @@
-import { AvailableNamespaces } from '../tools';
+import {AvailableNamespaces} from '../tools';
 
 describe('types/tools.ts', () => {
   describe('AvailableNamespaces Enum', () => {
@@ -69,6 +69,6 @@ describe('types/tools.ts', () => {
 
   // Note: The 'Tool' type alias defined in '../tools.ts' is a compile-time construct.
   // Its correctness is enforced by the TypeScript compiler and indirectly tested
-  // by tests of functions and classes that utilize this type. 
+  // by tests of functions and classes that utilize this type.
   // There are no runtime behaviors of the type alias itself to unit test directly.
-}); 
+});

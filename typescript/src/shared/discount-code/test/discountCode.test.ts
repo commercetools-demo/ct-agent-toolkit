@@ -86,7 +86,9 @@ describe('Discount Code Functions', () => {
         id: 'discount-code-id',
         code: 'SAVE10',
         name: {en: 'Save 10%'},
-        cartDiscounts: [{typeId: 'cart-discount', id: 'expanded-cart-discount'}],
+        cartDiscounts: [
+          {typeId: 'cart-discount', id: 'expanded-cart-discount'},
+        ],
       };
 
       mockApiRoot.execute.mockResolvedValueOnce({
@@ -119,7 +121,9 @@ describe('Discount Code Functions', () => {
         key: 'save10_code',
         code: 'SAVE10',
         name: {en: 'Save 10%'},
-        cartDiscounts: [{typeId: 'cart-discount', id: 'expanded-cart-discount'}],
+        cartDiscounts: [
+          {typeId: 'cart-discount', id: 'expanded-cart-discount'},
+        ],
       };
 
       mockApiRoot.execute.mockResolvedValueOnce({

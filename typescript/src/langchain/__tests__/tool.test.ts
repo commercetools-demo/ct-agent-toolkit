@@ -1,7 +1,7 @@
 import CommercetoolsTool from '../tool';
 import CommercetoolsAPI from '../../shared/api';
-import { DynamicStructuredTool } from '@langchain/core/tools';
-import { z } from 'zod';
+import {DynamicStructuredTool} from '@langchain/core/tools';
+import {z} from 'zod';
 
 // Mock dependencies
 jest.mock('../../shared/api');
@@ -9,7 +9,7 @@ jest.mock('../../shared/api');
 jest.mock('@langchain/core/tools', () => {
   const originalModule = jest.requireActual('@langchain/core/tools');
   // This jest.fn() will become the mocked DynamicStructuredTool
-  const localMockDSTConstructor = jest.fn(args => ({
+  const localMockDSTConstructor = jest.fn((args) => ({
     name: args.name,
     description: args.description,
     schema: args.schema,
@@ -54,8 +54,11 @@ describe('CommercetoolsTool (Langchain)', () => {
     );
 
     // Assert against the imported (and now mocked) DynamicStructuredTool
-    expect(DynamicStructuredTool as unknown as jest.Mock).toHaveBeenCalledTimes(1);
-    const toolArgs = (DynamicStructuredTool as unknown as jest.Mock).mock.calls[0][0];
+    expect(DynamicStructuredTool as unknown as jest.Mock).toHaveBeenCalledTimes(
+      1
+    );
+    const toolArgs = (DynamicStructuredTool as unknown as jest.Mock).mock
+      .calls[0][0];
     expect(toolArgs.name).toBe(testMethod);
     expect(toolArgs.description).toBe(testDescription);
     expect(toolArgs.schema).toBe(testSchema);
@@ -63,38 +66,43 @@ describe('CommercetoolsTool (Langchain)', () => {
 
   it('should call commercetoolsAPI.run and stringify the result when func is called', async () => {
     CommercetoolsTool(
-        mockCommercetoolsAPI,
-        testMethod,
-        testDescription,
-        testSchema
+      mockCommercetoolsAPI,
+      testMethod,
+      testDescription,
+      testSchema
     );
     // Access the mock's call arguments through the imported DynamicStructuredTool
-    const toolConstructorArgs = (DynamicStructuredTool as unknown as jest.Mock).mock.calls[0][0];
+    const toolConstructorArgs = (DynamicStructuredTool as unknown as jest.Mock)
+      .mock.calls[0][0];
     const funcToTest = toolConstructorArgs.func;
 
-    const executeArgs = { lcParam1: 'lcTestValue' };
-    const apiResultObject = { success: true, data: 'some data' };
+    const executeArgs = {lcParam1: 'lcTestValue'};
+    const apiResultObject = {success: true, data: 'some data'};
     mockCommercetoolsAPI.run.mockResolvedValue(apiResultObject as any);
 
     const result = await funcToTest(executeArgs);
 
     expect(mockCommercetoolsAPI.run).toHaveBeenCalledTimes(1);
-    expect(mockCommercetoolsAPI.run).toHaveBeenCalledWith(testMethod, executeArgs);
+    expect(mockCommercetoolsAPI.run).toHaveBeenCalledWith(
+      testMethod,
+      executeArgs
+    );
     expect(result).toBe(JSON.stringify(apiResultObject));
   });
 
   it('should handle func with optional parameters and stringify result', async () => {
     CommercetoolsTool(
-        mockCommercetoolsAPI,
-        testMethod,
-        testDescription,
-        testSchema
+      mockCommercetoolsAPI,
+      testMethod,
+      testDescription,
+      testSchema
     );
-    const toolConstructorArgs = (DynamicStructuredTool as unknown as jest.Mock).mock.calls[0][0];
+    const toolConstructorArgs = (DynamicStructuredTool as unknown as jest.Mock)
+      .mock.calls[0][0];
     const funcToTest = toolConstructorArgs.func;
 
-    const executeArgs = { lcParam1: 'lcTestValue', lcParam2: true };
-    const apiResultObject = { message: 'done' };
+    const executeArgs = {lcParam1: 'lcTestValue', lcParam2: true};
+    const apiResultObject = {message: 'done'};
     mockCommercetoolsAPI.run.mockResolvedValue(apiResultObject as any);
 
     const result = await funcToTest(executeArgs);
@@ -104,4 +112,4 @@ describe('CommercetoolsTool (Langchain)', () => {
     );
     expect(result).toBe(JSON.stringify(apiResultObject));
   });
-}); 
+});

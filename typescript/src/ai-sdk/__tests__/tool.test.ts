@@ -1,7 +1,7 @@
 import CommercetoolsTool from '../tool';
 import CommercetoolsAPI from '../../shared/api';
-import { tool } from 'ai';
-import { z } from 'zod';
+import {tool} from 'ai';
+import {z} from 'zod';
 
 // Mock dependencies
 jest.mock('ai', () => ({
@@ -55,13 +55,16 @@ describe('CommercetoolsTool', () => {
       testSchema
     ) as any; // Cast to any to access execute for testing
 
-    const executeArgs = { param1: 'testValue' };
+    const executeArgs = {param1: 'testValue'};
     mockCommercetoolsAPI.run.mockResolvedValue('API Result');
 
     const result = await coreToolConfig.execute(executeArgs);
 
     expect(mockCommercetoolsAPI.run).toHaveBeenCalledTimes(1);
-    expect(mockCommercetoolsAPI.run).toHaveBeenCalledWith(testMethod, executeArgs);
+    expect(mockCommercetoolsAPI.run).toHaveBeenCalledWith(
+      testMethod,
+      executeArgs
+    );
     expect(result).toBe('API Result');
   });
 
@@ -73,7 +76,7 @@ describe('CommercetoolsTool', () => {
       testSchema
     ) as any;
 
-    const executeArgs = { param1: 'testValue', param2: 123 };
+    const executeArgs = {param1: 'testValue', param2: 123};
     mockCommercetoolsAPI.run.mockResolvedValue('API Result with optional');
 
     const result = await coreToolConfig.execute(executeArgs);
@@ -83,4 +86,4 @@ describe('CommercetoolsTool', () => {
     );
     expect(result).toBe('API Result with optional');
   });
-}); 
+});

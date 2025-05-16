@@ -1,9 +1,9 @@
 import CommercetoolsAgentToolkit from '../toolkit';
 import CommercetoolsAPI from '../../shared/api';
 import CommercetoolsTool from '../tool';
-import { isToolAllowed } from '../../shared/configuration';
-import { z } from 'zod';
-import { DynamicStructuredTool } from '@langchain/core/tools';
+import {isToolAllowed} from '../../shared/configuration';
+import {z} from 'zod';
+import {DynamicStructuredTool} from '@langchain/core/tools';
 
 // Mock dependencies
 jest.mock('../../shared/api');
@@ -14,13 +14,13 @@ jest.mock('../../shared/configuration');
 jest.mock('../../shared/tools', () => {
   // Define mockToolDefinitions inside the factory or ensure it's accessible without hoisting issues
   // For this specific case, we can define it directly here.
-  const { z: localZ } = require('zod'); // Require z inside the factory
+  const {z: localZ} = require('zod'); // Require z inside the factory
   return [
     {
       method: 'lcTool1',
       name: 'lcTool1',
       description: 'Description for LC tool 1',
-      parameters: localZ.object({ paramA: localZ.string() }),
+      parameters: localZ.object({paramA: localZ.string()}),
       namespace: 'cart',
       actions: [] as any[],
     },
@@ -28,7 +28,7 @@ jest.mock('../../shared/tools', () => {
       method: 'lcTool2',
       name: 'lcTool2',
       description: 'Description for LC tool 2',
-      parameters: localZ.object({ paramB: localZ.number() }),
+      parameters: localZ.object({paramB: localZ.number()}),
       namespace: 'product',
       actions: [] as any[],
     },
@@ -36,7 +36,7 @@ jest.mock('../../shared/tools', () => {
       method: 'lcTool3',
       name: 'lcTool3',
       description: 'Description for LC tool 3',
-      parameters: localZ.object({ paramC: localZ.boolean() }),
+      parameters: localZ.object({paramC: localZ.boolean()}),
       namespace: 'order',
       actions: [] as any[],
     },
@@ -45,18 +45,18 @@ jest.mock('../../shared/tools', () => {
 
 // Now, if you need to reference the mocked data structure in your tests,
 // you might need to re-require it or use a helper if the structure is complex.
-// For this test, direct usage of the mocked module is fine, 
+// For this test, direct usage of the mocked module is fine,
 // or we can get the mocked tools via `require('../../shared/tools')` within the test cases if needed.
 let mockToolDefinitions: any[]; // To hold the data for assertions
 
 describe('CommercetoolsAgentToolkit (Langchain)', () => {
-  const mockConfiguration = { enabledTools: ['cart', 'product.lcTool2'] } as any;
+  const mockConfiguration = {enabledTools: ['cart', 'product.lcTool2']} as any;
   const mockCommercetoolsAPIInstance = {} as CommercetoolsAPI;
   const mockLangchainTool = new DynamicStructuredTool({
     name: 'mockTool',
     description: 'mock description',
     schema: z.object({}),
-    func: async () => 'mock result',
+    func: () => Promise.resolve('mock result'),
   });
 
   beforeAll(() => {
@@ -69,12 +69,14 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
     (CommercetoolsTool as jest.Mock).mockClear();
     (isToolAllowed as jest.Mock).mockClear();
 
-    (CommercetoolsAPI as jest.Mock).mockImplementation(() => mockCommercetoolsAPIInstance);
+    (CommercetoolsAPI as jest.Mock).mockImplementation(
+      () => mockCommercetoolsAPIInstance
+    );
     (CommercetoolsTool as jest.Mock).mockReturnValue(mockLangchainTool);
   });
 
   it('should initialize CommercetoolsAPI with constructor arguments', () => {
-    new CommercetoolsAgentToolkit({
+    const toolkit = new CommercetoolsAgentToolkit({
       clientId: 'id',
       clientSecret: 'secret',
       authUrl: 'auth',
@@ -93,8 +95,13 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
 
   it('should filter tools based on configuration and map to Langchain tools', () => {
     (isToolAllowed as jest.Mock).mockImplementation((tool, config) => {
-      if (tool.method === 'lcTool1' && config.enabledTools.includes('cart')) return true;
-      if (tool.method === 'lcTool2' && config.enabledTools.includes('product.lcTool2')) return true;
+      if (tool.method === 'lcTool1' && config.enabledTools.includes('cart'))
+        return true;
+      if (
+        tool.method === 'lcTool2' &&
+        config.enabledTools.includes('product.lcTool2')
+      )
+        return true;
       return false;
     });
 
@@ -131,7 +138,7 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
 
     expect(toolkit.tools.length).toBe(2);
     // Check if the tools in the toolkit are the mocked Langchain tools
-    toolkit.tools.forEach(tool => {
+    toolkit.tools.forEach((tool) => {
       expect(tool).toBe(mockLangchainTool);
     });
   });
@@ -144,12 +151,12 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
       authUrl: 'auth',
       projectKey: 'key',
       apiUrl: 'api',
-      configuration: { enabledTools: ['*'] } as any,
+      configuration: {enabledTools: ['*']} as any,
     });
 
     const returnedTools = toolkit.getTools();
     expect(returnedTools.length).toBe(mockToolDefinitions.length);
-    returnedTools.forEach(tool => {
+    returnedTools.forEach((tool) => {
       expect(tool).toBe(mockLangchainTool);
     });
   });
@@ -169,4 +176,4 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
     expect(CommercetoolsTool).not.toHaveBeenCalled();
     expect(toolkit.tools.length).toBe(0);
   });
-}); 
+});

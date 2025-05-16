@@ -8,8 +8,8 @@ import {
   CustomerGroupUpdateAction,
 } from '../functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
-import { customerGroupResourceIdentifierSchema } from '../parameters';
-import { z } from 'zod';
+import {customerGroupResourceIdentifierSchema} from '../parameters';
+import {z} from 'zod';
 import customerGroupTools from '../tools';
 
 // Mock ApiRoot for testing
@@ -167,7 +167,9 @@ describe('CustomerGroup Functions', () => {
     it('should query customer groups with expand parameter', async () => {
       const mockResponse = {
         body: {
-          results: [{id: 'group-1', name: 'Group 1', custom: {type: {id: 'type-id'}}}],
+          results: [
+            {id: 'group-1', name: 'Group 1', custom: {type: {id: 'type-id'}}},
+          ],
         },
       };
       mockExecute.mockResolvedValueOnce(mockResponse);
@@ -380,7 +382,9 @@ describe('CustomerGroup Functions', () => {
       const {getCustomerGroup} = jest.requireActual('../functions');
 
       await getCustomerGroup(mockApiRoot, mockContext, {id: 'group-id'});
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockCustomerGroups).toHaveBeenCalled();
       expect(mockWithId).toHaveBeenCalledWith({ID: 'group-id'});
       expect(mockGet).toHaveBeenCalled();
@@ -393,7 +397,9 @@ describe('CustomerGroup Functions', () => {
       const {getCustomerGroup} = jest.requireActual('../functions');
 
       await getCustomerGroup(mockApiRoot, mockContext, {key: 'group-key'});
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockCustomerGroups).toHaveBeenCalled();
       expect(mockWithKey).toHaveBeenCalledWith({key: 'group-key'});
       expect(mockGet).toHaveBeenCalled();
@@ -406,7 +412,9 @@ describe('CustomerGroup Functions', () => {
       const {getCustomerGroup} = jest.requireActual('../functions');
 
       await getCustomerGroup(mockApiRoot, mockContext, {limit: 5});
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockCustomerGroups).toHaveBeenCalled();
       // queryCustomerGroups directly calls .get() on customerGroups()
       expect(mockGet).toHaveBeenCalledWith({queryArgs: {limit: 5}});
@@ -419,13 +427,21 @@ describe('CustomerGroup Functions', () => {
       const mockResponse = {body: {id: 'group-id', version: 2}};
       mockExecute.mockResolvedValueOnce(mockResponse);
       const {updateCustomerGroup} = jest.requireActual('../functions');
-      const params = {id: 'group-id', version: 1, actions: [{action: 'changeName', name: 'new name'}]};
+      const params = {
+        id: 'group-id',
+        version: 1,
+        actions: [{action: 'changeName', name: 'new name'}],
+      };
 
       await updateCustomerGroup(mockApiRoot, mockContext, params);
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockCustomerGroups).toHaveBeenCalled();
       expect(mockWithId).toHaveBeenCalledWith({ID: 'group-id'});
-      expect(mockPost).toHaveBeenCalledWith({body: {version: 1, actions: params.actions}});
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {version: 1, actions: params.actions},
+      });
       expect(mockExecute).toHaveBeenCalled();
     });
 
@@ -433,46 +449,67 @@ describe('CustomerGroup Functions', () => {
       const mockResponse = {body: {key: 'group-key', version: 2}};
       mockExecute.mockResolvedValueOnce(mockResponse);
       const {updateCustomerGroup} = jest.requireActual('../functions');
-      const params = {key: 'group-key', version: 1, actions: [{action: 'changeName', name: 'new name'}]};
-      
+      const params = {
+        key: 'group-key',
+        version: 1,
+        actions: [{action: 'changeName', name: 'new name'}],
+      };
+
       await updateCustomerGroup(mockApiRoot, mockContext, params);
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockCustomerGroups).toHaveBeenCalled();
       expect(mockWithKey).toHaveBeenCalledWith({key: 'group-key'});
-      expect(mockPost).toHaveBeenCalledWith({body: {version: 1, actions: params.actions}});
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {version: 1, actions: params.actions},
+      });
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should throw an error if neither id nor key is provided', async () => {
+    it('should throw an error if neither id nor key is provided', () => {
       const {updateCustomerGroup} = jest.requireActual('../functions');
-      const params = {version: 1, actions: [{action: 'changeName', name: 'new name'}]};
+      const params = {
+        version: 1,
+        actions: [{action: 'changeName', name: 'new name'}],
+      };
 
-      expect(() => updateCustomerGroup(mockApiRoot, mockContext, params)).toThrow(
-        'Either id or key must be provided to update a customer group'
-      );
+      expect(() =>
+        updateCustomerGroup(mockApiRoot, mockContext, params)
+      ).toThrow('Either id or key must be provided to update a customer group');
     });
   });
 
   describe('Schema Validations: parameters.ts', () => {
     describe('customerGroupResourceIdentifierSchema', () => {
       it('should fail validation if neither id nor key is provided', () => {
-        const result = customerGroupResourceIdentifierSchema.safeParse({typeId: 'customer-group'});
+        const result = customerGroupResourceIdentifierSchema.safeParse({
+          typeId: 'customer-group',
+        });
         expect(result.success).toBe(false);
         if (!result.success) {
           // Check for the specific refine error message
           const formErrors = result.error.formErrors.fieldErrors;
           // Zod nests refine errors under _errors array for the object itself
-          expect(result.error.errors[0].message).toBe('Either id or key must be provided');
+          expect(result.error.errors[0].message).toBe(
+            'Either id or key must be provided'
+          );
         }
       });
 
       it('should pass validation if id is provided', () => {
-        const result = customerGroupResourceIdentifierSchema.safeParse({typeId: 'customer-group', id: 'test-id'});
+        const result = customerGroupResourceIdentifierSchema.safeParse({
+          typeId: 'customer-group',
+          id: 'test-id',
+        });
         expect(result.success).toBe(true);
       });
 
       it('should pass validation if key is provided', () => {
-        const result = customerGroupResourceIdentifierSchema.safeParse({typeId: 'customer-group', key: 'test-key'});
+        const result = customerGroupResourceIdentifierSchema.safeParse({
+          typeId: 'customer-group',
+          key: 'test-key',
+        });
         expect(result.success).toBe(true);
       });
     });
@@ -480,7 +517,9 @@ describe('CustomerGroup Functions', () => {
 
   describe('Schema Validations: tools.ts', () => {
     // Find the updateCustomerGroupParameters schema from the imported tools array
-    const updateToolSchema = customerGroupTools.find(tool => tool.method === 'update_customer_group')?.parameters;
+    const updateToolSchema = customerGroupTools.find(
+      (tool) => tool.method === 'update_customer_group'
+    )?.parameters;
 
     if (updateToolSchema) {
       describe('updateCustomerGroupParameters (from tools.ts)', () => {
@@ -492,7 +531,9 @@ describe('CustomerGroup Functions', () => {
           expect(result.success).toBe(false);
           if (!result.success) {
             const formErrors = result.error.formErrors.fieldErrors;
-            expect(result.error.errors[0].message).toBe('Either id or key must be provided');
+            expect(result.error.errors[0].message).toBe(
+              'Either id or key must be provided'
+            );
           }
         });
 

@@ -228,9 +228,7 @@ describe('Order Functions', () => {
     });
 
     it('should throw error if no id, orderNumber or where is provided', async () => {
-      await expect(
-        readOrder(mockApiRoot, mockContext, {})
-      ).rejects.toThrow(
+      await expect(readOrder(mockApiRoot, mockContext, {})).rejects.toThrow(
         'Failed to read order'
       );
     });
@@ -239,21 +237,27 @@ describe('Order Functions', () => {
       mockExecute.mockRejectedValueOnce(new Error('API Error'));
       await expect(
         readOrder(mockApiRoot, mockContext, {id: 'test-id'})
-      ).rejects.toThrow(new SDKError('Failed to read order', new Error('API Error')));
+      ).rejects.toThrow(
+        new SDKError('Failed to read order', new Error('API Error'))
+      );
     });
 
     it('should throw SDKError on API failure for orderNumber', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Error'));
       await expect(
         readOrder(mockApiRoot, mockContext, {orderNumber: 'test-num'})
-      ).rejects.toThrow(new SDKError('Failed to read order', new Error('API Error')));
+      ).rejects.toThrow(
+        new SDKError('Failed to read order', new Error('API Error'))
+      );
     });
 
     it('should throw SDKError on API failure for where', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Error'));
       await expect(
         readOrder(mockApiRoot, mockContext, {where: ['some query']})
-      ).rejects.toThrow(new SDKError('Failed to read order', new Error('API Error')));
+      ).rejects.toThrow(
+        new SDKError('Failed to read order', new Error('API Error'))
+      );
     });
   });
 
@@ -293,21 +297,48 @@ describe('Order Functions', () => {
     it('should create order from cart with orderNumber', async () => {
       const params = {id: 'test-cart-id', version: 1, orderNumber: 'order-123'};
       await createOrderFromCart(mockApiRoot, mockContext, params);
-      expect(mockPost).toHaveBeenCalledWith({body: {cart: {id: params.id, typeId: 'cart'}, version: params.version, orderNumber: params.orderNumber}});
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          cart: {id: params.id, typeId: 'cart'},
+          version: params.version,
+          orderNumber: params.orderNumber,
+        },
+      });
     });
 
     it('should create order from cart in store with orderNumber', async () => {
-      const params = {id: 'test-cart-id', version: 1, orderNumber: 'order-123', storeKey: 'test-store'};
+      const params = {
+        id: 'test-cart-id',
+        version: 1,
+        orderNumber: 'order-123',
+        storeKey: 'test-store',
+      };
       await createOrderFromCart(mockApiRoot, mockContext, params);
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({storeKey: params.storeKey});
-      expect(mockPost).toHaveBeenCalledWith({body: {cart: {id: params.id, typeId: 'cart'}, version: params.version, orderNumber: params.orderNumber}});
+      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
+        storeKey: params.storeKey,
+      });
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          cart: {id: params.id, typeId: 'cart'},
+          version: params.version,
+          orderNumber: params.orderNumber,
+        },
+      });
     });
 
     it('should throw SDKError on API failure', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Create Error'));
       await expect(
-        createOrderFromCart(mockApiRoot, mockContext, {id: 'fail-cart-id', version: 1})
-      ).rejects.toThrow(new SDKError('Failed to create order from cart', new Error('API Create Error')));
+        createOrderFromCart(mockApiRoot, mockContext, {
+          id: 'fail-cart-id',
+          version: 1,
+        })
+      ).rejects.toThrow(
+        new SDKError(
+          'Failed to create order from cart',
+          new Error('API Create Error')
+        )
+      );
     });
   });
 
@@ -354,9 +385,13 @@ describe('Order Functions', () => {
         storeKey: 'test-store',
       };
       await updateOrder(mockApiRoot, mockContext, params);
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({storeKey: params.storeKey});
+      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
+        storeKey: params.storeKey,
+      });
       expect(mockWithId).toHaveBeenCalledWith({ID: params.id});
-      expect(mockPost).toHaveBeenCalledWith({body: {version: params.version, actions: params.actions}});
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {version: params.version, actions: params.actions},
+      });
     });
 
     it('should update order by order number in store', async () => {
@@ -367,9 +402,15 @@ describe('Order Functions', () => {
         storeKey: 'test-store',
       };
       await updateOrder(mockApiRoot, mockContext, params);
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({storeKey: params.storeKey});
-      expect(mockWithOrderNumber).toHaveBeenCalledWith({orderNumber: params.orderNumber});
-      expect(mockPost).toHaveBeenCalledWith({body: {version: params.version, actions: params.actions}});
+      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
+        storeKey: params.storeKey,
+      });
+      expect(mockWithOrderNumber).toHaveBeenCalledWith({
+        orderNumber: params.orderNumber,
+      });
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {version: params.version, actions: params.actions},
+      });
     });
 
     it('should throw error if no id or orderNumber is provided for update', async () => {
@@ -381,29 +422,55 @@ describe('Order Functions', () => {
     it('should throw SDKError on API failure for update by ID', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Update Error'));
       await expect(
-        updateOrder(mockApiRoot, mockContext, {id: 'fail-id', version: 1, actions: []})
-      ).rejects.toThrow(new SDKError('Failed to update order', new Error('API Update Error')));
+        updateOrder(mockApiRoot, mockContext, {
+          id: 'fail-id',
+          version: 1,
+          actions: [],
+        })
+      ).rejects.toThrow(
+        new SDKError('Failed to update order', new Error('API Update Error'))
+      );
     });
 
     it('should throw SDKError on API failure for update by orderNumber', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Update Error'));
       await expect(
-        updateOrder(mockApiRoot, mockContext, {orderNumber: 'fail-num', version: 1, actions: []})
-      ).rejects.toThrow(new SDKError('Failed to update order', new Error('API Update Error')));
+        updateOrder(mockApiRoot, mockContext, {
+          orderNumber: 'fail-num',
+          version: 1,
+          actions: [],
+        })
+      ).rejects.toThrow(
+        new SDKError('Failed to update order', new Error('API Update Error'))
+      );
     });
 
-     it('should throw SDKError on API failure for update by ID in store', async () => {
+    it('should throw SDKError on API failure for update by ID in store', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Update Error'));
       await expect(
-        updateOrder(mockApiRoot, mockContext, {id: 'fail-id', storeKey: 'test-store', version: 1, actions: []})
-      ).rejects.toThrow(new SDKError('Failed to update order', new Error('API Update Error')));
+        updateOrder(mockApiRoot, mockContext, {
+          id: 'fail-id',
+          storeKey: 'test-store',
+          version: 1,
+          actions: [],
+        })
+      ).rejects.toThrow(
+        new SDKError('Failed to update order', new Error('API Update Error'))
+      );
     });
 
     it('should throw SDKError on API failure for update by orderNumber in store', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Update Error'));
       await expect(
-        updateOrder(mockApiRoot, mockContext, {orderNumber: 'fail-num', storeKey: 'test-store', version: 1, actions: []})
-      ).rejects.toThrow(new SDKError('Failed to update order', new Error('API Update Error')));
+        updateOrder(mockApiRoot, mockContext, {
+          orderNumber: 'fail-num',
+          storeKey: 'test-store',
+          version: 1,
+          actions: [],
+        })
+      ).rejects.toThrow(
+        new SDKError('Failed to update order', new Error('API Update Error'))
+      );
     });
   });
 
@@ -411,46 +478,104 @@ describe('Order Functions', () => {
     it('should create order from quote', async () => {
       const params = {quoteId: 'test-quote-id', version: 1};
       await createOrderFromQuote(mockApiRoot, mockContext, params);
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       // This assertion needs to be against the correct mock for create from quote
       // Assuming mockOrders().post is used for non-specific posts in this structure
-      expect(mockOrders).toHaveBeenCalled(); 
-      expect(mockPost).toHaveBeenCalledWith({body: {quote: {id: params.quoteId, typeId: 'quote'}, version: params.version}});
+      expect(mockOrders).toHaveBeenCalled();
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          quote: {id: params.quoteId, typeId: 'quote'},
+          version: params.version,
+        },
+      });
       expect(mockExecute).toHaveBeenCalled();
     });
 
     it('should create order from quote with orderNumber', async () => {
-      const params = {quoteId: 'test-quote-id', version: 1, orderNumber: 'quote-order-123'};
+      const params = {
+        quoteId: 'test-quote-id',
+        version: 1,
+        orderNumber: 'quote-order-123',
+      };
       await createOrderFromQuote(mockApiRoot, mockContext, params);
-      expect(mockPost).toHaveBeenCalledWith({body: {quote: {id: params.quoteId, typeId: 'quote'}, version: params.version, orderNumber: params.orderNumber}});
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          quote: {id: params.quoteId, typeId: 'quote'},
+          version: params.version,
+          orderNumber: params.orderNumber,
+        },
+      });
     });
 
     it('should create order from quote in store', async () => {
-      const params = {quoteId: 'test-quote-id', version: 1, storeKey: 'test-store'};
+      const params = {
+        quoteId: 'test-quote-id',
+        version: 1,
+        storeKey: 'test-store',
+      };
       await createOrderFromQuote(mockApiRoot, mockContext, params);
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({storeKey: params.storeKey});
-      expect(mockPost).toHaveBeenCalledWith({body: {quote: {id: params.quoteId, typeId: 'quote'}, version: params.version}});
+      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
+        storeKey: params.storeKey,
+      });
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          quote: {id: params.quoteId, typeId: 'quote'},
+          version: params.version,
+        },
+      });
     });
 
     it('should create order from quote in store with orderNumber', async () => {
-      const params = {quoteId: 'test-quote-id', version: 1, orderNumber: 'quote-order-123', storeKey: 'test-store'};
+      const params = {
+        quoteId: 'test-quote-id',
+        version: 1,
+        orderNumber: 'quote-order-123',
+        storeKey: 'test-store',
+      };
       await createOrderFromQuote(mockApiRoot, mockContext, params);
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({storeKey: params.storeKey});
-      expect(mockPost).toHaveBeenCalledWith({body: {quote: {id: params.quoteId, typeId: 'quote'}, version: params.version, orderNumber: params.orderNumber}});
+      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
+        storeKey: params.storeKey,
+      });
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          quote: {id: params.quoteId, typeId: 'quote'},
+          version: params.version,
+          orderNumber: params.orderNumber,
+        },
+      });
     });
 
     it('should throw SDKError on API failure for create from quote', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Quote Error'));
       await expect(
-        createOrderFromQuote(mockApiRoot, mockContext, {quoteId: 'fail-quote-id', version: 1})
-      ).rejects.toThrow(new SDKError('Failed to create order from quote', new Error('API Quote Error')));
+        createOrderFromQuote(mockApiRoot, mockContext, {
+          quoteId: 'fail-quote-id',
+          version: 1,
+        })
+      ).rejects.toThrow(
+        new SDKError(
+          'Failed to create order from quote',
+          new Error('API Quote Error')
+        )
+      );
     });
 
     it('should throw SDKError on API failure for create from quote in store', async () => {
       mockExecute.mockRejectedValueOnce(new Error('API Quote Store Error'));
       await expect(
-        createOrderFromQuote(mockApiRoot, mockContext, {quoteId: 'fail-quote-id', version: 1, storeKey: 'test-store'})
-      ).rejects.toThrow(new SDKError('Failed to create order from quote', new Error('API Quote Store Error')));
+        createOrderFromQuote(mockApiRoot, mockContext, {
+          quoteId: 'fail-quote-id',
+          version: 1,
+          storeKey: 'test-store',
+        })
+      ).rejects.toThrow(
+        new SDKError(
+          'Failed to create order from quote',
+          new Error('API Quote Store Error')
+        )
+      );
     });
   });
 
@@ -474,9 +599,11 @@ describe('Order Functions', () => {
 
     it('should create order by import with minimal params', async () => {
       await createOrderByImport(mockApiRoot, mockContext, baseImportParams);
-      expect(mockWithProjectKey).toHaveBeenCalledWith({projectKey: 'test-project'});
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockOrders).toHaveBeenCalled();
-      expect(mockImportOrder).toHaveBeenCalled(); 
+      expect(mockImportOrder).toHaveBeenCalled();
       expect(mockPost).toHaveBeenCalledWith({
         body: {
           totalPrice: {
@@ -539,7 +666,9 @@ describe('Order Functions', () => {
       mockExecute.mockRejectedValueOnce(new Error('API Import Error'));
       await expect(
         createOrderByImport(mockApiRoot, mockContext, baseImportParams)
-      ).rejects.toThrow(new SDKError('Failed to import order', new Error('API Import Error')));
+      ).rejects.toThrow(
+        new SDKError('Failed to import order', new Error('API Import Error'))
+      );
     });
   });
 });
