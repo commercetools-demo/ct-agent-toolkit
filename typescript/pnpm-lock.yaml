@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@commercetools-demo/ct-agent-toolkit':
+        specifier: 'link:'
+        version: 'link:'
       '@commercetools/platform-sdk':
         specifier: ^8.5.0
         version: 8.5.0

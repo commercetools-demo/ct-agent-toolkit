@@ -1,9 +1,6 @@
 import {CommercetoolsAgentToolkit} from '../../src/ai-sdk/index';
 import {openai} from '@ai-sdk/openai';
-import {
-  generateText,
-  // experimental_wrapLanguageModel as wrapLanguageModel,
-} from 'ai';
+import {generateText} from 'ai';
 
 require('dotenv').config();
 

@@ -1,22 +1,5 @@
 import {parseArgs} from '../index';
 
-describe('Dummy Test Suite', () => {
-  test('should pass a basic assertion', () => {
-    expect(true).toBe(true);
-  });
-
-  test('should perform basic math', () => {
-    expect(1 + 1).toBe(2);
-    expect(2 * 3).toBe(6);
-  });
-
-  test('should handle string operations', () => {
-    const str = 'hello';
-    expect(str.toUpperCase()).toBe('HELLO');
-    expect(str.length).toBe(5);
-  });
-});
-
 describe('parseArgs function', () => {
   describe('success cases', () => {
     it('should parse all arguments correctly', () => {
