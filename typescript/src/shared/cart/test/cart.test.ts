@@ -41,33 +41,35 @@ describe('Cart Functions', () => {
   });
 
   describe('readCart', () => {
-    it('should read a cart by ID', async () => {
+    it('should read a cart by ID (no storeKey)', async () => {
       const params = {id: 'cart-id'} as z.infer<typeof readCartParameters>;
       await readCart(mockApiRoot as any, context, params);
 
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockWithId).toHaveBeenCalledWith({ID: 'cart-id'});
       expect(mockGet).toHaveBeenCalled();
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should read a cart by key', async () => {
+    it('should read a cart by key (no storeKey)', async () => {
       const params = {key: 'cart-key'} as z.infer<typeof readCartParameters>;
       await readCart(mockApiRoot as any, context, params);
 
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockWithKey).toHaveBeenCalledWith({key: 'cart-key'});
       expect(mockGet).toHaveBeenCalled();
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should read a cart by customer ID', async () => {
+    it('should read a cart by customer ID (no storeKey)', async () => {
       const params = {customerId: 'customer-id'} as z.infer<
         typeof readCartParameters
       >;
@@ -76,6 +78,7 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
@@ -86,7 +89,7 @@ describe('Cart Functions', () => {
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should read carts with where query', async () => {
+    it('should read carts with where query (no storeKey)', async () => {
       const params = {where: ['customerId="customer-id"']} as z.infer<
         typeof readCartParameters
       >;
@@ -95,6 +98,7 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockGet).toHaveBeenCalledWith({
         queryArgs: {
@@ -226,7 +230,7 @@ describe('Cart Functions', () => {
   });
 
   describe('updateCart', () => {
-    it('should update a cart by ID', async () => {
+    it('should update a cart by ID (no storeKey)', async () => {
       const params = {
         id: 'cart-id',
         version: 1,
@@ -239,6 +243,7 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockWithId).toHaveBeenCalledWith({ID: 'cart-id'});
       expect(mockPost).toHaveBeenCalledWith({
@@ -252,7 +257,7 @@ describe('Cart Functions', () => {
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should update a cart by key', async () => {
+    it('should update a cart by key (no storeKey)', async () => {
       const params = {
         key: 'cart-key',
         version: 1,
@@ -265,6 +270,7 @@ describe('Cart Functions', () => {
       expect(mockWithProjectKey).toHaveBeenCalledWith({
         projectKey: 'test-project',
       });
+      expect(mockInStore).not.toHaveBeenCalled();
       expect(mockCarts).toHaveBeenCalled();
       expect(mockWithKey).toHaveBeenCalledWith({key: 'cart-key'});
       expect(mockPost).toHaveBeenCalledWith({
