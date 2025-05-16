@@ -3,6 +3,7 @@ import {bulkCreate, bulkUpdate} from './bulk/functions';
 import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
 import {contextToCartFunctionMapping} from './cart/functions';
 import {contextToCategoryFunctionMapping} from './category/functions';
+import {contextToChannelFunctionMapping} from './channel/functions';
 import {contextToCustomerGroupFunctionMapping} from './customer-group/functions';
 import {contextToCustomerFunctionMapping} from './customer/functions';
 import {contextToDiscountCodeFunctionMapping} from './discount-code/functions';
@@ -22,6 +23,7 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToCartFunctionMapping(context),
     ...contextToCartDiscountFunctionMapping(context),
     ...contextToCategoryFunctionMapping(context),
+    ...contextToChannelFunctionMapping(context),
     ...contextToCustomerFunctionMapping(context),
     ...contextToCustomerGroupFunctionMapping(context),
     ...contextToDiscountCodeFunctionMapping(context),

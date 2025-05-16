@@ -12,6 +12,7 @@ Supported entity types:
 - customer
 - cart
 - category
+- channel
 - discount-code
 - cart-discount
 - product-discount
@@ -91,6 +92,7 @@ The supported entity types are:
 - customer
 - cart
 - category
+- channel
 - discount-code
 - cart-discount
 - product-discount
@@ -178,6 +180,7 @@ Supported entity types:
 - customer
 - cart
 - category
+- channel
 - discount-code
 - cart-discount
 - product-discount
