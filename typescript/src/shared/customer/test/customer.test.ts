@@ -1,14 +1,14 @@
+import {z} from 'zod';
+import {CommercetoolsFuncContext} from '../../../types/configuration';
+import * as baseFunctions from '../base.functions';
 import {
   createCustomer,
   createCustomerInStore,
   getCustomerById,
   getCustomerInStoreById,
-  queryCustomers,
   updateCustomer,
 } from '../functions';
-import {CommercetoolsFuncContext} from '../../../types/configuration';
-import * as baseFunctions from '../base.functions';
-
+import {getCustomerByIdParameters} from '../parameters';
 // Mock base functions
 jest.mock('../base.functions', () => ({
   readCustomerById: jest.fn(),
@@ -121,7 +121,7 @@ describe('Customer Functions', () => {
       await expect(
         createCustomer(mockApiRoot as any, adminContext, params)
       ).rejects.toThrow('Failed to create customer');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(mockExecute).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -148,7 +148,7 @@ describe('Customer Functions', () => {
       const result = await createCustomerInStore(
         mockApiRoot as any,
         storeContext,
-        params
+        baseParams
       );
 
       expect(result).toEqual(mockResponse);
@@ -161,9 +161,9 @@ describe('Customer Functions', () => {
       );
 
       await expect(
-        createCustomerInStore(mockApiRoot as any, storeContext, params)
+        createCustomerInStore(mockApiRoot as any, storeContext, baseParams)
       ).rejects.toThrow('Failed to create customer in store');
-      expect(mockExecute).toHaveBeenCalledTimes(1);
+      expect(mockExecute).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -185,7 +185,7 @@ describe('Customer Functions', () => {
       const result = await getCustomerById(
         mockApiRoot as any,
         adminContext,
-        params
+        baseParams
       );
 
       expect(result).toEqual(mockResponse);

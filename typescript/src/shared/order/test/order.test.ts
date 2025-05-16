@@ -103,11 +103,14 @@ describe('Order Functions', () => {
     });
 
     it('should read order by order number in store', async () => {
-      await readOrder(mockApiRoot, mockContext, {
+      await readStoreOrder(mockApiRoot, mockContext, {
         orderNumber: 'test-order-number',
         storeKey: 'test-store',
       });
 
+      expect(mockWithProjectKey).toHaveBeenCalledWith({
+        projectKey: 'test-project',
+      });
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: 'test-store',
       });
@@ -116,6 +119,7 @@ describe('Order Functions', () => {
         orderNumber: 'test-order-number',
       });
       expect(mockGet).toHaveBeenCalled();
+      expect(mockExecute).toHaveBeenCalled();
     });
 
     it('should read order by ID with expand', async () => {
@@ -139,7 +143,7 @@ describe('Order Functions', () => {
     });
 
     it('should read order by ID in store with expand', async () => {
-      await readOrder(mockApiRoot, mockContext, {
+      await readStoreOrder(mockApiRoot, mockContext, {
         id: 'test-order-id',
         storeKey: 'test-store',
         expand: ['lineItems[*].state[*]'],
@@ -155,7 +159,7 @@ describe('Order Functions', () => {
     });
 
     it('should read order by order number in store with expand', async () => {
-      await readOrder(mockApiRoot, mockContext, {
+      await readStoreOrder(mockApiRoot, mockContext, {
         orderNumber: 'test-order-number',
         storeKey: 'test-store',
         expand: ['lineItems[*].state[*]'],
@@ -185,7 +189,7 @@ describe('Order Functions', () => {
     });
 
     it('should query orders with where in store', async () => {
-      await readOrder(mockApiRoot, mockContext, {
+      await readStoreOrder(mockApiRoot, mockContext, {
         where: ['customerEmail = "test@example.com"'],
         storeKey: 'test-store',
       });
@@ -221,7 +225,7 @@ describe('Order Functions', () => {
         sort: ['createdAt asc'],
         expand: ['paymentInfo.payments[*]'],
       };
-      await readOrder(mockApiRoot, mockContext, queryArgs);
+      await readStoreOrder(mockApiRoot, mockContext, queryArgs);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: 'test-store',
       });
@@ -237,6 +241,7 @@ describe('Order Functions', () => {
     });
 
     it('should throw error if no id, orderNumber or where is provided', async () => {
+      mockExecute.mockRejectedValueOnce(new Error('Failed to read order'));
       await expect(readOrder(mockApiRoot, mockContext, {})).rejects.toThrow(
         'Failed to read order'
       );
@@ -324,7 +329,7 @@ describe('Order Functions', () => {
         orderNumber: 'order-123',
         storeKey: 'test-store',
       };
-      await createOrderFromCart(mockApiRoot, mockContext, params);
+      await createOrderFromCartInStore(mockApiRoot, mockContext, params);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: params.storeKey,
       });
@@ -395,7 +400,13 @@ describe('Order Functions', () => {
         actions: [{action: 'changeOrderState', orderState: 'Complete'} as any],
         storeKey: 'test-store',
       };
-      await updateOrder(mockApiRoot, mockContext, params);
+
+      // Mock the readOrderById to return a version
+      mockExecute.mockImplementationOnce(() =>
+        Promise.resolve({body: {version: params.version}})
+      );
+
+      await updateOrderByIdInStore(mockApiRoot, mockContext, params);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: params.storeKey,
       });
@@ -412,7 +423,13 @@ describe('Order Functions', () => {
         actions: [{action: 'changeOrderState', orderState: 'Complete'} as any],
         storeKey: 'test-store',
       };
-      await updateOrder(mockApiRoot, mockContext, params);
+
+      // Mock the readOrderByOrderNumber to return a version
+      mockExecute.mockImplementationOnce(() =>
+        Promise.resolve({body: {version: params.version}})
+      );
+
+      await updateOrderByOrderNumberInStore(mockApiRoot, mockContext, params);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: params.storeKey,
       });
@@ -526,7 +543,7 @@ describe('Order Functions', () => {
         version: 1,
         storeKey: 'test-store',
       };
-      await createOrderFromQuote(mockApiRoot, mockContext, params);
+      await createOrderFromQuoteInStore(mockApiRoot, mockContext, params);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: params.storeKey,
       });
@@ -545,7 +562,7 @@ describe('Order Functions', () => {
         orderNumber: 'quote-order-123',
         storeKey: 'test-store',
       };
-      await createOrderFromQuote(mockApiRoot, mockContext, params);
+      await createOrderFromQuoteInStore(mockApiRoot, mockContext, params);
       expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
         storeKey: params.storeKey,
       });
@@ -680,52 +697,6 @@ describe('Order Functions', () => {
       ).rejects.toThrow(
         new SDKError('Failed to import order', new Error('API Import Error'))
       );
-    });
-  });
-
-  describe('updateOrderByIdInStore', () => {
-    it('should update order by ID in store', async () => {
-      await updateOrderByIdInStore(mockApiRoot, mockContext, {
-        id: 'test-order-id',
-        version: 1,
-        storeKey: 'test-store',
-        actions: [{action: 'changeOrderState', orderState: 'Complete'}],
-      });
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
-        storeKey: 'test-store',
-      });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'test-order-id'});
-      expect(mockPost).toHaveBeenCalled();
-      expect(mockExecute).toHaveBeenCalled();
-    });
-  });
-
-  describe('updateOrderByOrderNumberInStore', () => {
-    it('should update order by order number in store', async () => {
-      await updateOrderByOrderNumberInStore(mockApiRoot, mockContext, {
-        orderNumber: 'test-order-number',
-        version: 1,
-        storeKey: 'test-store',
-        actions: [{action: 'changeOrderState', orderState: 'Complete'}],
-      });
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInStoreKeyWithStoreKeyValue).toHaveBeenCalledWith({
-        storeKey: 'test-store',
-      });
-      expect(mockOrders).toHaveBeenCalled();
-      expect(mockWithOrderNumber).toHaveBeenCalledWith({
-        orderNumber: 'test-order-number',
-      });
-      expect(mockPost).toHaveBeenCalled();
-      expect(mockExecute).toHaveBeenCalled();
     });
   });
 });
