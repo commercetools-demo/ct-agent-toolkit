@@ -9,7 +9,7 @@ want to use the package run:
 npm install @commercetools-demo/ct-agent-toolkit
 ```
 
-The commercetools Agent Toolkit enables popular agent frameworks including LangChain and Vercel's AI SDK to integrate with commercetools APIs through function calling.
+The commercetools Agent Toolkit enables popular agent frameworks including LangChain, Vercel's AI SDK, and the [Model Context Protocol (MCP)](https://modelcontextprotocol.com/) to integrate with commercetools APIs through function calling.
 
 ### Requirements
 

@@ -2,11 +2,7 @@ import CommercetoolsAPI from '../shared/api';
 import tools from '../shared/tools';
 import {isToolAllowed} from '../shared/configuration';
 import type {Configuration} from '../types/configuration';
-import type {
-  CoreTool,
-  LanguageModelV1StreamPart,
-  Experimental_LanguageModelV1Middleware as LanguageModelV1Middleware,
-} from 'ai';
+import type {CoreTool} from 'ai';
 import CommercetoolsTool from './tool';
 
 class CommercetoolsAgentToolkit {
