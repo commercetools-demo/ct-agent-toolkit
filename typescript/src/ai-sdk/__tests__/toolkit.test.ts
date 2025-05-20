@@ -4,7 +4,7 @@ import CommercetoolsTool from '../tool';
 import {isToolAllowed} from '../../shared/configuration';
 import tools from '../../shared/tools'; // Assuming this is the source of all tools
 import {z} from 'zod';
-
+import {Configuration} from '../../types/configuration';
 // Mock dependencies
 jest.mock('../../shared/api');
 jest.mock('../tool');
@@ -35,8 +35,11 @@ jest.mock('../../shared/tools', () => {
   ];
 });
 
-describe('CommercetoolsAgentToolkit', () => {
-  const mockConfiguration = {enabledTools: ['cart', 'product.tool2']} as any;
+describe('CommercetoolsAgentToolkit with Admin tools', () => {
+  const mockConfiguration = {
+    context: {isAdmin: true},
+    actions: {cart: {read: true}, products: {read: true}},
+  } as any;
   const mockCommercetoolsAPIInstance = {} as CommercetoolsAPI;
 
   beforeEach(() => {
@@ -71,21 +74,20 @@ describe('CommercetoolsAgentToolkit', () => {
       'secret',
       'auth',
       'key',
-      'api'
+      'api',
+      mockConfiguration.context
     );
   });
 
   it('should filter tools based on configuration', () => {
-    (isToolAllowed as jest.Mock).mockImplementation((tool, config) => {
-      if (tool.method === 'tool1' && config.enabledTools.includes('cart'))
-        return true;
-      if (
-        tool.method === 'tool2' &&
-        config.enabledTools.includes('product.tool2')
-      )
-        return true;
-      return false;
-    });
+    (isToolAllowed as jest.Mock).mockImplementation(
+      (tool, config: Configuration) => {
+        if (tool.method === 'tool1' && config.actions?.cart?.read) return true;
+        if (tool.method === 'tool2' && config.actions?.products?.read)
+          return true;
+        return false;
+      }
+    );
 
     const toolkit = new CommercetoolsAgentToolkit({
       clientId: 'id',
@@ -95,6 +97,8 @@ describe('CommercetoolsAgentToolkit', () => {
       apiUrl: 'api',
       configuration: mockConfiguration,
     });
+
+    toolkit.authenticateAdmin();
 
     expect(isToolAllowed).toHaveBeenCalledTimes(tools.length);
     expect(CommercetoolsTool).toHaveBeenCalledTimes(2); // tool1 and tool2 should be allowed
@@ -134,8 +138,13 @@ describe('CommercetoolsAgentToolkit', () => {
       authUrl: 'auth',
       projectKey: 'key',
       apiUrl: 'api',
-      configuration: {enabledTools: ['*']} as any, // Enable all
+      configuration: {
+        context: {isAdmin: true},
+        actions: {cart: {read: true}, products: {read: true}},
+      } as any, // Enable all
     });
+
+    toolkit.authenticateAdmin();
 
     const returnedTools = toolkit.getTools();
     expect(Object.keys(returnedTools).length).toBe(tools.length);
@@ -153,8 +162,13 @@ describe('CommercetoolsAgentToolkit', () => {
       authUrl: 'auth',
       projectKey: 'key',
       apiUrl: 'api',
-      configuration: {enabledTools: []} as any, // No tools enabled
+      configuration: {
+        context: {isAdmin: true},
+        actions: {cart: {read: false}, products: {read: false}},
+      } as any, // No tools enabled
     });
+
+    toolkit.authenticateAdmin();
 
     expect(isToolAllowed).toHaveBeenCalledTimes(tools.length);
     expect(CommercetoolsTool).not.toHaveBeenCalled();
