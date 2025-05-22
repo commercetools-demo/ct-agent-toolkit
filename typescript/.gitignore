@@ -92,7 +92,7 @@ out
 dist
 ai-sdk/*
 modelcontextprotocol/*
-
+langchain/*
 
 # Gatsby files
 .cache/

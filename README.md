@@ -29,7 +29,7 @@ The library needs to be configured with your commercetools project API client cr
 Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
 
 ```typescript
-import { CommercetoolsAgentToolkit } from "@commercetools-demo/commercetools-agent-toolkit/langchain";
+import { CommercetoolsAgentToolkit } from "@commercetools-demo/ct-agent-toolkit/langchain";
 
 const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   clientId: process.env.CLIENT_ID!,
@@ -82,7 +82,6 @@ const agentExecutor = new AgentExecutor({
 ```
 
 #### Context
-<span style="color:red">Is this needed in this case?</span>
 In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts].
 
 ```typescript
@@ -123,7 +122,7 @@ Replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` w
 Alternatively, you can set up your own MCP server. For example:
 
 ```typescript
-import { CommercetoolsAgentToolkit } from "@commercetools-demo/commercetools-agent-toolkit/modelcontextprotocol";
+import { CommercetoolsAgentToolkit } from "@commercetools-demo/ct-agent-toolkit/modelcontextprotocol";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 const server = new CommercetoolsAgentToolkit({
