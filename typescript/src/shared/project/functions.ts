@@ -1,11 +1,20 @@
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 import * as admin from './admin.functions';
 import {readProjectParameters, updateProjectParameters} from './parameters';
 
 // Context mapping function for project functions
-export const contextToProjectFunctionMapping = (context?: Context) => {
+export const contextToProjectFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.isAdmin) {
     return {
       read_project: admin.readProject,

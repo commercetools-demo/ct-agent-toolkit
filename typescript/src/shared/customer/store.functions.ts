@@ -17,11 +17,11 @@ import {
   createCustomer as baseCreateCustomer,
   updateCustomer as baseUpdateCustomer,
 } from './base.functions';
-
+import {CommercetoolsFuncContext} from '../../types/configuration';
 // Read customer within a specific store
 export const readCustomerInStore = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof getCustomerByIdParameters>
 ) => {
   try {
@@ -40,7 +40,7 @@ export const readCustomerInStore = async (
 // Query customers within a specific store
 export const queryCustomersInStore = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof queryCustomersParameters>
 ) => {
   try {
@@ -62,7 +62,7 @@ export const queryCustomersInStore = async (
 // Create customer in a specific store
 export const createCustomerInStore = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof createCustomerParameters>
 ) => {
   try {
@@ -80,7 +80,7 @@ export const createCustomerInStore = async (
 // Update customer in a specific store
 export const updateCustomerInStore = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof updateCustomerParameters>
 ) => {
   try {

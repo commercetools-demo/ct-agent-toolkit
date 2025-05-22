@@ -6,9 +6,18 @@ import {
   updateInventoryParameters,
 } from './parameters';
 import * as admin from './admin.functions';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
-export const contextToInventoryFunctionMapping = (context?: Context) => {
+export const contextToInventoryFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.isAdmin) {
     return {
       read_inventory: admin.readInventory,

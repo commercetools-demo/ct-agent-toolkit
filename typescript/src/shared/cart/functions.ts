@@ -1,7 +1,7 @@
 import * as customer from './customer.functions';
 import * as store from './store.functions';
 import * as admin from './admin.functions';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
 import {
@@ -12,7 +12,16 @@ import {
 } from './parameters';
 
 // Context mapping function for cart functions
-export const contextToCartFunctionMapping = (context?: Context) => {
+export const contextToCartFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.customerId) {
     return {
       read_cart: customer.readCart,

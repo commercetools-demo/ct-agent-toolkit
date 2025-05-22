@@ -9,9 +9,18 @@ import {
   createOrderFromQuoteParameters,
   updateOrderParameters,
 } from './parameters';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
-export const contextToOrderFunctionMapping = (context?: Context) => {
+export const contextToOrderFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.customerId) {
     return {
       read_order: customer.readCustomerOrder,
@@ -34,6 +43,7 @@ export const contextToOrderFunctionMapping = (context?: Context) => {
       update_order: admin.updateOrder,
     };
   }
+  return {};
 };
 
 // Export the individual CRUD functions for direct use in tests

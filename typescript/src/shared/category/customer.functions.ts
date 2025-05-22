@@ -7,10 +7,11 @@ import {
   queryCategories,
 } from './base.functions';
 import {SDKError} from '../errors/sdkError';
+import {CommercetoolsFuncContext} from '../../types/configuration';
 
 export const readCategory = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; customerId: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof readCategoryParameters>
 ) => {
   try {

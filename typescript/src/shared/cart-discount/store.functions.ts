@@ -18,10 +18,11 @@ import {
   updateCartDiscountByKey,
 } from './base.functions';
 import {SDKError} from '../errors/sdkError';
+import {CommercetoolsFuncContext} from '../../types/configuration';
 
 export const readCartDiscount = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof readCartDiscountParameters>
 ) => {
   try {
@@ -68,7 +69,7 @@ export const readCartDiscount = async (
 
 export const createCartDiscount = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof createCartDiscountParameters>
 ) => {
   try {
@@ -88,7 +89,7 @@ export const createCartDiscount = async (
 
 export const updateCartDiscount = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; storeKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof updateCartDiscountParameters>
 ) => {
   try {

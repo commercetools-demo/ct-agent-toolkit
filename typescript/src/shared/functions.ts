@@ -1,5 +1,6 @@
-import {Context} from '../types/configuration';
-import {bulkCreate, bulkUpdate} from './bulk/functions';
+import {ApiRoot} from '@commercetools/platform-sdk';
+import {CommercetoolsFuncContext, Context} from '../types/configuration';
+import {contextToBulkFunctionMapping} from './bulk/functions';
 import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
 import {contextToCartFunctionMapping} from './cart/functions';
 import {contextToCategoryFunctionMapping} from './category/functions';
@@ -17,7 +18,16 @@ import {contextToProductFunctionMapping} from './products/functions';
 import {contextToProjectFunctionMapping} from './project/functions';
 import {contextToStandalonePriceFunctionMapping} from './standalone-price/functions';
 
-export const contextToFunctionMapping = (context?: Context) => {
+export const contextToFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   return {
     ...contextToOrderFunctionMapping(context),
     ...contextToCartFunctionMapping(context),
@@ -35,7 +45,6 @@ export const contextToFunctionMapping = (context?: Context) => {
     ...contextToProductFunctionMapping(context),
     ...contextToProjectFunctionMapping(context),
     ...contextToStandalonePriceFunctionMapping(context),
-    bulk_create: bulkCreate,
-    bulk_update: bulkUpdate,
+    ...contextToBulkFunctionMapping(context),
   };
 };

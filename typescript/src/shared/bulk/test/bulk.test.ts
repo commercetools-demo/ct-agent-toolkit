@@ -1,8 +1,7 @@
-import {bulkCreate} from '../functions';
+import {bulkCreate, bulkUpdate} from '../base.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {bulkCreateParameters} from '../parameters';
 import {z} from 'zod';
-import {bulkUpdate} from '../functions';
 import {bulkUpdateParameters} from '../parameters';
 
 // Mock the API Root

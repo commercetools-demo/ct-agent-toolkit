@@ -7,10 +7,19 @@ import {
 import {ApiRoot} from '@commercetools/platform-sdk';
 import * as admin from './admin.functions';
 import * as customer from './customer.functions';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
 // Context mapping function for category functions
-export const contextToCategoryFunctionMapping = (context?: Context) => {
+export const contextToCategoryFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.customerId) {
     return {
       read_category: customer.readCategory,

@@ -11,7 +11,16 @@ import * as admin from './admin.functions';
 /**
  * Maps context to product functions
  */
-export const contextToProductFunctionMapping = (context?: Context) => {
+export const contextToProductFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.isAdmin) {
     return {
       list_products: admin.listProducts,

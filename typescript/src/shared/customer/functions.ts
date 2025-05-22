@@ -1,10 +1,20 @@
+import {ApiRoot} from '@commercetools/platform-sdk';
 import {Context, CommercetoolsFuncContext} from '../../types/configuration';
 import * as admin from './admin.functions';
 import * as customer from './customer.functions';
 import * as store from './store.functions';
 
 // Context-to-function mapping
-export const contextToCustomerFunctionMapping = (context?: Context) => {
+export const contextToCustomerFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.customerId) {
     return {
       read_customer: customer.readCustomerProfile,

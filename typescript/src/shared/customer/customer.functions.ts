@@ -6,11 +6,12 @@ import {
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {SDKError} from '../errors/sdkError';
 import {readCustomerById, queryCustomers} from './base.functions';
+import {CommercetoolsFuncContext} from '../../types/configuration';
 
 // Helper function to verify that a customer can read their own profile
 export const readCustomerProfile = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string; customerId: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof getCustomerByIdParameters>
 ) => {
   try {

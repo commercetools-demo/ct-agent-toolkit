@@ -1,6 +1,6 @@
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 import * as admin from './admin.functions';
 import {
   createCartDiscountParameters,
@@ -10,7 +10,16 @@ import {
 import * as store from './store.functions';
 
 // Context mapping function for cart-discount functions
-export const contextToCartDiscountFunctionMapping = (context?: Context) => {
+export const contextToCartDiscountFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.storeKey) {
     return {
       read_cart_discount: store.readCartDiscount,

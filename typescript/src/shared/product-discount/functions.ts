@@ -6,9 +6,18 @@ import {
 } from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import * as admin from './admin.functions';
-import {Context} from '../../types/configuration';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
-export const contextToProductDiscountFunctionMapping = (context?: Context) => {
+export const contextToProductDiscountFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
   if (context?.isAdmin) {
     return {
       read_product_discount: admin.readProductDiscount,

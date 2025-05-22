@@ -24,7 +24,7 @@ describe('contextToProductSelectionFunctionMapping', () => {
 
   it('should return empty object when context does not have isAdmin set to true', () => {
     const context = {
-      projectKey: 'test-project',
+      customerId: 'test-customer',
     };
 
     const result = contextToProductSelectionFunctionMapping(context);
