@@ -1,8 +1,7 @@
 import {z} from 'zod';
 import {
-  getCustomerByIdParameters,
-  queryCustomersParameters,
   createCustomerParameters,
+  readCustomerParameters,
   updateCustomerParameters,
 } from './parameters';
 import {
@@ -22,28 +21,18 @@ import {CommercetoolsFuncContext} from '../../types/configuration';
 export const readCustomerInStore = async (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
-  params: z.infer<typeof getCustomerByIdParameters>
+  params: z.infer<typeof readCustomerParameters>
 ) => {
   try {
-    return await readCustomerById(
-      apiRoot,
-      context.projectKey,
-      params.id,
-      params.expand,
-      context.storeKey
-    );
-  } catch (error: any) {
-    throw new SDKError('Failed to read customer in store', error);
-  }
-};
-
-// Query customers within a specific store
-export const queryCustomersInStore = async (
-  apiRoot: ApiRoot,
-  context: CommercetoolsFuncContext,
-  params: z.infer<typeof queryCustomersParameters>
-) => {
-  try {
+    if (params.id) {
+      return await readCustomerById(
+        apiRoot,
+        context.projectKey,
+        params.id,
+        params.expand,
+        context.storeKey
+      );
+    }
     return await queryCustomers(
       apiRoot,
       context.projectKey,
@@ -55,7 +44,7 @@ export const queryCustomersInStore = async (
       context.storeKey
     );
   } catch (error: any) {
-    throw new SDKError('Failed to query customers in store', error);
+    throw new SDKError('Failed to read customer in store', error);
   }
 };
 

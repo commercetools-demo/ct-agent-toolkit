@@ -23,7 +23,6 @@ export const contextToCustomerFunctionMapping = (
   if (context?.storeKey) {
     return {
       read_customer: store.readCustomerInStore,
-      query_customers: store.queryCustomersInStore,
       create_customer: store.createCustomerInStore,
       update_customer: store.updateCustomerInStore,
     };
@@ -31,7 +30,6 @@ export const contextToCustomerFunctionMapping = (
   if (context?.isAdmin) {
     return {
       read_customer: admin.readCustomer,
-      query_customers: admin.queryCustomersAsAdmin,
       create_customer: admin.createCustomerAsAdmin,
       update_customer: admin.updateCustomerAsAdmin,
     };
@@ -42,9 +40,4 @@ export const contextToCustomerFunctionMapping = (
 // Re-export functions from admin for backward compatibility
 export const createCustomer = admin.createCustomerAsAdmin;
 export const getCustomerById = admin.readCustomer;
-export const queryCustomers = admin.queryCustomersAsAdmin;
 export const updateCustomer = admin.updateCustomerAsAdmin;
-
-// Re-export store functions for backward compatibility
-export const createCustomerInStore = store.createCustomerInStore;
-export const getCustomerInStoreById = store.readCustomerInStore;

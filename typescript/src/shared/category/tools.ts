@@ -10,9 +10,10 @@ import {
   updateCategoryParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_category: {
     method: 'read_category',
     name: 'Read Category',
     description: readCategoryPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_category: {
     method: 'create_category',
     name: 'Create Category',
     description: createCategoryPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_category: {
     method: 'update_category',
     name: 'Update Category',
     description: updateCategoryPrompt,
@@ -45,6 +46,11 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToCategoryTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [tools.read_category, tools.create_category, tools.update_category];
+  }
+  return [tools.read_category];
+};

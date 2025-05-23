@@ -1,7 +1,6 @@
 import {z} from 'zod';
 import {
   readDiscountCodeParameters,
-  listDiscountCodesParameters,
   createDiscountCodeParameters,
   updateDiscountCodeParameters,
 } from './parameters';
@@ -22,7 +21,6 @@ export const contextToDiscountCodeFunctionMapping = (
   if (context?.isAdmin) {
     return {
       read_discount_code: admin.readDiscountCode,
-      list_discount_codes: admin.listDiscountCodes,
       create_discount_code: admin.createDiscountCode,
       update_discount_code: admin.updateDiscountCode,
     };
@@ -38,18 +36,6 @@ export const readDiscountCode = (
   params: z.infer<typeof readDiscountCodeParameters>
 ) => {
   return admin.readDiscountCode(
-    apiRoot,
-    {...context, projectKey: context.projectKey},
-    params
-  );
-};
-
-export const listDiscountCodes = (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof listDiscountCodesParameters>
-) => {
-  return admin.listDiscountCodes(
     apiRoot,
     {...context, projectKey: context.projectKey},
     params

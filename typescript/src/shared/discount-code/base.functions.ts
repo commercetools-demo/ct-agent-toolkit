@@ -1,9 +1,7 @@
 import {z} from 'zod';
 import {
   readDiscountCodeParameters,
-  listDiscountCodesParameters,
   createDiscountCodeParameters,
-  updateDiscountCodeParameters,
 } from './parameters';
 import {
   ApiRoot,
@@ -61,7 +59,7 @@ export const readDiscountCodeByKey = async (
 export const queryDiscountCodes = async (
   apiRoot: ApiRoot,
   projectKey: string,
-  params: z.infer<typeof listDiscountCodesParameters>
+  params: z.infer<typeof readDiscountCodeParameters>
 ) => {
   try {
     const discountCodes = await apiRoot

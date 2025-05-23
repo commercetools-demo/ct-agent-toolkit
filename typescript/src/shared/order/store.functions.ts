@@ -6,18 +6,12 @@ import {
 } from '@commercetools/platform-sdk';
 import {z} from 'zod';
 import {SDKError} from '../errors/sdkError';
+import {updateOrderById, updateOrderByOrderNumber} from './base.functions';
 import {
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
+  createOrderParameters,
   readOrderParameters,
   updateOrderParameters,
 } from './parameters';
-import {
-  readOrderById,
-  readOrderByOrderNumber,
-  updateOrderById,
-  updateOrderByOrderNumber,
-} from './base.functions';
 
 // Helper function to handle reading an order by ID in a specific store
 export const readOrderByIdInStore = async (
@@ -151,12 +145,33 @@ export const readStoreOrder = async (
 };
 
 // Create order from cart in a specific store
-export const createOrderFromCartInStore = async (
+export const createOrderInStore = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
-  params: z.infer<typeof createOrderFromCartParameters> & {storeKey: string}
+  params: z.infer<typeof createOrderParameters> & {storeKey: string}
 ) => {
   try {
+    if (params.quoteId) {
+      const orderDraft: OrderFromQuoteDraft = {
+        quote: {
+          id: params.quoteId,
+          typeId: 'quote',
+        },
+        version: params.version,
+        ...(params.orderNumber && {orderNumber: params.orderNumber}),
+      };
+
+      const response = await apiRoot
+        .withProjectKey({projectKey: context.projectKey})
+        .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
+        .orders()
+        .post({
+          body: orderDraft,
+        })
+        .execute();
+
+      return response.body;
+    }
     const orderDraft: OrderFromCartDraft = {
       cart: {
         id: params.id || '',
@@ -178,37 +193,6 @@ export const createOrderFromCartInStore = async (
     return response.body;
   } catch (error: any) {
     throw new SDKError('Failed to create order from cart in store', error);
-  }
-};
-
-// Create order from quote in a specific store
-export const createOrderFromQuoteInStore = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderFromQuoteParameters> & {storeKey: string}
-) => {
-  try {
-    const orderDraft: OrderFromQuoteDraft = {
-      quote: {
-        id: params.quoteId,
-        typeId: 'quote',
-      },
-      version: params.version,
-      ...(params.orderNumber && {orderNumber: params.orderNumber}),
-    };
-
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-      .orders()
-      .post({
-        body: orderDraft,
-      })
-      .execute();
-
-    return response.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to create order from quote in store', error);
   }
 };
 

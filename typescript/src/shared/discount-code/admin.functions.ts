@@ -1,7 +1,6 @@
 import {z} from 'zod';
 import {
   readDiscountCodeParameters,
-  listDiscountCodesParameters,
   createDiscountCodeParameters,
   updateDiscountCodeParameters,
 } from './parameters';
@@ -26,10 +25,7 @@ export const readDiscountCode = (
       expand: params.expand,
     });
   } else {
-    throw new SDKError(
-      'Failed to read discount code',
-      new Error('Either id or key must be provided')
-    );
+    return base.queryDiscountCodes(apiRoot, context.projectKey, params);
   }
 };
 
@@ -47,14 +43,6 @@ export const readDiscountCodeByKey = (
   params: {key: string; expand?: string[]}
 ) => {
   return base.readDiscountCodeByKey(apiRoot, context.projectKey, params);
-};
-
-export const listDiscountCodes = (
-  apiRoot: ApiRoot,
-  context: CommercetoolsFuncContext,
-  params: z.infer<typeof listDiscountCodesParameters>
-) => {
-  return base.queryDiscountCodes(apiRoot, context.projectKey, params);
 };
 
 export const createDiscountCode = (

@@ -1,8 +1,8 @@
-import {z} from 'zod';
-import {readOrderParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
+import {z} from 'zod';
 import {SDKError} from '../errors/sdkError';
-import {queryOrders, verifyOrderBelongsToCustomer} from './base.functions';
+import {queryOrders} from './base.functions';
+import {readOrderParameters} from './parameters';
 
 // Helper function to handle reading an order by ID for a specific customer
 export const readOrderByIdForCustomer = async (

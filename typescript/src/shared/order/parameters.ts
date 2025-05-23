@@ -45,7 +45,7 @@ export const readOrderParameters = z.object({
     .describe('Key of the store to read orders from'),
 });
 
-export const createOrderFromCartParameters = z.object({
+const createOrderFromCartParameters = z.object({
   id: z
     .string()
     .optional()
@@ -61,7 +61,7 @@ export const createOrderFromCartParameters = z.object({
     .describe('Key of the store to create the order in'),
 });
 
-export const createOrderFromQuoteParameters = z.object({
+const createOrderFromQuoteParameters = z.object({
   quoteId: z.string().describe('The ID of the quote to create the order from'),
   version: z.number().int().describe('The current version of the quote'),
   orderNumber: z
@@ -74,7 +74,7 @@ export const createOrderFromQuoteParameters = z.object({
     .describe('Key of the store to create the order in'),
 });
 
-export const createOrderByImportParameters = z.object({
+const createOrderByImportParameters = z.object({
   orderNumber: z
     .string()
     .optional()
@@ -129,6 +129,102 @@ export const createOrderByImportParameters = z.object({
     })
     .describe('Total price of the order'),
 });
+
+export const createOrderParameters = z
+  .object({
+    // Cart creation parameters
+    id: z
+      .string()
+      .optional()
+      .describe('The ID of the cart to create the order from'),
+    version: z.number().int().describe('The current version of the cart'),
+    orderNumber: z
+      .string()
+      .optional()
+      .describe('User-defined identifier of the Order'),
+    storeKey: z
+      .string()
+      .optional()
+      .describe('Key of the store to create the order in'),
+
+    // Quote creation parameters
+    quoteId: z
+      .string()
+      .optional()
+      .describe('The ID of the quote to create the order from'),
+
+    // Import parameters
+    customerId: z
+      .string()
+      .optional()
+      .describe('ID of the customer that the Order belongs to'),
+    customerEmail: z
+      .string()
+      .optional()
+      .describe('Email address of the Customer'),
+    store: z
+      .object({
+        key: z.string(),
+        typeId: z.literal('store'),
+      })
+      .optional()
+      .describe('Reference to a Store the Order belongs to'),
+    lineItems: z
+      .array(
+        z.object({
+          id: z.string(),
+          productId: z.string(),
+          name: z.record(z.string(), z.string()),
+          productSlug: z.record(z.string(), z.string()).optional(),
+          variant: z.object({
+            id: z.number(),
+            sku: z.string().optional(),
+            prices: z
+              .array(
+                z.object({
+                  value: z.object({
+                    type: z.literal('centPrecision'),
+                    currencyCode: z.string(),
+                    centAmount: z.number(),
+                    fractionDigits: z.number(),
+                  }),
+                })
+              )
+              .optional(),
+          }),
+          quantity: z.number().int().positive(),
+        })
+      )
+      .optional()
+      .describe('Line items in the order'),
+    totalPrice: z
+      .object({
+        currencyCode: z.string(),
+        centAmount: z.number(),
+      })
+      .describe('Total price of the order'),
+  })
+  .refine(
+    (data) => {
+      // Validate cart creation
+      if (data.version && !data.quoteId && !data.totalPrice) {
+        return true;
+      }
+      // Validate quote creation
+      if (data.quoteId && data.version && !data.totalPrice) {
+        return true;
+      }
+      // Validate import
+      if (data.totalPrice && (data.customerId || data.customerEmail)) {
+        return true;
+      }
+      return false;
+    },
+    {
+      message:
+        'Invalid parameter combination. Must provide either cart parameters, quote parameters, or import parameters with required fields.',
+    }
+  );
 
 export const updateOrderParameters = z.object({
   id: z.string().optional().describe('The ID of the order to update'),

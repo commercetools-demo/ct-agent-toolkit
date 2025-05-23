@@ -10,9 +10,10 @@ import {
   updateChannelParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_channel: {
     method: 'read_channel',
     name: 'Read Channel',
     description: readChannelPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_channel: {
     method: 'create_channel',
     name: 'Create Channel',
     description: createChannelPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_channel: {
     method: 'update_channel',
     name: 'Update Channel',
     description: updateChannelPrompt,
@@ -45,6 +46,11 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToChannelTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [tools.read_channel, tools.create_channel, tools.update_channel];
+  }
+  return [];
+};

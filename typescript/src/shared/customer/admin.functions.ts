@@ -1,9 +1,8 @@
 import {z} from 'zod';
 import {
-  getCustomerByIdParameters,
-  queryCustomersParameters,
   createCustomerParameters,
   updateCustomerParameters,
+  readCustomerParameters,
 } from './parameters';
 import {
   ApiRoot,
@@ -17,53 +16,62 @@ import {
   createCustomer as baseCreateCustomer,
   updateCustomer as baseUpdateCustomer,
 } from './base.functions';
+import {CommercetoolsFuncContext} from '../../types/configuration';
 
 // Read any customer as admin
 export const readCustomer = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof getCustomerByIdParameters>
+  context: CommercetoolsFuncContext,
+  params: z.infer<typeof readCustomerParameters>
 ) => {
   try {
-    return await readCustomerById(
-      apiRoot,
-      context.projectKey,
-      params.id,
-      params.expand
-    );
+    if (params.id) {
+      if (params.storeKey) {
+        return await readCustomerById(
+          apiRoot,
+          context.projectKey,
+          params.id,
+          params.expand,
+          params.storeKey
+        );
+      }
+      return await readCustomerById(
+        apiRoot,
+        context.projectKey,
+        params.id,
+        params.expand
+      );
+    } else {
+      return await queryCustomers(
+        apiRoot,
+        context.projectKey,
+        params.limit,
+        params.offset,
+        params.sort,
+        params.where,
+        params.expand
+      );
+    }
   } catch (error: any) {
     throw new SDKError('Failed to read customer', error);
-  }
-};
-
-// Query customers as admin
-export const queryCustomersAsAdmin = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof queryCustomersParameters>
-) => {
-  try {
-    return await queryCustomers(
-      apiRoot,
-      context.projectKey,
-      params.limit,
-      params.offset,
-      params.sort,
-      params.where,
-      params.expand
-    );
-  } catch (error: any) {
-    throw new SDKError('Failed to query customers', error);
   }
 };
 
 // Create customer as admin
 export const createCustomerAsAdmin = async (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: CommercetoolsFuncContext,
   params: z.infer<typeof createCustomerParameters>
 ) => {
   try {
+    if (params.storeKey) {
+      return await baseCreateCustomer(
+        apiRoot,
+        context.projectKey,
+        params as CustomerDraft,
+        context.storeKey
+      );
+    }
     return await baseCreateCustomer(
       apiRoot,
       context.projectKey,

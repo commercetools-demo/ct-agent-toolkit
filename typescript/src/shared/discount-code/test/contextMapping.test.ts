@@ -8,7 +8,6 @@ describe('Discount Code Context Mapping', () => {
 
     expect(mapping).toEqual({
       read_discount_code: admin.readDiscountCode,
-      list_discount_codes: admin.listDiscountCodes,
       create_discount_code: admin.createDiscountCode,
       update_discount_code: admin.updateDiscountCode,
     });

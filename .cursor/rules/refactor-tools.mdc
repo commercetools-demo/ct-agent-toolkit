@@ -1,0 +1,57 @@
+---
+description: Refactoring a tool's list of tools in @commercetools-demo/ct-agent-toolkit
+globs:
+alwaysApply: false
+---
+# Refactoring a tool's list of tools in @commercetools-demo/ct-agent-toolkit
+
+This document outlines the steps taken to refactor a tool in @commercetools-demo/ct-agent-toolkit to connect to commercetools API.
+
+The following steps are defining implementation of an example `category` tools. So the `(namespace)` here refers to `category`.
+
+1. Working file is `typescript/src/shared/category/tools.ts` for the namespace
+2. Refactor `const tools: Tool[]` to const tools: Record<string, Tool>
+    - example
+    ```
+    const tools: Record<string, Tool> = {}
+        read_category: {
+            method: 'read_category',
+            name: 'Read Category',
+            description: readCategoryPrompt,
+            parameters: readCategoryParameters,
+            actions: {
+            category: {
+                read: true,
+            },
+            },
+        }
+        ...
+    ```
+3. Modify `typescript/src/shared/category/tools.ts` to export a method `contextToCategoryTools`. The method's return has to reflet the `typescript/src/shared/categorycategory/functions.ts` 's `contextToCategoryFunctionMapping` output
+    - example: 
+    ```ts
+    export const contextToCategoryTools = (context?: Context) => {
+        if (context?.customerId) {
+            return [tools.read_category]
+        }
+        if (context?.storeKey) {
+            return []
+        }
+        if (context?.isAdmin) { 
+            return [tools.read_category, tools.create_category, tools.update_category]
+        }
+        return { // IMPORTANT: usually fallback return is empty only exceptions are filled.
+            []
+        }
+        };
+    ```
+4. Modify `typescript/src/shared/tools.ts`
+    ```
+    export const contextToTools = (context?: Context) => {
+        return {
+            ...contextToCategoryTools(context)
+        }
+    }
+    ```
+5. remove export default from file `typescript/src/shared/category/tools.ts`
+6. remove default imported namespace in `typescript/src/shared/tools.ts`

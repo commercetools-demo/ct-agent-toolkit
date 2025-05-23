@@ -5,9 +5,8 @@ import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
 import {
   readOrderParameters,
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
   updateOrderParameters,
+  createOrderParameters,
 } from './parameters';
 import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
@@ -29,17 +28,14 @@ export const contextToOrderFunctionMapping = (
   if (context?.storeKey) {
     return {
       read_order: store.readStoreOrder,
-      create_order_from_cart: store.createOrderFromCartInStore,
-      create_order_from_quote: store.createOrderFromQuoteInStore,
+      create_order_from_cart: store.createOrderInStore,
       update_order: store.updateOrderByIdInStore,
     };
   }
   if (context?.isAdmin) {
     return {
       read_order: admin.readOrder,
-      create_order_from_cart: admin.createOrderFromCart,
-      create_order_from_quote: admin.createOrderFromQuote,
-      create_order_by_import: admin.createOrderByImport,
+      create_order: admin.createOrder,
       update_order: admin.updateOrder,
     };
   }
@@ -67,29 +63,29 @@ export const readOrder = (
 export const createOrderFromCart = (
   apiRoot: ApiRoot,
   context: any,
-  params: z.infer<typeof createOrderFromCartParameters>
+  params: z.infer<typeof createOrderParameters>
 ) => {
   if (context?.storeKey || params?.storeKey) {
-    return store.createOrderFromCartInStore(apiRoot, context, {
+    return store.createOrderInStore(apiRoot, context, {
       ...params,
       storeKey: context?.storeKey || params.storeKey,
     });
   }
-  return admin.createOrderFromCart(apiRoot, context, params);
+  return admin.createOrder(apiRoot, context, params);
 };
 
 export const createOrderFromQuote = (
   apiRoot: ApiRoot,
   context: any,
-  params: z.infer<typeof createOrderFromQuoteParameters>
+  params: z.infer<typeof createOrderParameters>
 ) => {
   if (context?.storeKey || params?.storeKey) {
-    return store.createOrderFromQuoteInStore(apiRoot, context, {
+    return store.createOrderInStore(apiRoot, context, {
       ...params,
       storeKey: context?.storeKey || params.storeKey,
     });
   }
-  return admin.createOrderFromQuote(apiRoot, context, params);
+  return admin.createOrder(apiRoot, context, params);
 };
 
 export const createOrderByImport = (
@@ -98,7 +94,7 @@ export const createOrderByImport = (
   params: any
 ) => {
   // Only available in admin context
-  return admin.createOrderByImport(apiRoot, context, params);
+  return admin.createOrder(apiRoot, context, params);
 };
 
 export const updateOrder = (

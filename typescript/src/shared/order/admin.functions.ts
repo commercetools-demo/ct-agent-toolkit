@@ -1,10 +1,8 @@
 import {z} from 'zod';
 import {
   readOrderParameters,
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
-  createOrderByImportParameters,
   updateOrderParameters,
+  createOrderParameters,
 } from './parameters';
 import {
   ApiRoot,
@@ -137,12 +135,79 @@ export const readOrder = async (
   }
 };
 
-export const createOrderFromCart = async (
+export const createOrder = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},
-  params: z.infer<typeof createOrderFromCartParameters>
+  params: z.infer<typeof createOrderParameters>
 ) => {
   try {
+    if (params.quoteId) {
+      const orderDraft: OrderFromQuoteDraft = {
+        quote: {
+          id: params.quoteId,
+          typeId: 'quote',
+        },
+        version: params.version,
+        ...(params.orderNumber && {orderNumber: params.orderNumber}),
+      };
+
+      const response = await apiRoot
+        .withProjectKey({projectKey: context.projectKey})
+        .orders()
+        .post({
+          body: orderDraft,
+        })
+        .execute();
+
+      return response.body;
+    } else if (params.totalPrice) {
+      const lineItems = params.lineItems?.map((item) => {
+        const lineItem: LineItemImportDraft = {
+          name: item.name,
+          productId: item.productId,
+          variant: {
+            id: item.variant.id,
+            sku: item.variant.sku,
+          },
+          quantity: item.quantity,
+          price: {
+            value: {
+              type: 'centPrecision',
+              currencyCode: params.totalPrice.currencyCode,
+              centAmount: params.totalPrice.centAmount,
+              fractionDigits: 2,
+            },
+          },
+        };
+        return lineItem;
+      });
+
+      // Import order
+      const orderImport: OrderImportDraft = {
+        ...(params.orderNumber && {orderNumber: params.orderNumber}),
+        ...(params.customerId && {customerId: params.customerId}),
+        ...(params.customerEmail && {customerEmail: params.customerEmail}),
+        ...(params.store && {store: params.store}),
+        ...(lineItems && {lineItems}),
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: params.totalPrice.currencyCode,
+          centAmount: params.totalPrice.centAmount,
+          fractionDigits: 2,
+        },
+      };
+
+      const response = await apiRoot
+        .withProjectKey({projectKey: context.projectKey})
+        .orders()
+        .importOrder()
+        .post({
+          body: orderImport,
+        })
+        .execute();
+
+      return response.body;
+    }
     // Create without store
     const orderDraft: OrderFromCartDraft = {
       cart: {
@@ -166,95 +231,6 @@ export const createOrderFromCart = async (
     throw new SDKError('Failed to create order from cart', error);
   }
 };
-
-export const createOrderFromQuote = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderFromQuoteParameters>
-) => {
-  try {
-    // Create without store
-    const orderDraft: OrderFromQuoteDraft = {
-      quote: {
-        id: params.quoteId,
-        typeId: 'quote',
-      },
-      version: params.version,
-      ...(params.orderNumber && {orderNumber: params.orderNumber}),
-    };
-
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .orders()
-      .post({
-        body: orderDraft,
-      })
-      .execute();
-
-    return response.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to create order from quote', error);
-  }
-};
-
-export const createOrderByImport = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderByImportParameters>
-) => {
-  try {
-    // Transform line items to match LineItemImportDraft
-    const lineItems = params.lineItems?.map((item) => {
-      const lineItem: LineItemImportDraft = {
-        name: item.name,
-        productId: item.productId,
-        variant: {
-          id: item.variant.id,
-          sku: item.variant.sku,
-        },
-        quantity: item.quantity,
-        price: {
-          value: {
-            type: 'centPrecision',
-            currencyCode: params.totalPrice.currencyCode,
-            centAmount: params.totalPrice.centAmount,
-            fractionDigits: 2,
-          },
-        },
-      };
-      return lineItem;
-    });
-
-    // Import order
-    const orderImport: OrderImportDraft = {
-      ...(params.orderNumber && {orderNumber: params.orderNumber}),
-      ...(params.customerId && {customerId: params.customerId}),
-      ...(params.customerEmail && {customerEmail: params.customerEmail}),
-      ...(params.store && {store: params.store}),
-      ...(lineItems && {lineItems}),
-      totalPrice: {
-        type: 'centPrecision',
-        currencyCode: params.totalPrice.currencyCode,
-        centAmount: params.totalPrice.centAmount,
-        fractionDigits: 2,
-      },
-    };
-
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .orders()
-      .importOrder()
-      .post({
-        body: orderImport,
-      })
-      .execute();
-
-    return response.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to import order', error);
-  }
-};
-
 export const updateOrder = async (
   apiRoot: ApiRoot,
   context: {projectKey: string},

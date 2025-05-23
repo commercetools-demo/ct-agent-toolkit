@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@commercetools-demo/ct-agent-toolkit": "link:../typescript",
-    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@modelcontextprotocol/sdk": "^1.11.0",
     "colors": "^1.4.0",
-    "mcp": "^1.4.0"
+    "mcp": "^1.4.2"
   },
   "keywords": [
     "mcp",

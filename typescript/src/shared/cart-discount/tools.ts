@@ -10,9 +10,10 @@ import {
   updateCartDiscountParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_cart_discount: {
     method: 'read_cart_discount',
     name: 'Read Cart Discount',
     description: readCartDiscountPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_cart_discount: {
     method: 'create_cart_discount',
     name: 'Create Cart Discount',
     description: createCartDiscountPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_cart_discount: {
     method: 'update_cart_discount',
     name: 'Update Cart Discount',
     description: updateCartDiscountPrompt,
@@ -45,6 +46,15 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToCartDiscountTools = (context?: Context) => {
+  if (context?.isAdmin || context?.storeKey) {
+    return [
+      tools.read_cart_discount,
+      tools.create_cart_discount,
+      tools.update_cart_discount,
+    ];
+  }
+  return [];
+};

@@ -1,6 +1,5 @@
 import {
   readDiscountCode,
-  listDiscountCodes,
   createDiscountCode,
   updateDiscountCode,
 } from '../functions';
@@ -210,7 +209,7 @@ describe('Discount Code Functions', () => {
         body: mockDiscountCodes,
       });
 
-      const result = await listDiscountCodes(
+      const result = await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         {limit: 20}
@@ -254,7 +253,7 @@ describe('Discount Code Functions', () => {
         expand: ['cartDiscounts[*]'],
       };
 
-      const result = await listDiscountCodes(
+      const result = await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         queryArgs
@@ -275,7 +274,7 @@ describe('Discount Code Functions', () => {
       mockApiRoot.execute.mockRejectedValueOnce(new Error('SDK List Error'));
 
       await expect(
-        listDiscountCodes(
+        readDiscountCode(
           mockApiRoot as any,
           {projectKey: 'test-project'},
           {limit: 5}
@@ -296,7 +295,7 @@ describe('Discount Code Functions', () => {
         body: mockDiscountCodes,
       });
 
-      await listDiscountCodes(
+      await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         {} // No parameters

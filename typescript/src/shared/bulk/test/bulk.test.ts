@@ -158,7 +158,7 @@ describe('bulkCreate', () => {
           },
         },
       ],
-    } as z.infer<typeof bulkCreateParameters>;
+    } as any;
 
     const result = await bulkCreate(mockApiRoot, mockContext, params);
 

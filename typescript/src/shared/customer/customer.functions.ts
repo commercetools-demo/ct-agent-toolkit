@@ -1,22 +1,19 @@
-import {z} from 'zod';
-import {
-  getCustomerByIdParameters,
-  queryCustomersParameters,
-} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
-import {readCustomerById, queryCustomers} from './base.functions';
+import {z} from 'zod';
 import {CommercetoolsFuncContext} from '../../types/configuration';
+import {SDKError} from '../errors/sdkError';
+import {readCustomerById} from './base.functions';
+import {readCustomerParameters} from './parameters';
 
 // Helper function to verify that a customer can read their own profile
 export const readCustomerProfile = async (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
-  params: z.infer<typeof getCustomerByIdParameters>
+  params: z.infer<typeof readCustomerParameters>
 ) => {
   try {
     // Customer can only access their own profile
-    if (params.id !== context.customerId) {
+    if (!params.id && params.id !== context.customerId) {
       throw new SDKError(
         'Access denied: Customers can only view their own profile',
         {
@@ -28,7 +25,7 @@ export const readCustomerProfile = async (
     return await readCustomerById(
       apiRoot,
       context.projectKey,
-      params.id,
+      params.id!,
       params.expand
     );
   } catch (error: any) {

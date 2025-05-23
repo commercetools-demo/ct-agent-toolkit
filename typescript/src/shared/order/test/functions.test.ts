@@ -226,7 +226,7 @@ describe('Order Functions', () => {
       const result = await createOrderFromCart(
         mockApiRoot,
         {projectKey: 'test-project'},
-        {id: 'cart-123', version: 1}
+        {id: 'cart-123', version: 1} as any
       );
 
       // Verify API was called correctly
@@ -262,7 +262,7 @@ describe('Order Functions', () => {
       const result = await createOrderFromQuote(
         mockApiRoot,
         {projectKey: 'test-project'},
-        {quoteId: 'quote-123', version: 1}
+        {quoteId: 'quote-123', version: 1} as any
       );
 
       // Verify API was called correctly

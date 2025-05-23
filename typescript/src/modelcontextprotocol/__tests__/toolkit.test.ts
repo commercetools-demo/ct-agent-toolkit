@@ -39,12 +39,6 @@ jest.mock('../../shared/tools', () => {
   ];
 });
 
-// Mock for shared/constants
-jest.mock('../../shared/constants', () => ({
-  customerAllowedTools: ['mcpTool1'],
-  anonymousAllowedTools: ['mcpTool2'],
-}));
-
 let mockSharedToolsData: any[]; // To hold the data for assertions
 
 describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
@@ -150,9 +144,6 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       configuration: mockConfiguration,
     });
 
-    // Manually call authenticateAdmin to trigger registering admin tools
-    toolkit.authenticateAdmin();
-
     expect(isToolAllowed).toHaveBeenCalledTimes(mockSharedToolsData.length);
     expect(mockToolMethod).toHaveBeenCalledTimes(2); // mcpTool1 and mcpTool2
 
@@ -180,9 +171,6 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       apiUrl: 'api',
       configuration: mockConfiguration,
     });
-
-    // Trigger registerAdminTools to set up the tools
-    toolkit.authenticateAdmin();
 
     // Get the handler from the mock call
     const toolCallArgs = mockToolMethod.mock.calls[0];
@@ -219,9 +207,6 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       apiUrl: 'api',
       configuration: {enabledTools: []} as any,
     });
-
-    // Call authenticateAdmin to trigger registering admin tools
-    toolkit.authenticateAdmin();
 
     expect(isToolAllowed).toHaveBeenCalledTimes(mockSharedToolsData.length);
     expect(mockToolMethod).not.toHaveBeenCalled();

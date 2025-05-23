@@ -1,19 +1,12 @@
-import {
-  readOrderPrompt,
-  createOrderFromCartPrompt,
-  createOrderFromQuotePrompt,
-  createOrderByImportPrompt,
-  updateOrderPrompt,
-} from './prompts';
+import {readOrderPrompt, createOrderPrompt, updateOrderPrompt} from './prompts';
 
 import {
   readOrderParameters,
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
-  createOrderByImportParameters,
+  createOrderParameters,
   updateOrderParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {z} from 'zod';
 
 const tools: Tool[] = [
   {
@@ -28,32 +21,15 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'create_order_from_cart',
-    name: 'Create Order from Cart',
-    description: createOrderFromCartPrompt,
-    parameters: createOrderFromCartParameters,
-    actions: {
-      order: {
-        create: true,
-      },
-    },
-  },
-  {
-    method: 'create_order_from_quote',
-    name: 'Create Order from Quote',
-    description: createOrderFromQuotePrompt,
-    parameters: createOrderFromQuoteParameters,
-    actions: {
-      order: {
-        create: true,
-      },
-    },
-  },
-  {
-    method: 'create_order_by_import',
-    name: 'Create Order by Import',
-    description: createOrderByImportPrompt,
-    parameters: createOrderByImportParameters,
+    method: 'create_order',
+    name: 'Create Order',
+    description: createOrderPrompt,
+    parameters: createOrderParameters as unknown as z.ZodObject<
+      any,
+      any,
+      any,
+      any
+    >,
     actions: {
       order: {
         create: true,

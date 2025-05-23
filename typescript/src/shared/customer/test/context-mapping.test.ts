@@ -28,7 +28,6 @@ describe('contextToCustomerFunctionMapping', () => {
 
     expect(mapping).toEqual({
       read_customer: store.readCustomerInStore,
-      query_customers: store.queryCustomersInStore,
       create_customer: store.createCustomerInStore,
       update_customer: store.updateCustomerInStore,
     });
@@ -44,7 +43,6 @@ describe('contextToCustomerFunctionMapping', () => {
 
     expect(mapping).toEqual({
       read_customer: admin.readCustomer,
-      query_customers: admin.queryCustomersAsAdmin,
       create_customer: admin.createCustomerAsAdmin,
       update_customer: admin.updateCustomerAsAdmin,
     });

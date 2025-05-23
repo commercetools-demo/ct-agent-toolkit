@@ -10,11 +10,7 @@ import {createProductDiscountParameters} from '../product-discount/parameters';
 import {createCustomerGroupParametersSchema} from '../customer-group/parameters';
 import {createStandalonePriceParameters} from '../standalone-price/parameters';
 import {createInventoryParameters} from '../inventory/parameters';
-import {
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
-  createOrderByImportParameters,
-} from '../order/parameters';
+import {createOrderParameters} from '../order/parameters';
 
 import {updateProductParameters} from '../products/parameters';
 import {updateCustomerParameters} from '../customer/parameters';
@@ -61,9 +57,7 @@ export const bulkCreateParameters = z.object({
         createCustomerGroupParametersSchema,
         createStandalonePriceParameters,
         createInventoryParameters,
-        createOrderFromCartParameters,
-        createOrderFromQuoteParameters,
-        createOrderByImportParameters,
+        createOrderParameters,
       ]),
     })
   ),

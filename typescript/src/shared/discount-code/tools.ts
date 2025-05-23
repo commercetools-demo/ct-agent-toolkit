@@ -1,20 +1,19 @@
 import {
   readDiscountCodePrompt,
-  listDiscountCodesPrompt,
   createDiscountCodePrompt,
   updateDiscountCodePrompt,
 } from './prompts';
 
 import {
   readDiscountCodeParameters,
-  listDiscountCodesParameters,
   createDiscountCodeParameters,
   updateDiscountCodeParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_discount_code: {
     method: 'read_discount_code',
     name: 'Read Discount Code',
     description: readDiscountCodePrompt,
@@ -25,18 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
-    method: 'list_discount_codes',
-    name: 'List Discount Codes',
-    description: listDiscountCodesPrompt,
-    parameters: listDiscountCodesParameters,
-    actions: {
-      'discount-code': {
-        read: true,
-      },
-    },
-  },
-  {
+  create_discount_code: {
     method: 'create_discount_code',
     name: 'Create Discount Code',
     description: createDiscountCodePrompt,
@@ -47,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_discount_code: {
     method: 'update_discount_code',
     name: 'Update Discount Code',
     description: updateDiscountCodePrompt,
@@ -58,6 +46,16 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToDiscountCodeTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_discount_code,
+      tools.list_discount_codes,
+      tools.create_discount_code,
+      tools.update_discount_code,
+    ];
+  }
+  return [];
+};

@@ -1,14 +1,8 @@
 import {z} from 'zod';
 import {CommercetoolsFuncContext} from '../../../types/configuration';
 import * as baseFunctions from '../base.functions';
-import {
-  createCustomer,
-  createCustomerInStore,
-  getCustomerById,
-  getCustomerInStoreById,
-  updateCustomer,
-} from '../functions';
-import {getCustomerByIdParameters} from '../parameters';
+import {createCustomer, getCustomerById, updateCustomer} from '../functions';
+import {readCustomerParameters} from '../parameters';
 // Mock base functions
 jest.mock('../base.functions', () => ({
   readCustomerById: jest.fn(),
@@ -145,7 +139,7 @@ describe('Customer Functions', () => {
         mockResponse
       );
 
-      const result = await createCustomerInStore(
+      const result = await createCustomer(
         mockApiRoot as any,
         storeContext,
         baseParams
@@ -161,14 +155,14 @@ describe('Customer Functions', () => {
       );
 
       await expect(
-        createCustomerInStore(mockApiRoot as any, storeContext, baseParams)
+        createCustomer(mockApiRoot as any, storeContext, baseParams)
       ).rejects.toThrow('Failed to create customer in store');
       expect(mockExecute).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('getCustomerById', () => {
-    const baseParams: z.infer<typeof getCustomerByIdParameters> = {
+    const baseParams: z.infer<typeof readCustomerParameters> = {
       id: 'customer-id',
     };
 
@@ -208,7 +202,7 @@ describe('Customer Functions', () => {
         mockResponse
       );
 
-      const result = await getCustomerInStoreById(
+      const result = await getCustomerById(
         mockApiRoot as any,
         storeContext,
         params

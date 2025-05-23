@@ -2,9 +2,9 @@ import CommercetoolsAgentToolkit from '../toolkit';
 import CommercetoolsAPI from '../../shared/api';
 import CommercetoolsTool from '../tool';
 import {isToolAllowed} from '../../shared/configuration';
-import tools from '../../shared/tools'; // Assuming this is the source of all tools
+import {contextToTools} from '../../shared/tools'; // Assuming this is the source of all tools
 import {z} from 'zod';
-import {Configuration} from '../../types/configuration';
+import {Configuration, Context} from '../../types/configuration';
 // Mock dependencies
 jest.mock('../../shared/api');
 jest.mock('../tool');
@@ -13,27 +13,31 @@ jest.mock('../../shared/configuration');
 // Mock the actual tools array if it's imported and used directly
 jest.mock('../../shared/tools', () => {
   const {z: localZ} = require('zod'); // Require z inside the factory
-  return [
-    {
-      method: 'tool1',
-      description: 'Description for tool 1',
-      parameters: localZ.object({paramA: localZ.string()}),
-      namespace: 'cart',
-    },
-    {
-      method: 'tool2',
-      description: 'Description for tool 2',
-      parameters: localZ.object({paramB: localZ.number()}),
-      namespace: 'product',
-    },
-    {
-      method: 'tool3',
-      description: 'Description for tool 3',
-      parameters: localZ.object({paramC: localZ.boolean()}),
-      namespace: 'order',
-    },
-  ];
+  return {
+    contextToTools: (context: Context) => [
+      {
+        method: 'tool1',
+        description: 'Description for tool 1',
+        parameters: localZ.object({paramA: localZ.string()}),
+        namespace: 'cart',
+      },
+      {
+        method: 'tool2',
+        description: 'Description for tool 2',
+        parameters: localZ.object({paramB: localZ.number()}),
+        namespace: 'product',
+      },
+      {
+        method: 'tool3',
+        description: 'Description for tool 3',
+        parameters: localZ.object({paramC: localZ.boolean()}),
+        namespace: 'order',
+      },
+    ],
+  };
 });
+
+const tools = contextToTools({isAdmin: true});
 
 describe('CommercetoolsAgentToolkit with Admin tools', () => {
   const mockConfiguration = {
@@ -98,8 +102,6 @@ describe('CommercetoolsAgentToolkit with Admin tools', () => {
       configuration: mockConfiguration,
     });
 
-    toolkit.authenticateAdmin();
-
     expect(isToolAllowed).toHaveBeenCalledTimes(tools.length);
     expect(CommercetoolsTool).toHaveBeenCalledTimes(2); // tool1 and tool2 should be allowed
 
@@ -144,8 +146,6 @@ describe('CommercetoolsAgentToolkit with Admin tools', () => {
       } as any, // Enable all
     });
 
-    toolkit.authenticateAdmin();
-
     const returnedTools = toolkit.getTools();
     expect(Object.keys(returnedTools).length).toBe(tools.length);
     expect(returnedTools.tool1).toBeDefined();
@@ -167,8 +167,6 @@ describe('CommercetoolsAgentToolkit with Admin tools', () => {
         actions: {cart: {read: false}, products: {read: false}},
       } as any, // No tools enabled
     });
-
-    toolkit.authenticateAdmin();
 
     expect(isToolAllowed).toHaveBeenCalledTimes(tools.length);
     expect(CommercetoolsTool).not.toHaveBeenCalled();

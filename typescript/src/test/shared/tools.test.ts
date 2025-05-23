@@ -1,9 +1,10 @@
-import tools from '../../shared/tools';
+import {contextToTools} from '../../shared/tools';
 import productSearchTools from '../../shared/product-search/tools';
 
 describe('tools', () => {
   it('should include product-search tools', () => {
     // Find search_products tool in the combined tools array
+    const tools = contextToTools({isAdmin: true});
     const searchProductsTool = tools.find(
       (tool) => tool.method === 'search_products'
     );
@@ -13,6 +14,7 @@ describe('tools', () => {
   });
 
   it('should have correct structure for search_products tool', () => {
+    const tools = contextToTools({isAdmin: true});
     const searchProductsTool = tools.find(
       (tool) => tool.method === 'search_products'
     );

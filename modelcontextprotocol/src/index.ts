@@ -214,11 +214,6 @@ export async function main() {
   });
 
   const transport = new StdioServerTransport();
-  if (options.customerId) {
-    await server.authenticateCustomer();
-  } else if (options.isAdmin) {
-    await server.authenticateAdmin();
-  }
   await server.connect(transport);
 }
 

@@ -4,8 +4,7 @@ import {
   readOrderByOrderNumberInStore,
   queryOrdersInStore,
   readStoreOrder,
-  createOrderFromCartInStore,
-  createOrderFromQuoteInStore,
+  createOrderInStore,
   updateOrderByIdInStore,
   updateOrderByOrderNumberInStore,
 } from '../store.functions';
@@ -310,10 +309,10 @@ describe('Store Order Functions', () => {
       });
 
       // Call function
-      const result = await createOrderFromCartInStore(
+      const result = await createOrderInStore(
         mockApiRoot,
         {projectKey: 'test-project'},
-        {id: 'cart-123', version: 1, storeKey: 'test-store'}
+        {id: 'cart-123', version: 1, storeKey: 'test-store'} as any
       );
 
       // Verify store was used correctly
@@ -335,11 +334,11 @@ describe('Store Order Functions', () => {
 
       // Call function and check for wrapped error
       await expect(
-        createOrderFromCartInStore(
-          mockApiRoot,
-          {projectKey: 'test-project'},
-          {id: 'cart-123', version: 1, storeKey: 'test-store'}
-        )
+        createOrderInStore(mockApiRoot, {projectKey: 'test-project'}, {
+          id: 'cart-123',
+          version: 1,
+          storeKey: 'test-store',
+        } as any)
       ).rejects.toThrow(SDKError);
     });
   });
@@ -353,10 +352,10 @@ describe('Store Order Functions', () => {
       });
 
       // Call function
-      const result = await createOrderFromQuoteInStore(
+      const result = await createOrderInStore(
         mockApiRoot,
         {projectKey: 'test-project'},
-        {quoteId: 'quote-123', version: 1, storeKey: 'test-store'}
+        {quoteId: 'quote-123', version: 1, storeKey: 'test-store'} as any
       );
 
       // Verify store was used correctly
