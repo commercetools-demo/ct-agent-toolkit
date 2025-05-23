@@ -4,16 +4,13 @@ import {readInventory, createInventory, updateInventory} from '../functions';
 const mockExecute = jest.fn();
 const mockGet = jest.fn().mockReturnValue({execute: mockExecute});
 const mockPost = jest.fn().mockReturnValue({execute: mockExecute});
-const mockDelete = jest.fn().mockReturnValue({execute: mockExecute});
 const mockWithId = jest.fn().mockReturnValue({
   get: mockGet,
   post: mockPost,
-  delete: mockDelete,
 });
 const mockWithKey = jest.fn().mockReturnValue({
   get: mockGet,
   post: mockPost,
-  delete: mockDelete,
 });
 const mockInventory = jest.fn().mockReturnValue({
   get: mockGet,
@@ -217,58 +214,6 @@ describe('Inventory Functions', () => {
       expect(mockExecute).toHaveBeenCalled();
     });
 
-    it('should delete an inventory entry by ID when delete action is provided', async () => {
-      const params = {
-        id: 'test-id',
-        version: 1,
-        actions: [
-          {
-            action: 'delete' as const,
-          },
-        ],
-      };
-
-      await updateInventory(mockApiRoot as any, mockContext, params);
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInventory).toHaveBeenCalled();
-      expect(mockWithId).toHaveBeenCalledWith({ID: 'test-id'});
-      expect(mockDelete).toHaveBeenCalledWith({
-        queryArgs: {
-          version: 1,
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-    });
-
-    it('should delete an inventory entry by key when delete action is provided', async () => {
-      const params = {
-        key: 'test-key',
-        version: 1,
-        actions: [
-          {
-            action: 'delete' as const,
-          },
-        ],
-      };
-
-      await updateInventory(mockApiRoot as any, mockContext, params);
-
-      expect(mockWithProjectKey).toHaveBeenCalledWith({
-        projectKey: 'test-project',
-      });
-      expect(mockInventory).toHaveBeenCalled();
-      expect(mockWithKey).toHaveBeenCalledWith({key: 'test-key'});
-      expect(mockDelete).toHaveBeenCalledWith({
-        queryArgs: {
-          version: 1,
-        },
-      });
-      expect(mockExecute).toHaveBeenCalled();
-    });
-
     it('should throw an error if neither id nor key is provided', async () => {
       const params = {
         version: 1,
@@ -280,9 +225,13 @@ describe('Inventory Functions', () => {
         ],
       };
 
-      await expect(
-        updateInventory(mockApiRoot as any, mockContext, params as any)
-      ).rejects.toThrow('Either id or key must be provided');
+      try {
+        await updateInventory(mockApiRoot as any, mockContext, params as any);
+        // Should not get here if error is thrown correctly
+        fail('Expected updateInventory to throw an error');
+      } catch (error: any) {
+        expect(error.message).toContain('Either id or key must be provided');
+      }
     });
   });
 });

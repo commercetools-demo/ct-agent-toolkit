@@ -1,4 +1,4 @@
-import {bulkCreate} from '../functions';
+import {bulkCreate} from '../base.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 
 // Mock the individual create functions

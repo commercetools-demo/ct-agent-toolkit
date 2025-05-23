@@ -1,6 +1,15 @@
-import {searchProducts} from '../functions';
+import {
+  searchProducts,
+  contextToProductSearchFunctionMapping,
+} from '../functions';
+import * as admin from '../admin.functions';
 
-describe('searchProducts', () => {
+// Mock the admin functions
+jest.mock('../admin.functions', () => ({
+  searchProducts: jest.fn(),
+}));
+
+describe('product-search functions', () => {
   let mockApiRoot: any;
   let mockExecute: jest.Mock;
   let mockContext: any;
@@ -35,6 +44,71 @@ describe('searchProducts', () => {
         ],
       },
     });
+
+    // Reset mocks
+    jest.clearAllMocks();
+  });
+
+  describe('contextToProductSearchFunctionMapping', () => {
+    it('should return search_products function for admin context', () => {
+      const mapping = contextToProductSearchFunctionMapping({isAdmin: true});
+      expect(mapping).toHaveProperty('search_products');
+      expect(mapping.search_products).toBe(admin.searchProducts);
+    });
+
+    it('should return search_products function for customer context', () => {
+      const mapping = contextToProductSearchFunctionMapping({
+        customerId: 'customer-1',
+      });
+      expect(mapping).toHaveProperty('search_products');
+      expect(mapping.search_products).toBe(admin.searchProducts);
+    });
+
+    it('should return search_products function for store context', () => {
+      const mapping = contextToProductSearchFunctionMapping({
+        storeKey: 'store-1',
+      });
+      expect(mapping).toHaveProperty('search_products');
+      expect(mapping.search_products).toBe(admin.searchProducts);
+    });
+
+    it('should return search_products function for empty context', () => {
+      const mapping = contextToProductSearchFunctionMapping();
+      expect(mapping).toHaveProperty('search_products');
+      expect(mapping.search_products).toBe(admin.searchProducts);
+    });
+  });
+
+  describe('legacy searchProducts function', () => {
+    it('should call admin.searchProducts with the correct parameters', async () => {
+      const params = {
+        query: {
+          fullText: {
+            value: 'test product',
+            locale: 'en',
+          },
+        },
+      };
+
+      // Setup the mock implementation for admin.searchProducts
+      (admin.searchProducts as jest.Mock).mockResolvedValue({
+        count: 2,
+        total: 2,
+        results: [
+          {id: 'product-1', key: 'product-key-1'},
+          {id: 'product-2', key: 'product-key-2'},
+        ],
+      });
+
+      await searchProducts(mockApiRoot, mockContext, params);
+
+      // Check if admin.searchProducts was called with correct parameters
+      expect(admin.searchProducts).toHaveBeenCalledWith(
+        mockApiRoot,
+        {...mockContext, projectKey: mockContext.projectKey},
+        params
+      );
+    });
   });
 
   it('should search products with minimal parameters', async () => {
@@ -47,12 +121,27 @@ describe('searchProducts', () => {
       },
     };
 
+    // Setup the mock implementation for admin.searchProducts
+    (admin.searchProducts as jest.Mock).mockResolvedValue({
+      count: 2,
+      total: 2,
+      offset: 0,
+      limit: 20,
+      results: [
+        {id: 'product-1', key: 'product-key-1'},
+        {id: 'product-2', key: 'product-key-2'},
+      ],
+    });
+
     const result = await searchProducts(mockApiRoot, mockContext, params);
 
-    expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-      projectKey: 'test-project',
-    });
-    expect(mockExecute).toHaveBeenCalled();
+    // We don't need to check withProjectKey since we're mocking admin.searchProducts
+    expect(admin.searchProducts).toHaveBeenCalledWith(
+      mockApiRoot,
+      {...mockContext, projectKey: mockContext.projectKey},
+      params
+    );
+
     expect(result).toEqual({
       count: 2,
       total: 2,
@@ -97,27 +186,27 @@ describe('searchProducts', () => {
       ],
     };
 
+    // Setup the mock implementation for admin.searchProducts
+    (admin.searchProducts as jest.Mock).mockResolvedValue({
+      count: 2,
+      total: 2,
+      offset: 0,
+      limit: 20,
+      results: [
+        {id: 'product-1', key: 'product-key-1'},
+        {id: 'product-2', key: 'product-key-2'},
+      ],
+    });
+
     const result = await searchProducts(mockApiRoot, mockContext, params);
 
-    expect(mockApiRoot.withProjectKey).toHaveBeenCalledWith({
-      projectKey: 'test-project',
-    });
+    // We don't need to check withProjectKey since we're mocking admin.searchProducts
+    expect(admin.searchProducts).toHaveBeenCalledWith(
+      mockApiRoot,
+      {...mockContext, projectKey: mockContext.projectKey},
+      params
+    );
 
-    // Verify that the post body contains all expected parameters
-    const mockPostFn = mockApiRoot.withProjectKey().products().search().post;
-    expect(mockPostFn).toHaveBeenCalledWith({
-      body: {
-        query: params.query,
-        sort: params.sort,
-        limit: params.limit,
-        offset: params.offset,
-        markMatchingVariants: params.markMatchingVariants,
-        productProjectionParameters: params.productProjectionParameters,
-        facets: params.facets,
-      },
-    });
-
-    expect(mockExecute).toHaveBeenCalled();
     expect(result).toEqual({
       count: 2,
       total: 2,
@@ -132,7 +221,11 @@ describe('searchProducts', () => {
 
   it('should throw an error when API request fails', async () => {
     const error = new Error('API Error');
-    mockExecute.mockRejectedValue(error);
+
+    // Make admin.searchProducts throw an error
+    (admin.searchProducts as jest.Mock).mockRejectedValue(
+      new Error('Failed to search products')
+    );
 
     const params = {
       query: {

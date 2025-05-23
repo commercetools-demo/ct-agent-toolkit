@@ -2,6 +2,7 @@ import {z} from 'zod';
 
 export const createCustomerParameters = z.object({
   email: z.string().email().describe('Customer email address'),
+  storeKey: z.string().optional().describe('Store key'),
   password: z.string().describe('Customer password'),
   firstName: z.string().optional().describe('Customer first name'),
   lastName: z.string().optional().describe('Customer last name'),
@@ -92,22 +93,9 @@ export const createCustomerParameters = z.object({
   key: z.string().optional().describe('Customer key'),
 });
 
-export const createCustomerInStoreParameters = createCustomerParameters.extend({
-  storeKey: z.string().describe('Store key'),
-});
-
-export const getCustomerByIdParameters = z.object({
-  id: z.string().describe('Customer ID'),
-  expand: z.array(z.string()).optional().describe('Fields to expand'),
-});
-
-export const getCustomerInStoreByIdParameters = z.object({
-  id: z.string().describe('Customer ID'),
-  storeKey: z.string().describe('Store key'),
-  expand: z.array(z.string()).optional().describe('Fields to expand'),
-});
-
-export const queryCustomersParameters = z.object({
+export const readCustomerParameters = z.object({
+  id: z.string().optional().describe('Customer ID'),
+  storeKey: z.string().optional().describe('Store key'),
   where: z
     .array(z.string())
     .optional()

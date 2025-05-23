@@ -10,9 +10,10 @@ import {
   updateProductDiscountParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_product_discount: {
     method: 'read_product_discount',
     name: 'Read Product Discount',
     description: readProductDiscountPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_product_discount: {
     method: 'create_product_discount',
     name: 'Create Product Discount',
     description: createProductDiscountPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_product_discount: {
     method: 'update_product_discount',
     name: 'Update Product Discount',
     description: updateProductDiscountPrompt,
@@ -45,6 +46,15 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToProductDiscountTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_product_discount,
+      tools.create_product_discount,
+      tools.update_product_discount,
+    ];
+  }
+  return [];
+};

@@ -10,7 +10,7 @@ import {
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {customerGroupResourceIdentifierSchema} from '../parameters';
 import {z} from 'zod';
-import customerGroupTools from '../tools';
+import {contextToCustomerGroupTools} from '../tools';
 
 // Mock ApiRoot for testing
 const mockExecute = jest.fn();
@@ -517,7 +517,7 @@ describe('CustomerGroup Functions', () => {
 
   describe('Schema Validations: tools.ts', () => {
     // Find the updateCustomerGroupParameters schema from the imported tools array
-    const updateToolSchema = customerGroupTools.find(
+    const updateToolSchema = contextToCustomerGroupTools({isAdmin: true}).find(
       (tool) => tool.method === 'update_customer_group'
     )?.parameters;
 

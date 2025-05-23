@@ -1,23 +1,14 @@
 export const readProductTypePrompt = `
-This tool will fetch a single Product Type from commercetools by its ID.
+This tool will fetch a single Product Type from commercetools by its ID or a list of Product Types by optional parameters.
 
-It takes these required arguments:
-- id (string): The ID of the product type to retrieve.
 
 It takes these optional arguments:
-- expand (string array, optional): An array of field paths to expand. Example: ["attributes[*].type"]
-`;
-
-export const listProductTypesPrompt = `
-This tool will fetch a list of Product Types from commercetools.
-
-It takes these optional arguments:
+- id (string, optional): The ID of the product type to retrieve.
 - limit (int, optional): The number of product types to return (default: 10, range: 1-500).
 - offset (int, optional): The number of items to skip before starting to collect the result set.
 - sort (string array, optional): Sort criteria for the results. Example: ["name asc", "createdAt desc"]
 - where (string array, optional): Query predicates specified as strings. Example: ["name = \\"Standard product type\\""]
-- expand (string array, optional): An array of field paths to expand. Example: ["attributes[*].type"]
-`;
+- expand (string array, optional): An array of field paths to expand. Example: ["attributes[*].type"]`;
 
 export const createProductTypePrompt = `
 This tool will create a new Product Type in commercetools.

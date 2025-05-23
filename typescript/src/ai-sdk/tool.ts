@@ -1,4 +1,4 @@
-import type {CoreTool} from 'ai';
+import type {Tool} from 'ai';
 import {tool} from 'ai';
 import {z} from 'zod';
 import CommercetoolsAPI from '../shared/api';
@@ -8,7 +8,7 @@ export default function CommercetoolsTool(
   method: string,
   description: string,
   schema: z.ZodObject<any, any, any, any, {[x: string]: any}>
-): CoreTool {
+): Tool {
   return tool({
     description: description,
     parameters: schema,

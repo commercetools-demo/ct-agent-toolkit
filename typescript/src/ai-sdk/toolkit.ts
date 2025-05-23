@@ -1,14 +1,13 @@
+import type {Tool} from 'ai';
 import CommercetoolsAPI from '../shared/api';
-import tools from '../shared/tools';
 import {isToolAllowed} from '../shared/configuration';
+import {contextToTools} from '../shared/tools';
 import type {Configuration} from '../types/configuration';
-import type {CoreTool} from 'ai';
 import CommercetoolsTool from './tool';
-
 class CommercetoolsAgentToolkit {
   private _commercetools: CommercetoolsAPI;
 
-  tools: {[key: string]: CoreTool};
+  tools: {[key: string]: Tool};
 
   constructor({
     clientId,
@@ -30,11 +29,12 @@ class CommercetoolsAgentToolkit {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
     this.tools = {};
 
-    const filteredTools = tools.filter((tool) =>
+    const filteredTools = contextToTools(configuration.context).filter((tool) =>
       isToolAllowed(tool, configuration)
     );
 
@@ -48,7 +48,7 @@ class CommercetoolsAgentToolkit {
     });
   }
 
-  getTools(): {[key: string]: CoreTool} {
+  getTools(): {[key: string]: Tool} {
     return this.tools;
   }
 }

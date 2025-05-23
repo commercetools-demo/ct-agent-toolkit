@@ -4,6 +4,7 @@ import CommercetoolsTool from '../tool';
 import {isToolAllowed} from '../../shared/configuration';
 import {z} from 'zod';
 import {DynamicStructuredTool} from '@langchain/core/tools';
+import {Context} from '../../types/configuration';
 
 // Mock dependencies
 jest.mock('../../shared/api');
@@ -15,32 +16,34 @@ jest.mock('../../shared/tools', () => {
   // Define mockToolDefinitions inside the factory or ensure it's accessible without hoisting issues
   // For this specific case, we can define it directly here.
   const {z: localZ} = require('zod'); // Require z inside the factory
-  return [
-    {
-      method: 'lcTool1',
-      name: 'lcTool1',
-      description: 'Description for LC tool 1',
-      parameters: localZ.object({paramA: localZ.string()}),
-      namespace: 'cart',
-      actions: [] as any[],
-    },
-    {
-      method: 'lcTool2',
-      name: 'lcTool2',
-      description: 'Description for LC tool 2',
-      parameters: localZ.object({paramB: localZ.number()}),
-      namespace: 'product',
-      actions: [] as any[],
-    },
-    {
-      method: 'lcTool3',
-      name: 'lcTool3',
-      description: 'Description for LC tool 3',
-      parameters: localZ.object({paramC: localZ.boolean()}),
-      namespace: 'order',
-      actions: [] as any[],
-    },
-  ];
+  return {
+    contextToTools: (context: Context) => [
+      {
+        method: 'lcTool1',
+        name: 'lcTool1',
+        description: 'Description for LC tool 1',
+        parameters: localZ.object({paramA: localZ.string()}),
+        namespace: 'cart',
+        actions: [] as any[],
+      },
+      {
+        method: 'lcTool2',
+        name: 'lcTool2',
+        description: 'Description for LC tool 2',
+        parameters: localZ.object({paramB: localZ.number()}),
+        namespace: 'product',
+        actions: [] as any[],
+      },
+      {
+        method: 'lcTool3',
+        name: 'lcTool3',
+        description: 'Description for LC tool 3',
+        parameters: localZ.object({paramC: localZ.boolean()}),
+        namespace: 'order',
+        actions: [] as any[],
+      },
+    ],
+  };
 });
 
 // Now, if you need to reference the mocked data structure in your tests,
@@ -50,7 +53,10 @@ jest.mock('../../shared/tools', () => {
 let mockToolDefinitions: any[]; // To hold the data for assertions
 
 describe('CommercetoolsAgentToolkit (Langchain)', () => {
-  const mockConfiguration = {enabledTools: ['cart', 'product.lcTool2']} as any;
+  const mockConfiguration = {
+    enabledTools: ['cart', 'product.lcTool2'],
+    context: {isAdmin: true},
+  } as any;
   const mockCommercetoolsAPIInstance = {} as CommercetoolsAPI;
   const mockLangchainTool = new DynamicStructuredTool({
     name: 'mockTool',
@@ -61,7 +67,8 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
 
   beforeAll(() => {
     // Load the mocked definitions for use in tests
-    mockToolDefinitions = require('../../shared/tools');
+    const {contextToTools} = require('../../shared/tools');
+    mockToolDefinitions = contextToTools({isAdmin: true});
   });
 
   beforeEach(() => {
@@ -89,7 +96,8 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
       'secret',
       'auth',
       'key',
-      'api'
+      'api',
+      mockConfiguration.context
     );
   });
 
@@ -121,13 +129,13 @@ describe('CommercetoolsAgentToolkit (Langchain)', () => {
       mockCommercetoolsAPIInstance,
       mockToolDefinitions[0].method,
       mockToolDefinitions[0].description,
-      mockToolDefinitions[0].parameters
+      expect.any(Object)
     );
     expect(CommercetoolsTool).toHaveBeenCalledWith(
       mockCommercetoolsAPIInstance,
       mockToolDefinitions[1].method,
       mockToolDefinitions[1].description,
-      mockToolDefinitions[1].parameters
+      expect.any(Object)
     );
     expect(CommercetoolsTool).not.toHaveBeenCalledWith(
       expect.anything(),

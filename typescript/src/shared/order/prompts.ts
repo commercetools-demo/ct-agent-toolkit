@@ -19,9 +19,10 @@ It takes these parameters:
 Either id, orderNumber, or where must be provided.
 `;
 
-export const createOrderFromCartPrompt = `
-This tool will create a new Order from a Cart in commercetools.
+export const createOrderPrompt = `
+This tool will create a new Order from a Cart or a Quote in commercetools or Import an Order.
 
+1. Create an Order from a Cart
 It takes these required arguments:
 - version (integer): The current version of the cart.
 
@@ -31,11 +32,8 @@ It takes these optional arguments:
 - storeKey (string, optional): Key of the store to create the order in.
 
 The cart ID is required unless provided through context.
-`;
 
-export const createOrderFromQuotePrompt = `
-This tool will create a new Order from a Quote in commercetools.
-
+2. Create an Order from a Quote
 It takes these required arguments:
 - quoteId (string): The ID of the quote to create the order from.
 - version (integer): The current version of the quote.
@@ -43,11 +41,8 @@ It takes these required arguments:
 It takes these optional arguments:
 - orderNumber (string, optional): User-defined identifier of the Order.
 - storeKey (string, optional): Key of the store to create the order in.
-`;
 
-export const createOrderByImportPrompt = `
-This tool will create a new Order by Import in commercetools.
-
+3. Create an Order by Import
 It takes these required arguments:
 - totalPrice (object): Total price of the order with currencyCode and centAmount.
 

@@ -3,15 +3,6 @@ import {z} from 'zod';
 export const readDiscountCodeParameters = z.object({
   id: z.string().optional().describe('The ID of the discount code to read'),
   key: z.string().optional().describe('The key of the discount code to read'),
-  expand: z
-    .array(z.string())
-    .optional()
-    .describe(
-      'An array of field paths to expand. Example: ["cartDiscounts[*]", "references[*]"]'
-    ),
-});
-
-export const listDiscountCodesParameters = z.object({
   limit: z
     .number()
     .int()

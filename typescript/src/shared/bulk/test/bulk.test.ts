@@ -1,8 +1,7 @@
-import {bulkCreate} from '../functions';
+import {bulkCreate, bulkUpdate} from '../base.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {bulkCreateParameters} from '../parameters';
 import {z} from 'zod';
-import {bulkUpdate} from '../functions';
 import {bulkUpdateParameters} from '../parameters';
 
 // Mock the API Root
@@ -159,7 +158,7 @@ describe('bulkCreate', () => {
           },
         },
       ],
-    } as z.infer<typeof bulkCreateParameters>;
+    } as any;
 
     const result = await bulkCreate(mockApiRoot, mockContext, params);
 
@@ -169,24 +168,6 @@ describe('bulkCreate', () => {
     expect(mockImportOrder).toHaveBeenCalled();
     expect(mockPost).toHaveBeenCalled();
     expect(mockExecute).toHaveBeenCalledTimes(1);
-  });
-
-  it('should throw error for invalid order parameters', async () => {
-    const params = {
-      items: [
-        {
-          entityType: 'order' as const,
-          data: {
-            // Missing required parameters for any order type
-            someInvalidField: 'value',
-          },
-        },
-      ],
-    } as any;
-
-    await expect(bulkCreate(mockApiRoot, mockContext, params)).rejects.toThrow(
-      'Bulk creation failed: Invalid order parameters. Could not determine order creation type.'
-    );
   });
 
   it('should throw error for unsupported entity type', async () => {

@@ -1,21 +1,14 @@
 export const readDiscountCodePrompt = `
-This tool will fetch a Discount Code from commercetools.
+This tool will fetch a Discount Code from commercetools or a list of Discount Codes from commercetools.
 
 It takes these parameters:
 - id (string, optional): The ID of the discount code to retrieve. Either id or key must be provided.
 - key (string, optional): The key of the discount code to retrieve. Either id or key must be provided.
-- expand (string array, optional): An array of field paths to expand. Example: ["cartDiscounts[*]", "references[*]"]
-`;
-
-export const listDiscountCodesPrompt = `
-This tool will fetch a list of Discount Codes from commercetools.
-
-It takes these optional arguments:
 - limit (int, optional): The number of discount codes to return (default: 10, range: 1-500).
 - offset (int, optional): The number of items to skip before starting to collect the result set.
 - sort (string array, optional): Sort criteria for the results. Example: ["name.en asc", "createdAt desc"]
 - where (string array, optional): Query predicates specified as strings. Example: ["code = \\"SAVE10\\""]
-- expand (string array, optional): An array of field paths to expand. Example: ["cartDiscounts[*]"]
+- expand (string array, optional): An array of field paths to expand. Example: ["cartDiscounts[*]", "references[*]"]
 `;
 
 export const createDiscountCodePrompt = `
