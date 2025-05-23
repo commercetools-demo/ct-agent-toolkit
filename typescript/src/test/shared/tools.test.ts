@@ -1,5 +1,5 @@
 import {contextToTools} from '../../shared/tools';
-import productSearchTools from '../../shared/product-search/tools';
+import {contextToProductSearchTools} from '../../shared/product-search/tools';
 
 describe('tools', () => {
   it('should include product-search tools', () => {
@@ -8,6 +8,8 @@ describe('tools', () => {
     const searchProductsTool = tools.find(
       (tool) => tool.method === 'search_products'
     );
+
+    const productSearchTools = contextToProductSearchTools({isAdmin: true});
 
     expect(searchProductsTool).toBeDefined();
     expect(searchProductsTool).toEqual(productSearchTools[0]);

@@ -12,7 +12,6 @@ describe('contextToProductFunctionMapping', () => {
 
     expect(mapping).toEqual({
       list_products: admin.listProducts,
-      read_product: admin.readProduct,
       create_product: admin.createProduct,
       update_product: admin.updateProduct,
     });
@@ -22,7 +21,6 @@ describe('contextToProductFunctionMapping', () => {
     const mapping = contextToProductFunctionMapping();
     expect(mapping).toEqual({
       list_products: admin.listProducts,
-      read_product: admin.readProduct,
     });
   });
 
@@ -31,7 +29,6 @@ describe('contextToProductFunctionMapping', () => {
     const mapping = contextToProductFunctionMapping(context);
     expect(mapping).toEqual({
       list_products: admin.listProducts,
-      read_product: admin.readProduct,
     });
   });
 });
