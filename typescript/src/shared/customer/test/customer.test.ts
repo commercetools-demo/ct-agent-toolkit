@@ -156,7 +156,7 @@ describe('Customer Functions', () => {
 
       await expect(
         createCustomer(mockApiRoot as any, storeContext, baseParams)
-      ).rejects.toThrow('Failed to create customer in store');
+      ).rejects.toThrow('Failed to create customer');
       expect(mockExecute).toHaveBeenCalledTimes(0);
     });
   });

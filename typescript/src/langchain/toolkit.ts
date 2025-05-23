@@ -39,7 +39,8 @@ class CommercetoolsAgentToolkit implements BaseToolkit {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
 
     const filteredToolDefinitions = contextToTools(

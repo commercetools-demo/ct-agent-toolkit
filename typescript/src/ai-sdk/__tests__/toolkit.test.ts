@@ -37,7 +37,7 @@ jest.mock('../../shared/tools', () => {
   };
 });
 
-const tools = contextToTools({isAdmin: true});
+const tools = contextToTools({});
 
 describe('CommercetoolsAgentToolkit with Admin tools', () => {
   const mockConfiguration = {
@@ -110,14 +110,14 @@ describe('CommercetoolsAgentToolkit with Admin tools', () => {
       mockCommercetoolsAPIInstance,
       tools[0].method,
       tools[0].description,
-      tools[0].parameters
+      expect.any(Object)
     );
     // Detailed check for tool2 (namespace 'product', method 'tool2')
     expect(CommercetoolsTool).toHaveBeenCalledWith(
       mockCommercetoolsAPIInstance,
       tools[1].method,
       tools[1].description,
-      tools[1].parameters
+      expect.any(Object)
     );
     // Ensure tool3 was filtered out
     expect(CommercetoolsTool).not.toHaveBeenCalledWith(

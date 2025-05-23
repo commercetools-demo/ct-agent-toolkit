@@ -1,5 +1,5 @@
-import {contextToTools} from '../../shared/tools';
-import {contextToProductSearchTools} from '../../shared/product-search/tools';
+import {contextToTools} from '../../tools';
+import {contextToProductSearchTools} from '../tools';
 
 describe('tools', () => {
   it('should include product-search tools', () => {

@@ -22,7 +22,7 @@ export const contextToProjectFunctionMapping = (
     };
   }
 
-  // If no valid context is provided, return empty object
+  // If no valid context is provided, return read only
   return {
     read_project: admin.readProject,
   };

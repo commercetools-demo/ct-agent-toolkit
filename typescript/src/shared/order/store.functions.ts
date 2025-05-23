@@ -192,7 +192,7 @@ export const createOrderInStore = async (
 
     return response.body;
   } catch (error: any) {
-    throw new SDKError('Failed to create order from cart in store', error);
+    throw new SDKError('Failed to create order in store', error);
   }
 };
 

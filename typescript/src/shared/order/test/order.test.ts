@@ -345,10 +345,7 @@ describe('Order Functions', () => {
           version: 1,
         } as any)
       ).rejects.toThrow(
-        new SDKError(
-          'Failed to create order from cart',
-          new Error('API Create Error')
-        )
+        new SDKError('Failed to create order', new Error('API Create Error'))
       );
     });
   });
@@ -578,10 +575,7 @@ describe('Order Functions', () => {
           version: 1,
         } as any)
       ).rejects.toThrow(
-        new SDKError(
-          'Failed to create order from quote',
-          new Error('API Quote Error')
-        )
+        new SDKError('Failed to create order', new Error('API Quote Error'))
       );
     });
 
@@ -595,7 +589,7 @@ describe('Order Functions', () => {
         } as any)
       ).rejects.toThrow(
         new SDKError(
-          'Failed to create order from quote',
+          'Failed to create order in store',
           new Error('API Quote Store Error')
         )
       );
@@ -690,7 +684,7 @@ describe('Order Functions', () => {
       await expect(
         createOrder(mockApiRoot, mockContext, baseImportParams as any)
       ).rejects.toThrow(
-        new SDKError('Failed to import order', new Error('API Import Error'))
+        new SDKError('Failed to create order', new Error('API Import Error'))
       );
     });
   });

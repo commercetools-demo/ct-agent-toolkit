@@ -52,7 +52,6 @@ export const contextToDiscountCodeTools = (context?: Context) => {
   if (context?.isAdmin) {
     return [
       tools.read_discount_code,
-      tools.list_discount_codes,
       tools.create_discount_code,
       tools.update_discount_code,
     ];

@@ -62,15 +62,15 @@ describe('Project functions', () => {
       });
     });
 
-    it('should return empty object when no context is provided', () => {
+    it('should return read only when no context is provided', () => {
       const mapping = contextToProjectFunctionMapping();
-      expect(mapping).toEqual({});
+      expect(mapping).toEqual({read_project: admin.readProject});
     });
 
     it('should return empty object when context does not have isAdmin set to true', () => {
       const context: Context = {};
       const mapping = contextToProjectFunctionMapping(context);
-      expect(mapping).toEqual({});
+      expect(mapping).toEqual({read_project: admin.readProject});
     });
   });
 

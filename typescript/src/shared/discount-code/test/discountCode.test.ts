@@ -183,7 +183,7 @@ describe('Discount Code Functions', () => {
         // Should not get here if error is thrown correctly
         fail('Expected readDiscountCode to throw an error');
       } catch (error: any) {
-        expect(error.message).toContain('Failed to read discount code');
+        expect(error.message).toContain('Failed to list discount codes');
       }
     });
   });

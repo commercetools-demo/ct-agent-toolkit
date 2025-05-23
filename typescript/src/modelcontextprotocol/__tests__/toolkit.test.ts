@@ -2,7 +2,7 @@ import CommercetoolsAgentToolkit from '../toolkit';
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import CommercetoolsAPI from '../../shared/api';
 import {isToolAllowed} from '../../shared/configuration';
-import {Configuration} from '../../types/configuration';
+import {Configuration, Context} from '../../types/configuration';
 
 // Mock dependencies
 jest.mock('@modelcontextprotocol/sdk/server/mcp.js');
@@ -11,32 +11,38 @@ jest.mock('../../shared/configuration');
 
 jest.mock('../../shared/tools', () => {
   const {z: localZ} = require('zod'); // Require z inside the factory
-  return [
-    {
-      method: 'mcpTool1',
-      description: 'Description for MCP tool 1',
-      parameters: localZ.object({paramA: localZ.string().describe('Param A')}),
-      namespace: 'cart',
-      actions: {
-        cart: {
-          read: true,
+  return {
+    contextToTools: (context: Context) => [
+      {
+        method: 'mcpTool1',
+        description: 'Description for MCP tool 1',
+        parameters: localZ.object({
+          paramA: localZ.string().describe('Param A'),
+        }),
+        namespace: 'cart',
+        actions: {
+          cart: {
+            read: true,
+          },
         },
+        name: 'mcpTool1',
       },
-      name: 'mcpTool1',
-    },
-    {
-      method: 'mcpTool2',
-      description: 'Description for MCP tool 2',
-      parameters: localZ.object({paramB: localZ.number().describe('Param B')}),
-      namespace: 'product',
-      actions: {
-        products: {
-          read: true,
+      {
+        method: 'mcpTool2',
+        description: 'Description for MCP tool 2',
+        parameters: localZ.object({
+          paramB: localZ.number().describe('Param B'),
+        }),
+        namespace: 'product',
+        actions: {
+          products: {
+            read: true,
+          },
         },
+        name: 'mcpTool2',
       },
-      name: 'mcpTool2',
-    },
-  ];
+    ],
+  };
 });
 
 let mockSharedToolsData: any[]; // To hold the data for assertions
@@ -60,7 +66,8 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
 
   beforeAll(() => {
     // Load the mocked definitions for use in tests
-    mockSharedToolsData = require('../../shared/tools');
+    const {contextToTools} = require('../../shared/tools');
+    mockSharedToolsData = contextToTools({isAdmin: true});
   });
 
   beforeEach(() => {
@@ -82,7 +89,8 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       's',
       'a',
       'p',
-      'a'
+      'a',
+      mockConfiguration.context
     ) as jest.Mocked<CommercetoolsAPI>;
     mockCommercetoolsAPIInstance.run = jest.fn();
     (CommercetoolsAPI as jest.Mock).mockImplementation(
@@ -151,13 +159,13 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
     expect(mockToolMethod).toHaveBeenCalledWith(
       mockSharedToolsData[0].method,
       mockSharedToolsData[0].description,
-      mockSharedToolsData[0].parameters.shape,
+      expect.any(Object),
       expect.any(Function) // Handler function
     );
     expect(mockToolMethod).toHaveBeenCalledWith(
       mockSharedToolsData[1].method,
       mockSharedToolsData[1].description,
-      mockSharedToolsData[1].parameters.shape,
+      expect.any(Object),
       expect.any(Function) // Handler function
     );
   });

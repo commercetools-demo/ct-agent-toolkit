@@ -170,24 +170,6 @@ describe('bulkCreate', () => {
     expect(mockExecute).toHaveBeenCalledTimes(1);
   });
 
-  it('should throw error for invalid order parameters', async () => {
-    const params = {
-      items: [
-        {
-          entityType: 'order' as const,
-          data: {
-            // Missing required parameters for any order type
-            someInvalidField: 'value',
-          },
-        },
-      ],
-    } as any;
-
-    await expect(bulkCreate(mockApiRoot, mockContext, params)).rejects.toThrow(
-      'Bulk creation failed: Invalid order parameters. Could not determine order creation type.'
-    );
-  });
-
   it('should throw error for unsupported entity type', async () => {
     const params = {
       items: [

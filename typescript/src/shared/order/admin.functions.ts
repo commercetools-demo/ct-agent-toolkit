@@ -228,7 +228,7 @@ export const createOrder = async (
 
     return response.body;
   } catch (error: any) {
-    throw new SDKError('Failed to create order from cart', error);
+    throw new SDKError('Failed to create order', error);
   }
 };
 export const updateOrder = async (
