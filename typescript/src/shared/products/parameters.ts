@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
 export const listProductsParameters = z.object({
+  id: z.string().optional().describe('The ID of the product to read'),
   limit: z
     .number()
     .int()

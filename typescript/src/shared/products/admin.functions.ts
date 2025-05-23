@@ -17,6 +17,15 @@ export const listProducts = (
   context: CommercetoolsFuncContext,
   params: z.infer<typeof listProductsParameters>
 ) => {
+  if (params.id) {
+    return base.readProductById(
+      apiRoot,
+      context.projectKey,
+      params.id,
+      params.expand
+    );
+  }
+
   const queryArgs = {
     limit: params.limit || 10,
     ...(params.offset && {offset: params.offset}),
@@ -26,19 +35,6 @@ export const listProducts = (
   };
 
   return base.queryProducts(apiRoot, context.projectKey, queryArgs);
-};
-
-export const readProduct = (
-  apiRoot: ApiRoot,
-  context: CommercetoolsFuncContext,
-  params: {id: string; expand?: string[]}
-) => {
-  return base.readProductById(
-    apiRoot,
-    context.projectKey,
-    params.id,
-    params.expand
-  );
 };
 
 export const createProduct = (

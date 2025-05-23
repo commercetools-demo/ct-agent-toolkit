@@ -7,9 +7,10 @@ import {
 } from './parameters';
 import {Tool} from '../../types/tools';
 import {z} from 'zod';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_order: {
     method: 'read_order',
     name: 'Read Order',
     description: readOrderPrompt,
@@ -20,7 +21,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_order: {
     method: 'create_order',
     name: 'Create Order',
     description: createOrderPrompt,
@@ -36,7 +37,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_order: {
     method: 'update_order',
     name: 'Update Order',
     description: updateOrderPrompt,
@@ -47,6 +48,17 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToOrderTools = (context?: Context) => {
+  if (context?.customerId) {
+    return [tools.read_order];
+  }
+  if (context?.isAdmin) {
+    return [tools.read_order, tools.create_order, tools.update_order];
+  }
+  if (context?.storeKey) {
+    return [tools.read_order, tools.create_order, tools.update_order];
+  }
+  return [];
+};

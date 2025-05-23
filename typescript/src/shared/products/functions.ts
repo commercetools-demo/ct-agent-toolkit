@@ -24,14 +24,12 @@ export const contextToProductFunctionMapping = (
   if (context?.isAdmin) {
     return {
       list_products: admin.listProducts,
-      read_product: admin.readProduct,
       create_product: admin.createProduct,
       update_product: admin.updateProduct,
     };
   }
   return {
     list_products: admin.listProducts,
-    read_product: admin.readProduct,
   };
 };
 
@@ -41,14 +39,6 @@ export const listProducts = (
   params: z.infer<typeof listProductsParameters>
 ) => {
   return admin.listProducts(apiRoot, context, params);
-};
-
-export const readProduct = (
-  apiRoot: ApiRoot,
-  context: CommercetoolsFuncContext,
-  params: {id: string; expand?: string[]}
-) => {
-  return admin.readProduct(apiRoot, context, params);
 };
 
 export const createProduct = (

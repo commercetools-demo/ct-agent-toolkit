@@ -23,7 +23,9 @@ export const contextToProjectFunctionMapping = (
   }
 
   // If no valid context is provided, return empty object
-  return {};
+  return {
+    read_project: admin.readProject,
+  };
 };
 
 // Export the read function for direct use (backward compatibility)

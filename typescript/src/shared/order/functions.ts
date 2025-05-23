@@ -28,7 +28,7 @@ export const contextToOrderFunctionMapping = (
   if (context?.storeKey) {
     return {
       read_order: store.readStoreOrder,
-      create_order_from_cart: store.createOrderInStore,
+      create_order: store.createOrderInStore,
       update_order: store.updateOrderByIdInStore,
     };
   }
