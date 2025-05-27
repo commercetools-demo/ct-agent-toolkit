@@ -1,7 +1,7 @@
 import {BaseToolkit, DynamicStructuredTool} from '@langchain/core/tools';
 import CommercetoolsTool from './tool';
 import CommercetoolsAPI from '../shared/api';
-import sharedTools from '../shared/tools';
+import {contextToTools} from '../shared/tools';
 import {isToolAllowed} from '../shared/configuration';
 import type {Configuration} from '../types/configuration';
 import {z} from 'zod';
@@ -39,14 +39,13 @@ class CommercetoolsAgentToolkit implements BaseToolkit {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
 
-    const toolDefinitions: ToolDefinition[] = sharedTools;
-
-    const filteredToolDefinitions = toolDefinitions.filter(
-      (tool: ToolDefinition) => isToolAllowed(tool, configuration)
-    );
+    const filteredToolDefinitions = contextToTools(
+      configuration.context
+    ).filter((tool: ToolDefinition) => isToolAllowed(tool, configuration));
 
     this.tools = filteredToolDefinitions.map((toolDef: ToolDefinition) =>
       CommercetoolsTool(

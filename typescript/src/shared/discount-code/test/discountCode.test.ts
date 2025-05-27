@@ -1,6 +1,5 @@
 import {
   readDiscountCode,
-  listDiscountCodes,
   createDiscountCode,
   updateDiscountCode,
 } from '../functions';
@@ -175,9 +174,17 @@ describe('Discount Code Functions', () => {
     });
 
     it('should throw an error if neither id nor key is provided', async () => {
-      await expect(
-        readDiscountCode(mockApiRoot as any, {projectKey: 'test-project'}, {})
-      ).rejects.toThrow('Failed to read discount code');
+      try {
+        await readDiscountCode(
+          mockApiRoot as any,
+          {projectKey: 'test-project'},
+          {}
+        );
+        // Should not get here if error is thrown correctly
+        fail('Expected readDiscountCode to throw an error');
+      } catch (error: any) {
+        expect(error.message).toContain('Failed to list discount codes');
+      }
     });
   });
 
@@ -202,7 +209,7 @@ describe('Discount Code Functions', () => {
         body: mockDiscountCodes,
       });
 
-      const result = await listDiscountCodes(
+      const result = await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         {limit: 20}
@@ -246,7 +253,7 @@ describe('Discount Code Functions', () => {
         expand: ['cartDiscounts[*]'],
       };
 
-      const result = await listDiscountCodes(
+      const result = await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         queryArgs
@@ -267,7 +274,7 @@ describe('Discount Code Functions', () => {
       mockApiRoot.execute.mockRejectedValueOnce(new Error('SDK List Error'));
 
       await expect(
-        listDiscountCodes(
+        readDiscountCode(
           mockApiRoot as any,
           {projectKey: 'test-project'},
           {limit: 5}
@@ -288,7 +295,7 @@ describe('Discount Code Functions', () => {
         body: mockDiscountCodes,
       });
 
-      await listDiscountCodes(
+      await readDiscountCode(
         mockApiRoot as any,
         {projectKey: 'test-project'},
         {} // No parameters
@@ -523,13 +530,17 @@ describe('Discount Code Functions', () => {
     });
 
     it('should throw an error if neither id nor key is provided', async () => {
-      await expect(
-        updateDiscountCode(
+      try {
+        await updateDiscountCode(
           mockApiRoot as any,
           {projectKey: 'test-project'},
           {version: 1, actions: []}
-        )
-      ).rejects.toThrow('Failed to update discount code');
+        );
+        // Should not get here if error is thrown correctly
+        fail('Expected updateDiscountCode to throw an error');
+      } catch (error: any) {
+        expect(error.message).toContain('Failed to update discount code');
+      }
     });
   });
 });

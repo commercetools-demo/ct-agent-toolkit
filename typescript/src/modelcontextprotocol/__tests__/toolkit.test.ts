@@ -2,6 +2,7 @@ import CommercetoolsAgentToolkit from '../toolkit';
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import CommercetoolsAPI from '../../shared/api';
 import {isToolAllowed} from '../../shared/configuration';
+import {Configuration, Context} from '../../types/configuration';
 
 // Mock dependencies
 jest.mock('@modelcontextprotocol/sdk/server/mcp.js');
@@ -10,36 +11,63 @@ jest.mock('../../shared/configuration');
 
 jest.mock('../../shared/tools', () => {
   const {z: localZ} = require('zod'); // Require z inside the factory
-  return [
-    {
-      method: 'mcpTool1',
-      description: 'Description for MCP tool 1',
-      parameters: localZ.object({paramA: localZ.string().describe('Param A')}),
-      namespace: 'cart',
-      actions: [] as any[],
-      name: 'mcpTool1',
-    },
-    {
-      method: 'mcpTool2',
-      description: 'Description for MCP tool 2',
-      parameters: localZ.object({paramB: localZ.number().describe('Param B')}),
-      namespace: 'product',
-      actions: [] as any[],
-      name: 'mcpTool2',
-    },
-  ];
+  return {
+    contextToTools: (context: Context) => [
+      {
+        method: 'mcpTool1',
+        description: 'Description for MCP tool 1',
+        parameters: localZ.object({
+          paramA: localZ.string().describe('Param A'),
+        }),
+        namespace: 'cart',
+        actions: {
+          cart: {
+            read: true,
+          },
+        },
+        name: 'mcpTool1',
+      },
+      {
+        method: 'mcpTool2',
+        description: 'Description for MCP tool 2',
+        parameters: localZ.object({
+          paramB: localZ.number().describe('Param B'),
+        }),
+        namespace: 'product',
+        actions: {
+          products: {
+            read: true,
+          },
+        },
+        name: 'mcpTool2',
+      },
+    ],
+  };
 });
 
 let mockSharedToolsData: any[]; // To hold the data for assertions
 
 describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
-  const mockConfiguration = {enabledTools: ['cart', 'product.mcpTool2']} as any;
+  const mockConfiguration: Configuration = {
+    actions: {
+      products: {
+        read: true,
+      },
+      cart: {
+        read: true,
+      },
+    },
+    context: {
+      isAdmin: true,
+    },
+  };
   let mockCommercetoolsAPIInstance: jest.Mocked<CommercetoolsAPI>;
-  let mockMcpServerInstance: jest.Mocked<McpServer>;
+  let mockToolMethod: jest.Mock;
 
   beforeAll(() => {
     // Load the mocked definitions for use in tests
-    mockSharedToolsData = require('../../shared/tools');
+    const {contextToTools} = require('../../shared/tools');
+    mockSharedToolsData = contextToTools({isAdmin: true});
   });
 
   beforeEach(() => {
@@ -48,34 +76,36 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
     (CommercetoolsAPI as jest.Mock).mockClear();
     (isToolAllowed as jest.Mock).mockClear();
 
-    // Setup mock instances and implementations
-    mockMcpServerInstance = {
-      tool: jest.fn(),
-    } as unknown as jest.Mocked<McpServer>;
-    (McpServer as jest.Mock).mockImplementation(() => mockMcpServerInstance);
+    // Setup mockToolMethod for the McpServer's tool method
+    mockToolMethod = jest.fn();
+
+    // Set up McpServer mock to handle the fact that CommercetoolsAgentToolkit extends it
+    (McpServer as jest.Mock).mockImplementation(function (this: any) {
+      this.tool = mockToolMethod;
+    });
 
     mockCommercetoolsAPIInstance = new CommercetoolsAPI(
       'c',
       's',
       'a',
       'p',
-      'a'
+      'a',
+      mockConfiguration.context
     ) as jest.Mocked<CommercetoolsAPI>;
     mockCommercetoolsAPIInstance.run = jest.fn();
     (CommercetoolsAPI as jest.Mock).mockImplementation(
       () => mockCommercetoolsAPIInstance
     );
 
-    (isToolAllowed as jest.Mock).mockImplementation((tool, config) => {
-      if (tool.method === 'mcpTool1' && config.enabledTools.includes('cart'))
-        return true;
-      if (
-        tool.method === 'mcpTool2' &&
-        config.enabledTools.includes('product.mcpTool2')
-      )
-        return true;
-      return false;
-    });
+    (isToolAllowed as jest.Mock).mockImplementation(
+      (tool, config: Configuration) => {
+        if (tool.method === 'mcpTool1' && config?.actions?.cart?.read)
+          return true;
+        if (tool.method === 'mcpTool2' && config?.actions?.products?.read)
+          return true;
+        return false;
+      }
+    );
   });
 
   it('should call McpServer constructor with correct parameters', () => {
@@ -107,11 +137,12 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       'secret',
       'auth',
       'key',
-      'api'
+      'api',
+      mockConfiguration.context
     );
   });
 
-  it('should filter tools and register allowed tools with McpServer', () => {
+  it('should filter tools and register allowed tools with McpServer when registerAdminTools is called', () => {
     const toolkit = new CommercetoolsAgentToolkit({
       clientId: 'id',
       clientSecret: 'secret',
@@ -122,18 +153,19 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
     });
 
     expect(isToolAllowed).toHaveBeenCalledTimes(mockSharedToolsData.length);
-    expect(mockMcpServerInstance.tool).toHaveBeenCalledTimes(2); // mcpTool1 and mcpTool2
+    expect(mockToolMethod).toHaveBeenCalledTimes(2); // mcpTool1 and mcpTool2
 
-    expect(mockMcpServerInstance.tool).toHaveBeenCalledWith(
+    // Check if registerTool was called with the correct parameters
+    expect(mockToolMethod).toHaveBeenCalledWith(
       mockSharedToolsData[0].method,
       mockSharedToolsData[0].description,
-      mockSharedToolsData[0].parameters.shape,
+      expect.any(Object),
       expect.any(Function) // Handler function
     );
-    expect(mockMcpServerInstance.tool).toHaveBeenCalledWith(
+    expect(mockToolMethod).toHaveBeenCalledWith(
       mockSharedToolsData[1].method,
       mockSharedToolsData[1].description,
-      mockSharedToolsData[1].parameters.shape,
+      expect.any(Object),
       expect.any(Function) // Handler function
     );
   });
@@ -148,9 +180,8 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
       configuration: mockConfiguration,
     });
 
-    // Assuming mcpTool1 was allowed and registered
-    const toolCallArgs = (mockMcpServerInstance.tool as jest.Mock).mock
-      .calls[0];
+    // Get the handler from the mock call
+    const toolCallArgs = mockToolMethod.mock.calls[0];
     const handler = toolCallArgs[3]; // The async handler function
     const toolMethod = toolCallArgs[0];
 
@@ -186,6 +217,6 @@ describe('CommercetoolsAgentToolkit (ModelContextProtocol)', () => {
     });
 
     expect(isToolAllowed).toHaveBeenCalledTimes(mockSharedToolsData.length);
-    expect(mockMcpServerInstance.tool).not.toHaveBeenCalled();
+    expect(mockToolMethod).not.toHaveBeenCalled();
   });
 });

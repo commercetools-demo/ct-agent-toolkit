@@ -20,6 +20,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -47,7 +48,14 @@ describe('main function', () => {
           'discount-code': {read: true, create: true, update: true},
           'product-type': {read: true, create: true, update: true},
           inventory: {read: true, create: true, update: true},
+          channel: {read: true, create: true, update: true},
           bulk: {create: true, update: true},
+        },
+        context: {
+          isAdmin: true,
+          storeKey: undefined,
+          cartId: undefined,
+          customerId: undefined,
         },
       },
     });
@@ -65,6 +73,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -75,7 +84,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {products: {read: true}}},
+      configuration: {
+        actions: {products: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -91,6 +105,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -101,7 +116,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {products: {create: true}}},
+      configuration: {
+        actions: {products: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -117,6 +137,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -127,7 +148,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {products: {update: true}}},
+      configuration: {
+        actions: {products: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -143,6 +169,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -153,7 +180,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {project: {read: true}}},
+      configuration: {
+        actions: {project: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -169,6 +201,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -179,7 +212,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-search': {read: true}}},
+      configuration: {
+        actions: {'product-search': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -195,6 +233,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -205,7 +244,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {category: {read: true}}},
+      configuration: {
+        actions: {category: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -221,6 +265,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -231,7 +276,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {category: {create: true}}},
+      configuration: {
+        actions: {category: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -247,6 +297,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -257,7 +308,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {category: {update: true}}},
+      configuration: {
+        actions: {category: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -273,6 +329,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -283,7 +340,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-selection': {read: true}}},
+      configuration: {
+        actions: {'product-selection': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -299,6 +361,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -309,7 +372,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-selection': {create: true}}},
+      configuration: {
+        actions: {'product-selection': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -325,6 +393,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -335,7 +404,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-selection': {update: true}}},
+      configuration: {
+        actions: {'product-selection': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -351,6 +425,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -361,7 +436,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {order: {read: true}}},
+      configuration: {
+        actions: {order: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -377,6 +457,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -387,7 +468,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {order: {create: true}}},
+      configuration: {
+        actions: {order: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -403,6 +489,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -413,7 +500,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {order: {update: true}}},
+      configuration: {
+        actions: {order: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -429,6 +521,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -439,7 +532,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {cart: {read: true}}},
+      configuration: {
+        actions: {cart: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -455,6 +553,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -465,7 +564,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {cart: {create: true}}},
+      configuration: {
+        actions: {cart: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -481,6 +585,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -491,7 +596,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {cart: {update: true}}},
+      configuration: {
+        actions: {cart: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -507,6 +617,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -517,7 +628,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {create: true}}},
+      configuration: {
+        actions: {customer: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -533,6 +649,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -543,7 +660,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {read: true}}},
+      configuration: {
+        actions: {customer: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -559,6 +681,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -569,7 +692,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {customer: {update: true}}},
+      configuration: {
+        actions: {customer: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -585,6 +713,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -595,7 +724,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {read: true}}},
+      configuration: {
+        actions: {'customer-group': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -611,6 +745,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -621,7 +756,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {create: true}}},
+      configuration: {
+        actions: {'customer-group': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -637,6 +777,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -647,7 +788,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'customer-group': {update: true}}},
+      configuration: {
+        actions: {'customer-group': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -663,6 +809,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -673,7 +820,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'standalone-price': {read: true}}},
+      configuration: {
+        actions: {'standalone-price': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -689,6 +841,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -699,7 +852,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'standalone-price': {create: true}}},
+      configuration: {
+        actions: {'standalone-price': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -715,6 +873,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -725,7 +884,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'standalone-price': {update: true}}},
+      configuration: {
+        actions: {'standalone-price': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -741,6 +905,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -751,7 +916,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-discount': {read: true}}},
+      configuration: {
+        actions: {'product-discount': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -767,6 +937,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -777,7 +948,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-discount': {create: true}}},
+      configuration: {
+        actions: {'product-discount': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -793,6 +969,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -803,7 +980,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'product-discount': {update: true}}},
+      configuration: {
+        actions: {'product-discount': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -819,6 +1001,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -829,7 +1012,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'cart-discount': {read: true}}},
+      configuration: {
+        actions: {'cart-discount': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -845,6 +1033,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -855,7 +1044,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'cart-discount': {create: true}}},
+      configuration: {
+        actions: {'cart-discount': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -871,6 +1065,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -881,7 +1076,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'cart-discount': {update: true}}},
+      configuration: {
+        actions: {'cart-discount': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -897,6 +1097,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -907,7 +1108,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'discount-code': {read: true}}},
+      configuration: {
+        actions: {'discount-code': {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -923,6 +1129,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -933,7 +1140,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'discount-code': {create: true}}},
+      configuration: {
+        actions: {'discount-code': {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -949,6 +1161,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -959,7 +1172,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {'discount-code': {update: true}}},
+      configuration: {
+        actions: {'discount-code': {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -975,6 +1193,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -985,7 +1204,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {bulk: {create: true}}},
+      configuration: {
+        actions: {bulk: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -1001,6 +1225,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -1011,7 +1236,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {bulk: {update: true}}},
+      configuration: {
+        actions: {bulk: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -1027,6 +1257,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -1037,7 +1268,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {inventory: {read: true}}},
+      configuration: {
+        actions: {inventory: {read: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -1053,6 +1289,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -1063,7 +1300,12 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {inventory: {create: true}}},
+      configuration: {
+        actions: {inventory: {create: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -1079,6 +1321,7 @@ describe('main function', () => {
       '--authUrl=https://auth.commercetools.com',
       '--projectKey=test_project',
       '--apiUrl=https://api.commercetools.com',
+      '--isAdmin=true',
     ];
 
     await main();
@@ -1089,7 +1332,50 @@ describe('main function', () => {
       authUrl: 'https://auth.commercetools.com',
       projectKey: 'test_project',
       apiUrl: 'https://api.commercetools.com',
-      configuration: {actions: {inventory: {update: true}}},
+      configuration: {
+        actions: {inventory: {update: true}},
+        context: {
+          isAdmin: true,
+        },
+      },
+    });
+
+    expect(StdioServerTransport).toHaveBeenCalled();
+  });
+
+  it('should initialize the server with customerId and multiple allowed tools', async () => {
+    process.argv = [
+      'node',
+      'index.js',
+      '--tools=products.read,order.read,cart.read',
+      '--clientId=test_client_id',
+      '--clientSecret=test_client_secret',
+      '--authUrl=https://auth.commercetools.com',
+      '--projectKey=test_project',
+      '--apiUrl=https://api.commercetools.com',
+      '--customerId=xxx',
+      '--isAdmin=true',
+    ];
+
+    await main();
+
+    expect(CommercetoolsAgentToolkit).toHaveBeenCalledWith({
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      authUrl: 'https://auth.commercetools.com',
+      projectKey: 'test_project',
+      apiUrl: 'https://api.commercetools.com',
+      configuration: {
+        actions: {
+          products: {read: true},
+          order: {read: true},
+          cart: {read: true},
+        },
+        context: {
+          customerId: 'xxx',
+          isAdmin: true,
+        },
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();

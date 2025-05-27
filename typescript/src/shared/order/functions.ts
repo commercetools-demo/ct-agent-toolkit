@@ -1,410 +1,125 @@
+import * as customer from './customer.functions';
+import * as admin from './admin.functions';
+import * as store from './store.functions';
+import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
 import {
   readOrderParameters,
-  createOrderFromCartParameters,
-  createOrderFromQuoteParameters,
-  createOrderByImportParameters,
   updateOrderParameters,
+  createOrderParameters,
 } from './parameters';
-import {
-  ApiRoot,
-  OrderUpdateAction,
-  OrderFromCartDraft,
-  LineItemImportDraft,
-  OrderImportDraft,
-  OrderFromQuoteDraft,
-} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
-export const readOrder = async (
+export const contextToOrderFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
+  if (context?.customerId) {
+    return {
+      read_order: customer.readCustomerOrder,
+    };
+  }
+  if (context?.storeKey) {
+    return {
+      read_order: store.readStoreOrder,
+      create_order: store.createOrderInStore,
+      update_order: store.updateOrderByIdInStore,
+    };
+  }
+  if (context?.isAdmin) {
+    return {
+      read_order: admin.readOrder,
+      create_order: admin.createOrder,
+      update_order: admin.updateOrder,
+    };
+  }
+  return {};
+};
+
+// Export the individual CRUD functions for direct use in tests
+export const readOrder = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: any,
   params: z.infer<typeof readOrderParameters>
 ) => {
-  try {
-    // If id is provided, get by ID
-    if (params.id) {
-      const request = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .withId({ID: params.id});
-
-      // Add store key if provided
-      if (params.storeKey) {
-        const orderInStore = apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .withId({ID: params.id});
-
-        if (params.expand) {
-          const response = await orderInStore
-            .get({
-              queryArgs: {
-                expand: params.expand,
-              },
-            })
-            .execute();
-          return response.body;
-        } else {
-          const response = await orderInStore.get().execute();
-          return response.body;
-        }
-      }
-
-      // Add expand if provided
-      if (params.expand) {
-        const response = await request
-          .get({
-            queryArgs: {
-              expand: params.expand,
-            },
-          })
-          .execute();
-        return response.body;
-      } else {
-        const response = await request.get().execute();
-        return response.body;
-      }
-    }
-
-    // If orderNumber is provided, get by orderNumber
-    if (params.orderNumber) {
-      // If storeKey is provided, get from store
-      if (params.storeKey) {
-        const orderInStore = apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .withOrderNumber({orderNumber: params.orderNumber});
-
-        if (params.expand) {
-          const response = await orderInStore
-            .get({
-              queryArgs: {
-                expand: params.expand,
-              },
-            })
-            .execute();
-          return response.body;
-        } else {
-          const response = await orderInStore.get().execute();
-          return response.body;
-        }
-      }
-
-      // Get without store
-      const request = apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .withOrderNumber({orderNumber: params.orderNumber});
-
-      if (params.expand) {
-        const response = await request
-          .get({
-            queryArgs: {
-              expand: params.expand,
-            },
-          })
-          .execute();
-        return response.body;
-      } else {
-        const response = await request.get().execute();
-        return response.body;
-      }
-    }
-
-    // If where is provided, query orders
-    if (params.where) {
-      // If storeKey is provided, query from store
-      if (params.storeKey) {
-        const ordersInStore = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .get({
-            queryArgs: {
-              where: params.where,
-              limit: params.limit || 10,
-              ...(params.offset && {offset: params.offset}),
-              ...(params.sort && {sort: params.sort}),
-              ...(params.expand && {expand: params.expand}),
-            },
-          })
-          .execute();
-        return ordersInStore.body;
-      }
-
-      // Query without store
-      const orders = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .get({
-          queryArgs: {
-            where: params.where,
-            limit: params.limit || 10,
-            ...(params.offset && {offset: params.offset}),
-            ...(params.sort && {sort: params.sort}),
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-      return orders.body;
-    }
-
-    throw new Error(
-      'Invalid parameters. Either id, orderNumber, or where must be provided'
-    );
-  } catch (error: any) {
-    throw new SDKError('Failed to read order', error);
+  if (context?.customerId) {
+    return customer.readCustomerOrder(apiRoot, context, params);
   }
-};
-
-export const createOrderFromCart = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderFromCartParameters>
-) => {
-  try {
-    // Create order from cart
-    if (params.storeKey) {
-      // Create in store
-      const orderDraft: OrderFromCartDraft = {
-        cart: {
-          id: params.id || '',
-          typeId: 'cart',
-        },
-        version: params.version,
-        ...(params.orderNumber && {orderNumber: params.orderNumber}),
-      };
-
-      const response = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-        .orders()
-        .post({
-          body: orderDraft,
-        })
-        .execute();
-
-      return response.body;
-    } else {
-      // Create without store
-      const orderDraft: OrderFromCartDraft = {
-        cart: {
-          id: params.id || '',
-          typeId: 'cart',
-        },
-        version: params.version,
-        ...(params.orderNumber && {orderNumber: params.orderNumber}),
-      };
-
-      const response = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .orders()
-        .post({
-          body: orderDraft,
-        })
-        .execute();
-
-      return response.body;
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to create order from cart', error);
-  }
-};
-
-export const createOrderFromQuote = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderFromQuoteParameters>
-) => {
-  try {
-    // Create order from quote
-    // Note: This may require additional implementation based on the commercetools SDK
-    // The exact API path may differ based on the SDK version
-    const orderDraft: OrderFromQuoteDraft = {
-      quote: {
-        id: params.quoteId,
-        typeId: 'quote',
-      },
-      version: params.version,
-      ...(params.orderNumber && {orderNumber: params.orderNumber}),
-    };
-
-    if (params.storeKey) {
-      // Try to create in store if SDK supports it
-      try {
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .post({
-            body: orderDraft,
-          })
-          .execute();
-
-        return response.body;
-      } catch (error: any) {
-        throw new SDKError('Failed to create order from quote in store', error);
-      }
-    } else {
-      // Create without store
-      try {
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .orders()
-          .post({
-            body: orderDraft,
-          })
-          .execute();
-
-        return response.body;
-      } catch (error: any) {
-        throw new SDKError('Failed to create order from quote', error);
-      }
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to create order from quote', error);
-  }
-};
-
-export const createOrderByImport = async (
-  apiRoot: ApiRoot,
-  context: {projectKey: string},
-  params: z.infer<typeof createOrderByImportParameters>
-) => {
-  try {
-    // Transform line items to match LineItemImportDraft
-    const lineItems = params.lineItems?.map((item) => {
-      const lineItem: LineItemImportDraft = {
-        name: item.name,
-        productId: item.productId,
-        variant: {
-          id: item.variant.id,
-          sku: item.variant.sku,
-        },
-        quantity: item.quantity,
-        price: {
-          value: {
-            type: 'centPrecision',
-            currencyCode: params.totalPrice.currencyCode,
-            centAmount: params.totalPrice.centAmount,
-            fractionDigits: 2,
-          },
-        },
-      };
-      return lineItem;
+  if (context?.storeKey || params?.storeKey) {
+    return store.readStoreOrder(apiRoot, context, {
+      ...params,
+      storeKey: context?.storeKey || params.storeKey,
     });
-
-    // Import order
-    const orderImport: OrderImportDraft = {
-      ...(params.orderNumber && {orderNumber: params.orderNumber}),
-      ...(params.customerId && {customerId: params.customerId}),
-      ...(params.customerEmail && {customerEmail: params.customerEmail}),
-      ...(params.store && {store: params.store}),
-      ...(lineItems && {lineItems}),
-      totalPrice: {
-        type: 'centPrecision',
-        currencyCode: params.totalPrice.currencyCode,
-        centAmount: params.totalPrice.centAmount,
-        fractionDigits: 2,
-      },
-    };
-
-    const response = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .orders()
-      .importOrder()
-      .post({
-        body: orderImport,
-      })
-      .execute();
-
-    return response.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to import order', error);
   }
+  return admin.readOrder(apiRoot, context, params);
 };
 
-export const updateOrder = async (
+export const createOrderFromCart = (
   apiRoot: ApiRoot,
-  context: {projectKey: string},
+  context: any,
+  params: z.infer<typeof createOrderParameters>
+) => {
+  if (context?.storeKey || params?.storeKey) {
+    return store.createOrderInStore(apiRoot, context, {
+      ...params,
+      storeKey: context?.storeKey || params.storeKey,
+    });
+  }
+  return admin.createOrder(apiRoot, context, params);
+};
+
+export const createOrderFromQuote = (
+  apiRoot: ApiRoot,
+  context: any,
+  params: z.infer<typeof createOrderParameters>
+) => {
+  if (context?.storeKey || params?.storeKey) {
+    return store.createOrderInStore(apiRoot, context, {
+      ...params,
+      storeKey: context?.storeKey || params.storeKey,
+    });
+  }
+  return admin.createOrder(apiRoot, context, params);
+};
+
+export const createOrderByImport = (
+  apiRoot: ApiRoot,
+  context: any,
+  params: any
+) => {
+  // Only available in admin context
+  return admin.createOrder(apiRoot, context, params);
+};
+
+export const updateOrder = (
+  apiRoot: ApiRoot,
+  context: any,
   params: z.infer<typeof updateOrderParameters>
 ) => {
-  try {
+  if (context?.storeKey || params?.storeKey) {
+    const storeKey = context?.storeKey || params.storeKey;
+
     if (params.id) {
-      // Update by ID
-      if (params.storeKey) {
-        // Update in store
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .withId({ID: params.id})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as OrderUpdateAction[],
-            },
-          })
-          .execute();
-
-        return response.body;
-      } else {
-        // Update without store
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .orders()
-          .withId({ID: params.id})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as OrderUpdateAction[],
-            },
-          })
-          .execute();
-
-        return response.body;
-      }
+      return store.updateOrderByIdInStore(apiRoot, context, {
+        ...params,
+        id: params.id,
+        storeKey,
+      });
     } else if (params.orderNumber) {
-      // Update by orderNumber
-      if (params.storeKey) {
-        // Update in store
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .inStoreKeyWithStoreKeyValue({storeKey: params.storeKey})
-          .orders()
-          .withOrderNumber({orderNumber: params.orderNumber})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as OrderUpdateAction[],
-            },
-          })
-          .execute();
-
-        return response.body;
-      } else {
-        // Update without store
-        const response = await apiRoot
-          .withProjectKey({projectKey: context.projectKey})
-          .orders()
-          .withOrderNumber({orderNumber: params.orderNumber})
-          .post({
-            body: {
-              version: params.version,
-              actions: params.actions as OrderUpdateAction[],
-            },
-          })
-          .execute();
-
-        return response.body;
-      }
+      return store.updateOrderByOrderNumberInStore(apiRoot, context, {
+        ...params,
+        orderNumber: params.orderNumber,
+        storeKey,
+      });
     } else {
       throw new Error('Either id or orderNumber must be provided');
     }
-  } catch (error: any) {
-    throw new SDKError('Failed to update order', error);
   }
+  return admin.updateOrder(apiRoot, context, params);
 };

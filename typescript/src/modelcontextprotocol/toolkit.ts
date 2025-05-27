@@ -1,13 +1,10 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
-import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
-import {isToolAllowed} from '../shared/configuration';
-import type {Configuration} from '../types/configuration';
 import CommercetoolsAPI from '../shared/api';
-import tools from '../shared/tools';
-
+import {isToolAllowed} from '../shared/configuration';
+import {contextToTools} from '../shared/tools';
+import type {Configuration} from '../types/configuration';
 class CommercetoolsAgentToolkit extends McpServer {
   private _commercetools: CommercetoolsAPI;
-
   constructor({
     clientId,
     clientSecret,
@@ -33,23 +30,18 @@ class CommercetoolsAgentToolkit extends McpServer {
       clientSecret,
       authUrl,
       projectKey,
-      apiUrl
+      apiUrl,
+      configuration.context
     );
-
-    const filteredTools = tools.filter((tool) =>
+    const filteredTools = contextToTools(configuration.context).filter((tool) =>
       isToolAllowed(tool, configuration)
     );
-
     filteredTools.forEach((tool) => {
       this.tool(
         tool.method,
         tool.description,
         tool.parameters.shape,
-        async (
-          arg: any,
-          // @ts-ignore // If TS in IDE is wrong, but build is right with non-generic
-          _extra: RequestHandlerExtra
-        ) => {
+        async (arg: any) => {
           const result = await this._commercetools.run(tool.method, arg);
           return {
             content: [

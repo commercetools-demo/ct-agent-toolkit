@@ -1,6 +1,6 @@
 {
   "name": "@commercetools-demo/ct-agent-toolkit",
-  "version": "1.12.1",
+  "version": "1.13.0-beta.1",
   "homepage": "https://github.com/commercetools-demo/ct-agent-toolkit",
   "scripts": {
     "build": "tsup",
@@ -63,7 +63,7 @@
   },
   "peerDependencies": {
     "@langchain/core": "^0.3.6",
-    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@modelcontextprotocol/sdk": "^1.10.2",
     "ai": "^4.1.54",
     "openai": "^4.86.1"
   },

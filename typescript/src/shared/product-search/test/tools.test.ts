@@ -1,18 +1,22 @@
-import tools from '../../shared/tools';
-import productSearchTools from '../../shared/product-search/tools';
+import {contextToTools} from '../../tools';
+import {contextToProductSearchTools} from '../tools';
 
 describe('tools', () => {
   it('should include product-search tools', () => {
     // Find search_products tool in the combined tools array
+    const tools = contextToTools({isAdmin: true});
     const searchProductsTool = tools.find(
       (tool) => tool.method === 'search_products'
     );
+
+    const productSearchTools = contextToProductSearchTools({isAdmin: true});
 
     expect(searchProductsTool).toBeDefined();
     expect(searchProductsTool).toEqual(productSearchTools[0]);
   });
 
   it('should have correct structure for search_products tool', () => {
+    const tools = contextToTools({isAdmin: true});
     const searchProductsTool = tools.find(
       (tool) => tool.method === 'search_products'
     );

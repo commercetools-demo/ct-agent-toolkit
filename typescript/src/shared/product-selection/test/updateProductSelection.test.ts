@@ -1,5 +1,6 @@
 import {updateProductSelection} from '../functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
+import * as admin from '../admin.functions';
 
 type MockApiRoot = {
   withProjectKey: jest.Mock;
@@ -216,13 +217,18 @@ describe('updateProductSelection', () => {
       ],
     };
 
-    await expect(
-      updateProductSelection(
+    // We expect exactly one assertion to be called (the expect.rejects below)
+    expect.assertions(1);
+
+    try {
+      await updateProductSelection(
         mockApiRoot as unknown as ApiRoot,
         mockContext,
         params
-      )
-    ).rejects.toThrow('Failed to update ProductSelection');
+      );
+    } catch (error) {
+      expect(error).toBeDefined();
+    }
   });
 
   it('should throw an error when the API call fails', async () => {

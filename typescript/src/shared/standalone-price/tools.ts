@@ -10,9 +10,10 @@ import {
   updateStandalonePriceParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_standalone_price: {
     method: 'read_standalone_price',
     name: 'Read Standalone Price',
     description: readStandalonePricePrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_standalone_price: {
     method: 'create_standalone_price',
     name: 'Create Standalone Price',
     description: createStandalonePricePrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_standalone_price: {
     method: 'update_standalone_price',
     name: 'Update Standalone Price',
     description: updateStandalonePricePrompt,
@@ -45,6 +46,15 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToStandalonePriceTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_standalone_price,
+      tools.create_standalone_price,
+      tools.update_standalone_price,
+    ];
+  }
+  return [];
+};

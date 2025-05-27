@@ -4,129 +4,54 @@ import {
   createProductSelectionParameters,
   updateProductSelectionParameters,
 } from './parameters';
-import {
-  ApiRoot,
-  ProductSelectionDraft,
-  ProductSelectionUpdateAction,
-} from '@commercetools/platform-sdk';
-import {SDKError} from '../errors/sdkError';
+import {ApiRoot} from '@commercetools/platform-sdk';
+import * as admin from './admin.functions';
+import {CommercetoolsFuncContext, Context} from '../../types/configuration';
 
-export const readProductSelection = async (
+// We only have admin functions for product-selection as requested
+export const contextToProductSelectionFunctionMapping = (
+  context?: Context
+): Record<
+  string,
+  (
+    apiRoot: ApiRoot,
+    context: CommercetoolsFuncContext,
+    params: any
+  ) => Promise<any>
+> => {
+  if (context?.isAdmin) {
+    return {
+      read_product_selection: admin.readProductSelection,
+      create_product_selection: admin.createProductSelection,
+      update_product_selection: admin.updateProductSelection,
+    };
+  }
+
+  // If no valid context is provided, return empty object
+  return {};
+};
+
+// For backwards compatibility
+export const readProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof readProductSelectionParameters>
 ) => {
-  try {
-    if (params.id) {
-      const productSelection = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .productSelections()
-        .withId({ID: params.id})
-        .get({
-          queryArgs: {
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-
-      return productSelection.body;
-    } else if (params.key) {
-      const productSelection = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .productSelections()
-        .withKey({key: params.key})
-        .get({
-          queryArgs: {
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-
-      return productSelection.body;
-    } else {
-      const productSelections = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .productSelections()
-        .get({
-          queryArgs: {
-            limit: params.limit || 10,
-            ...(typeof params.offset !== 'undefined' && {
-              offset: params.offset,
-            }),
-            ...(params.sort && {sort: params.sort}),
-            ...(params.where && {where: params.where}),
-            ...(params.expand && {expand: params.expand}),
-          },
-        })
-        .execute();
-
-      return productSelections.body;
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to read ProductSelection', error);
-  }
+  return admin.readProductSelection(apiRoot, context, params);
 };
 
-export const createProductSelection = async (
+export const createProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof createProductSelectionParameters>
 ) => {
-  try {
-    const productSelection = await apiRoot
-      .withProjectKey({projectKey: context.projectKey})
-      .productSelections()
-      .post({
-        body: params as ProductSelectionDraft,
-      })
-      .execute();
-
-    return productSelection.body;
-  } catch (error: any) {
-    throw new SDKError('Failed to create ProductSelection', error);
-  }
+  return admin.createProductSelection(apiRoot, context, params);
 };
 
-export const updateProductSelection = async (
+export const updateProductSelection = (
   apiRoot: ApiRoot,
   context: {projectKey: string},
   params: z.infer<typeof updateProductSelectionParameters>
 ) => {
-  try {
-    if (params.id) {
-      const productSelection = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .productSelections()
-        .withId({ID: params.id})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as ProductSelectionUpdateAction[],
-          },
-        })
-        .execute();
-
-      return productSelection.body;
-    } else if (params.key) {
-      const productSelection = await apiRoot
-        .withProjectKey({projectKey: context.projectKey})
-        .productSelections()
-        .withKey({key: params.key})
-        .post({
-          body: {
-            version: params.version,
-            actions: params.actions as ProductSelectionUpdateAction[],
-          },
-        })
-        .execute();
-
-      return productSelection.body;
-    } else {
-      throw new Error(
-        'Either id or key must be provided to update a ProductSelection'
-      );
-    }
-  } catch (error: any) {
-    throw new SDKError('Failed to update ProductSelection', error);
-  }
+  return admin.updateProductSelection(apiRoot, context, params);
 };

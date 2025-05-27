@@ -9,16 +9,16 @@ importers:
   .:
     dependencies:
       '@commercetools-demo/ct-agent-toolkit':
-        specifier: ^1.12.1
-        version: 1.12.1(@langchain/core@0.3.56(openai@4.100.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.15(react@18.3.1)(zod@3.24.4))(openai@4.100.0(ws@8.18.2)(zod@3.24.4))
+        specifier: 1.13.0-beta.1
+        version: 1.13.0-beta.1(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))
       '@modelcontextprotocol/sdk':
-        specifier: ^1.9.0
+        specifier: ^1.11.0
         version: 1.11.3
       colors:
         specifier: ^1.4.0
         version: 1.4.0
       mcp:
-        specifier: ^1.4.0
+        specifier: ^1.4.2
         version: 1.4.2(@types/react@19.1.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
     devDependencies:
       '@eslint/compat':
@@ -266,12 +266,12 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@commercetools-demo/ct-agent-toolkit@1.12.1':
-    resolution: {integrity: sha512-4wfK1+taXcjYjEzUu5y3u3SdfcHvx1HCVCQ95puQYbwo7ViAql/DV01SP8QToxWSJ7xL8aXMXIxIm/m69B5t7g==}
+  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.1':
+    resolution: {integrity: sha512-q1ezfZ2Pc0iN7OLlShO2UAsT0IiQk18Cugy7zhkhpwyqU/RxNmLlCZV3XQTH8kuyYSc412xB5Cp/yeTrYNYwGw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^0.3.6
-      '@modelcontextprotocol/sdk': ^1.9.0
+      '@modelcontextprotocol/sdk': ^1.10.2
       ai: ^4.1.54
       openai: ^4.86.1
 
@@ -467,8 +467,8 @@ packages:
     peerDependencies:
       jsep: ^0.4.0||^1.0.0
 
-  '@langchain/core@0.3.56':
-    resolution: {integrity: sha512-eF9MyInM9RLNisAygiCrzHnqzOnuzGWy4f1SAqAis+XIMhcA98WuZDNWxyX9pP3aKQGc47FAJ/9XWJwv5KiquA==}
+  '@langchain/core@0.3.57':
+    resolution: {integrity: sha512-jz28qCTKJmi47b6jqhQ6vYRTG5jRpqhtPQjriRTB5wR8mgvzo6xKs0fG/kExS3ZvM79ytD1npBvgf8i19xOo9Q==}
     engines: {node: '>=18'}
 
   '@mdx-js/mdx@3.1.0':
@@ -722,8 +722,8 @@ packages:
   '@types/node-fetch@2.6.12':
     resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
-  '@types/node@18.19.100':
-    resolution: {integrity: sha512-ojmMP8SZBKprc3qGrGk8Ujpo80AXkrP7G2tOT4VWr5jlr5DHjsJF+emXJz+Wm0glmy4Js62oKMdZZ6B9Y+tEcA==}
+  '@types/node@18.19.104':
+    resolution: {integrity: sha512-mqjoYx1RjmN61vjnHWfiWzAlwvBKutoUdm+kYLPnjI5DCh8ZqofUhaTbT3WLl7bt3itR8DuCf8ShnxI0JvIC3g==}
 
   '@types/node@22.15.18':
     resolution: {integrity: sha512-v1DKRfUdyW+jJhZNEI1PYy29S2YRxMV5AOO/x/SjKmW0acCIOqmbj6Haf9eHAhsPmrhlHSxEhv/1WszcLWV4cg==}
@@ -841,8 +841,8 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
-  ai@4.3.15:
-    resolution: {integrity: sha512-TYKRzbWg6mx/pmTadlAEIhuQtzfHUV0BbLY72+zkovXwq/9xhcH24IlQmkyBpElK6/4ArS0dHdOOtR1jOPVwtg==}
+  ai@4.3.16:
+    resolution: {integrity: sha512-KUDwlThJ5tr2Vw0A1ZkbDKNME3wzWhuVfAOwIvFUzl1TPVDFAXDFTXio3p+jaKneB+dKNCvFFlolYmmgHttG1g==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -1193,8 +1193,8 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  console-table-printer@2.12.1:
-    resolution: {integrity: sha512-wKGOQRRvdnd89pCeH96e2Fn4wkbenSP6LMHfjfyNLMbGuHEFbMqQNuxXqd0oXG9caIOQ1FTvc5Uijp9/4jujnQ==}
+  console-table-printer@2.13.0:
+    resolution: {integrity: sha512-Wl1rFO1NLonYBBjrdF2SMCnfNrKr8PPooPSnQBRX3LTJsnyGjBzLcwffo8wSKuJ0kr/rgC2Ltxb3Bpb072VA9w==}
 
   content-disposition@1.0.0:
     resolution: {integrity: sha512-Au9nRL8VNUut/XSzbQA38+M78dzP4D+eqg3gfJHMIHHYa3bg067xj1KxMUWj+VULbiZMowKngFFbKczUrNJ1mg==}
@@ -2786,7 +2786,6 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
-    deprecated: Use your platform's native DOMException instead
 
   node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
@@ -2859,8 +2858,8 @@ packages:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
 
-  openai@4.100.0:
-    resolution: {integrity: sha512-9soq/wukv3utxcuD7TWFqKdKp0INWdeyhUCvxwrne5KwnxaCp4eHL4GdT/tMFhYolxgNhxFzg5GFwM331Z5CZg==}
+  openai@4.103.0:
+    resolution: {integrity: sha512-eWcz9kdurkGOFDtd5ySS5y251H2uBgq9+1a2lTBnjMMzlexJ40Am5t6Mu76SSE87VvitPa0dkIAp75F+dZVC0g==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -4057,14 +4056,14 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@commercetools-demo/ct-agent-toolkit@1.12.1(@langchain/core@0.3.56(openai@4.100.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.15(react@18.3.1)(zod@3.24.4))(openai@4.100.0(ws@8.18.2)(zod@3.24.4))':
+  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.1(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))':
     dependencies:
       '@commercetools/platform-sdk': 8.9.0
       '@commercetools/ts-client': 3.3.1
-      '@langchain/core': 0.3.56(openai@4.100.0(ws@8.18.2)(zod@3.24.4))
+      '@langchain/core': 0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4))
       '@modelcontextprotocol/sdk': 1.11.3
-      ai: 4.3.15(react@18.3.1)(zod@3.24.4)
-      openai: 4.100.0(ws@8.18.2)(zod@3.24.4)
+      ai: 4.3.16(react@18.3.1)(zod@3.24.4)
+      openai: 4.103.0(ws@8.18.2)(zod@3.24.4)
       zod: 3.24.4
       zod-to-json-schema: 3.24.5(zod@3.24.4)
 
@@ -4347,14 +4346,14 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  '@langchain/core@0.3.56(openai@4.100.0(ws@8.18.2)(zod@3.24.4))':
+  '@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.20
-      langsmith: 0.3.29(openai@4.100.0(ws@8.18.2)(zod@3.24.4))
+      langsmith: 0.3.29(openai@4.103.0(ws@8.18.2)(zod@3.24.4))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -4867,7 +4866,7 @@ snapshots:
       '@types/node': 22.15.18
       form-data: 4.0.2
 
-  '@types/node@18.19.100':
+  '@types/node@18.19.104':
     dependencies:
       undici-types: 5.26.5
 
@@ -5008,7 +5007,7 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@4.3.15(react@18.3.1)(zod@3.24.4):
+  ai@4.3.16(react@18.3.1)(zod@3.24.4):
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.8(zod@3.24.4)
@@ -5386,7 +5385,7 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  console-table-printer@2.12.1:
+  console-table-printer@2.13.0:
     dependencies:
       simple-wcswidth: 1.0.1
 
@@ -7002,17 +7001,17 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  langsmith@0.3.29(openai@4.100.0(ws@8.18.2)(zod@3.24.4)):
+  langsmith@0.3.29(openai@4.103.0(ws@8.18.2)(zod@3.24.4)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
-      console-table-printer: 2.12.1
+      console-table-printer: 2.13.0
       p-queue: 6.6.2
       p-retry: 4.6.2
       semver: 7.7.2
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.100.0(ws@8.18.2)(zod@3.24.4)
+      openai: 4.103.0(ws@8.18.2)(zod@3.24.4)
 
   lcm@0.0.3:
     dependencies:
@@ -7724,9 +7723,9 @@ snapshots:
     dependencies:
       mimic-fn: 2.1.0
 
-  openai@4.100.0(ws@8.18.2)(zod@3.24.4):
+  openai@4.103.0(ws@8.18.2)(zod@3.24.4):
     dependencies:
-      '@types/node': 18.19.100
+      '@types/node': 18.19.104
       '@types/node-fetch': 2.6.12
       abort-controller: 3.0.0
       agentkeepalive: 4.6.0

@@ -9,9 +9,10 @@ import {
   updateInventoryPrompt,
 } from './prompts';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const inventoryTools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_inventory: {
     name: 'Read Inventory',
     method: 'read_inventory',
     parameters: readInventoryParameters,
@@ -22,7 +23,7 @@ const inventoryTools: Tool[] = [
       },
     },
   },
-  {
+  create_inventory: {
     name: 'Create Inventory',
     method: 'create_inventory',
     parameters: createInventoryParameters,
@@ -33,7 +34,7 @@ const inventoryTools: Tool[] = [
       },
     },
   },
-  {
+  update_inventory: {
     name: 'Update Inventory',
     method: 'update_inventory',
     parameters: updateInventoryParameters,
@@ -44,6 +45,15 @@ const inventoryTools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default inventoryTools;
+export const contextToInventoryTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_inventory,
+      tools.create_inventory,
+      tools.update_inventory,
+    ];
+  }
+  return [];
+};

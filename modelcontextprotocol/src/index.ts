@@ -10,6 +10,10 @@ import {red, yellow} from 'colors';
 
 type Options = {
   tools?: string[];
+  customerId?: string;
+  cartId?: string;
+  isAdmin?: boolean;
+  storeKey?: string;
 };
 
 type EnvVars = {
@@ -27,6 +31,9 @@ const ACCEPTED_ARGS = [
   'authUrl',
   'projectKey',
   'apiUrl',
+  'customerId',
+  'isAdmin',
+  'storeKey',
 ];
 const ACCEPTED_TOOLS = [
   'products.read',
@@ -37,6 +44,9 @@ const ACCEPTED_TOOLS = [
   'category.read',
   'category.create',
   'category.update',
+  'channel.read',
+  'channel.create',
+  'channel.update',
   'product-selection.read',
   'product-selection.create',
   'product-selection.update',
@@ -94,6 +104,14 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
         env.projectKey = value;
       } else if (key == 'apiUrl') {
         env.apiUrl = value;
+      } else if (key == 'customerId') {
+        options.customerId = value;
+      } else if (key == 'isAdmin') {
+        options.isAdmin = value === 'true';
+      } else if (key == 'cartId') {
+        options.cartId = value;
+      } else if (key == 'storeKey') {
+        options.storeKey = value;
       } else {
         throw new Error(
           `Invalid argument: ${key}. Accepted arguments are: ${ACCEPTED_ARGS.join(
@@ -156,7 +174,15 @@ export async function main() {
 
   // Create the CommercetoolsAgentToolkit instance
   const selectedTools = options.tools!;
-  const configuration: Configuration = {actions: {}};
+  const configuration: Configuration = {
+    actions: {},
+    context: {
+      customerId: options.customerId,
+      isAdmin: options.isAdmin,
+      cartId: options.cartId,
+      storeKey: options.storeKey,
+    },
+  };
 
   if (selectedTools.includes('all')) {
     ACCEPTED_TOOLS.forEach((tool) => {

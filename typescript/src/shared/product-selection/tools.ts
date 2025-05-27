@@ -10,9 +10,10 @@ import {
   updateProductSelectionParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_product_selection: {
     method: 'read_product_selection',
     name: 'Read Product Selection',
     description: readProductSelectionPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_product_selection: {
     method: 'create_product_selection',
     name: 'Create Product Selection',
     description: createProductSelectionPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_product_selection: {
     method: 'update_product_selection',
     name: 'Update Product Selection',
     description: updateProductSelectionPrompt,
@@ -45,6 +46,15 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToProductSelectionTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_product_selection,
+      tools.create_product_selection,
+      tools.update_product_selection,
+    ];
+  }
+  return [];
+};

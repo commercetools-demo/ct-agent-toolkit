@@ -8,20 +8,22 @@ import {
   ApiRoot,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
-import {functionMapping} from './functions';
-
+import {contextToFunctionMapping} from './functions';
+import {CommercetoolsFuncContext, Context} from '../types/configuration';
 class CommercetoolsAPI {
   private authMiddlewareOptions: AuthMiddlewareOptions;
   private httpMiddlewareOptions: HttpMiddlewareOptions;
   private client: Client;
-  private apiRoot: ApiRoot;
+  public apiRoot: ApiRoot;
+  private context?: Context;
 
   constructor(
     clientId: string,
     clientSecret: string,
     authUrl: string,
     projectKey: string,
-    apiUrl: string
+    apiUrl: string,
+    context?: Context
   ) {
     this.authMiddlewareOptions = {
       credentials: {
@@ -40,10 +42,15 @@ class CommercetoolsAPI {
       .withClientCredentialsFlow(this.authMiddlewareOptions)
       .build();
     this.apiRoot = createApiBuilderFromCtpClient(this.client);
+    this.context = context;
   }
 
   async run(method: string, arg: any) {
-    const func = functionMapping[method];
+    const functionMap = contextToFunctionMapping(this.context) as Record<
+      string,
+      any
+    >;
+    const func = functionMap[method];
 
     if (!func) {
       throw new Error('Invalid method ' + method);
@@ -52,7 +59,10 @@ class CommercetoolsAPI {
     const output = JSON.stringify(
       await func(
         this.apiRoot,
-        {projectKey: this.authMiddlewareOptions.projectKey},
+        {
+          projectKey: this.authMiddlewareOptions.projectKey,
+          ...this.context,
+        } as CommercetoolsFuncContext,
         arg
       )
     );

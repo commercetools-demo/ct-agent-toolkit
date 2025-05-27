@@ -1,20 +1,19 @@
 import {
   readProductTypePrompt,
-  listProductTypesPrompt,
   createProductTypePrompt,
   updateProductTypePrompt,
 } from './prompts';
 
 import {
   readProductTypeParameters,
-  listProductTypesParameters,
   createProductTypeParameters,
   updateProductTypeParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  read_product_type: {
     method: 'read_product_type',
     name: 'Read Product Type',
     description: readProductTypePrompt,
@@ -25,18 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
-    method: 'list_product_types',
-    name: 'List Product Types',
-    description: listProductTypesPrompt,
-    parameters: listProductTypesParameters,
-    actions: {
-      'product-type': {
-        read: true,
-      },
-    },
-  },
-  {
+  create_product_type: {
     method: 'create_product_type',
     name: 'Create Product Type',
     description: createProductTypePrompt,
@@ -47,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_product_type: {
     method: 'update_product_type',
     name: 'Update Product Type',
     description: updateProductTypePrompt,
@@ -58,6 +46,15 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToProductTypeTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [
+      tools.read_product_type,
+      tools.create_product_type,
+      tools.update_product_type,
+    ];
+  }
+  return [tools.read_product_type];
+};

@@ -1,24 +1,19 @@
 import {
   createCustomerPrompt,
-  createCustomerInStorePrompt,
-  getCustomerByIdPrompt,
-  getCustomerInStoreByIdPrompt,
-  queryCustomersPrompt,
+  readCustomerPrompt,
   updateCustomerPrompt,
 } from './prompts';
 
 import {
   createCustomerParameters,
-  createCustomerInStoreParameters,
-  getCustomerByIdParameters,
-  getCustomerInStoreByIdParameters,
-  queryCustomersParameters,
+  readCustomerParameters,
   updateCustomerParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  create_customer: {
     method: 'create_customer',
     name: 'Create Customer',
     description: createCustomerPrompt,
@@ -29,51 +24,18 @@ const tools: Tool[] = [
       },
     },
   },
-  {
-    method: 'create_customer_in_store',
-    name: 'Create Customer In Store',
-    description: createCustomerInStorePrompt,
-    parameters: createCustomerInStoreParameters,
-    actions: {
-      customer: {
-        create: true,
-      },
-    },
-  },
-  {
-    method: 'get_customer_by_id',
-    name: 'Get Customer By ID',
-    description: getCustomerByIdPrompt,
-    parameters: getCustomerByIdParameters,
+  read_customer: {
+    method: 'read_customer',
+    name: 'Read Customer',
+    description: readCustomerPrompt,
+    parameters: readCustomerParameters,
     actions: {
       customer: {
         read: true,
       },
     },
   },
-  {
-    method: 'get_customer_in_store_by_id',
-    name: 'Get Customer In Store By ID',
-    description: getCustomerInStoreByIdPrompt,
-    parameters: getCustomerInStoreByIdParameters,
-    actions: {
-      customer: {
-        read: true,
-      },
-    },
-  },
-  {
-    method: 'query_customers',
-    name: 'Query Customers',
-    description: queryCustomersPrompt,
-    parameters: queryCustomersParameters,
-    actions: {
-      customer: {
-        read: true,
-      },
-    },
-  },
-  {
+  update_customer: {
     method: 'update_customer',
     name: 'Update Customer',
     description: updateCustomerPrompt,
@@ -84,6 +46,17 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToCustomerTools = (context?: Context) => {
+  if (context?.customerId) {
+    return [tools.read_customer];
+  }
+  if (context?.isAdmin) {
+    return [tools.create_customer, tools.read_customer, tools.update_customer];
+  }
+  if (context?.storeKey) {
+    return [tools.create_customer, tools.read_customer];
+  }
+  return [];
+};

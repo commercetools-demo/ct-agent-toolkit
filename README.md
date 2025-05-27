@@ -38,6 +38,9 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   authUrl: process.env.AUTH_URL!,
   apiUrl: process.env.API_URL!,
   configuration: {
+    context: {
+      isAdmin: true,
+    },
     actions: {
       products: {
         read: true,
@@ -82,7 +85,27 @@ const agentExecutor = new AgentExecutor({
 ```
 
 #### Context
-In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts].
+In some cases you will want to provide values that serve as defaults when making requests. Providing context is required to access the tools.
+
+#### Customer Context
+
+```typescript
+    const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
+      clientId: process.env.CLIENT_ID!,
+      clientSecret: process.env.CLIENT_SECRET!,
+      projectKey: process.env.PROJECT_KEY!,
+      authUrl: process.env.AUTH_URL!,
+      apiUrl: process.env.API_URL!,
+      configuration: {
+        context: {
+          customerId: "customer-12345",
+          cartId: "cart-12345",
+        },
+      },
+    });
+```
+
+#### Admin Context
 
 ```typescript
 const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
@@ -93,11 +116,32 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   apiUrl: process.env.API_URL!,
   configuration: {
     context: {
-      account: "acct_123",
+      isAdmin: true,
     },
   },
 });
 ```
+
+#### Store Context
+
+```typescript
+
+const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
+  clientId: process.env.CLIENT_ID!,
+  clientSecret: process.env.CLIENT_SECRET!,
+  projectKey: process.env.PROJECT_KEY!,
+  authUrl: process.env.AUTH_URL!,
+  apiUrl: process.env.API_URL!,
+  configuration: {
+    context: {
+      storeKey: "store-12345",
+    },
+  },
+});
+```
+
+***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`
+
 
 ## Model Context Protocol
 
@@ -113,10 +157,11 @@ Then, you might need to configure your PATH or use `npx @commercetools-demo/mcp 
 To run the commercetools MCP server directly using npx (which handles downloading the package if needed), use the following command:
 
 ```bash
-npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
+npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
 ```
 
 Replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. Or, you could set the API_SECRET_KEY in your environment variables.
+
 
 Alternatively, you can set up your own MCP server. For example:
 
@@ -131,6 +176,9 @@ const server = new CommercetoolsAgentToolkit({
   authUrl: process.env.AUTH_URL!,
   apiUrl: process.env.API_URL!,
   configuration: {
+    context: {
+      isAdmin: true,
+    },
     actions: {
       products: {
         read: true,
@@ -154,6 +202,14 @@ main().catch((error) => {
   console.error("Fatal error in main():", error);
   process.exit(1);
 });
+```
+
+#### getTools()
+
+Returns the current set of available tools that can be used with LangChain, AI SDK, or other agent frameworks:
+
+```typescript
+const tools = commercetoolsAgentToolkit.getTools();
 ```
 
 ## Supported API methods

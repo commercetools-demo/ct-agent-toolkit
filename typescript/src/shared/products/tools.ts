@@ -10,9 +10,10 @@ import {
   updateProductParameters,
 } from './parameters';
 import {Tool} from '../../types/tools';
+import {Context} from '../../types/configuration';
 
-const tools: Tool[] = [
-  {
+const tools: Record<string, Tool> = {
+  list_products: {
     method: 'list_products',
     name: 'List Products',
     description: listProductsPrompt,
@@ -23,7 +24,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  create_product: {
     method: 'create_product',
     name: 'Create Product',
     description: createProductPrompt,
@@ -34,7 +35,7 @@ const tools: Tool[] = [
       },
     },
   },
-  {
+  update_product: {
     method: 'update_product',
     name: 'Update Product',
     description: updateProductPrompt,
@@ -45,6 +46,11 @@ const tools: Tool[] = [
       },
     },
   },
-];
+};
 
-export default tools;
+export const contextToProductsTools = (context?: Context) => {
+  if (context?.isAdmin) {
+    return [tools.list_products, tools.create_product, tools.update_product];
+  }
+  return [tools.list_products];
+};
