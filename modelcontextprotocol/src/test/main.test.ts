@@ -48,10 +48,14 @@ describe('main function', () => {
           'discount-code': {read: true, create: true, update: true},
           'product-type': {read: true, create: true, update: true},
           inventory: {read: true, create: true, update: true},
+          channel: {read: true, create: true, update: true},
           bulk: {create: true, update: true},
         },
         context: {
           isAdmin: true,
+          storeKey: undefined,
+          cartId: undefined,
+          customerId: undefined,
         },
       },
     });
