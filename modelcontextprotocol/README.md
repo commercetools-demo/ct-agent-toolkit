@@ -4,19 +4,26 @@
 
 To run the commercetools MCP server using npx, use the following command:
 
-````bash
+```bash
 # To set up all available tools
-npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
+npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
 
+```
+
+```bash
 # To set up specific tools
-npx -y @commercetools-demo/mcp --tools=products.read --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
+npx -y @commercetools-demo/mcp --tools=products.read,products.create --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
 
-# Additional optional parameters:
+# Additional optional parameters (providing one of the following parameters is required)
 # --isAdmin           Enable admin access for backend operations (not restricted to a specific customer)
 # --customerId        Restrict operations to a specific customer (e.g., --customerId=CUSTOMER_ID)
 # --cartId            Restrict operations to a specific cart (e.g., --cartId=CART_ID)
+# --storeKey          Restrict operations to a specific store (e.g., --storeKey=STORE_KEY)
 
+```
 Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. If using the customerId parameter, replace `CUSTOMER_ID` with the actual customer ID. Alternatively, you could set the API_KEY in your environment variables.
+
+***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`
 
 ### Usage with Claude Desktop
 
@@ -39,6 +46,7 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
         // Optional: add "--isAdmin" for admin access
         // Optional: add "--customerId=CUSTOMER_ID" to restrict to a specific customer
         // Optional: add "--cartId=CART_ID" to restrict to a specific cart
+        // Optional: add "--storeKey=STORE_KEY" to restrict to a specific store
       ]
     }
   }
@@ -158,6 +166,7 @@ Configure MCP servers in Claude Desktop
         // Optional: add "--isAdmin" for admin access
         // Optional: add "--customerId=CUSTOMER_ID" to restrict to a specific customer
         // Optional: add "--cartId=CART_ID" to restrict to a specific cart
+        // Optional: add "--storeKey=STORE_KEY" to restrict to a specific store
       ]
     }
   }
@@ -182,6 +191,7 @@ npx @modelcontextprotocol/inspector node dist/index.js --tools=all --clientId=CL
 # Optional: add --isAdmin for admin access
 # Optional: add --customerId=CUSTOMER_ID to restrict to a specific customer
 # Optional: add --cartId=CART_ID to restrict to a specific cart
+# Optional: add --storeKey=STORE_KEY to restrict to a specific store
 ```
 
 ### Instructions
