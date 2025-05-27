@@ -12,20 +12,10 @@ export const readCustomerProfile = async (
   params: z.infer<typeof readCustomerParameters>
 ) => {
   try {
-    // Customer can only access their own profile
-    if (!params.id && params.id !== context.customerId) {
-      throw new SDKError(
-        'Access denied: Customers can only view their own profile',
-        {
-          statusCode: 403,
-        }
-      );
-    }
-
     return await readCustomerById(
       apiRoot,
       context.projectKey,
-      params.id!,
+      context.customerId!,
       params.expand
     );
   } catch (error: any) {
