@@ -21,9 +21,10 @@ npx -y @commercetools-demo/mcp --tools=products.read,products.create --clientId=
 # --storeKey          Restrict operations to a specific store (e.g., --storeKey=STORE_KEY)
 
 ```
+
 Make sure to replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. If using the customerId parameter, replace `CUSTOMER_ID` with the actual customer ID. Alternatively, you could set the API_KEY in your environment variables.
 
-***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`
+**_Note:_** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`
 
 ### Usage with Claude Desktop
 
@@ -51,7 +52,7 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
     }
   }
 }
-````
+```
 
 ## Available tools
 
