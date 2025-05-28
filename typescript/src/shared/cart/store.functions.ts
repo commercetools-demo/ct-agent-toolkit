@@ -30,9 +30,7 @@ export const readCart = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
     // Case 0: If context.cartId is provided, always return that cart
     if (context.cartId) {
@@ -43,9 +41,7 @@ export const readCart = async (
         params.expand
       );
       if (cart.store?.key !== context.storeKey) {
-        throw new SDKError('Cart not found', {
-          statusCode: 404,
-        });
+        throw new SDKError('Cart not found', {});
       }
       return cart;
     }
@@ -58,9 +54,7 @@ export const readCart = async (
         params.expand
       );
       if (cart.store?.key !== context.storeKey) {
-        throw new SDKError('Cart not found', {
-          statusCode: 404,
-        });
+        throw new SDKError('Cart not found', {});
       }
       return cart;
     }
@@ -131,9 +125,7 @@ export const createCart = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     // Ensure the store key is set
@@ -164,9 +156,7 @@ export const replicateCart = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     // Verify that the cart to be replicated belongs to the store
@@ -203,9 +193,7 @@ export const updateCart = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     const cartId = context.cartId || params.id;
@@ -227,9 +215,7 @@ export const updateCart = async (
         });
       }
     } else {
-      throw new SDKError('Either cart ID or key must be provided', {
-        statusCode: 400,
-      });
+      throw new SDKError('Either cart ID or key must be provided', {});
     }
 
     // Always use in-store endpoint when we have store context
@@ -251,9 +237,7 @@ export const updateCart = async (
       );
     }
 
-    throw new SDKError('Failed to update cart', {
-      statusCode: 500,
-    });
+    throw new SDKError('Failed to update cart', {});
   } catch (error: any) {
     throw new SDKError('Failed to update cart', error);
   }

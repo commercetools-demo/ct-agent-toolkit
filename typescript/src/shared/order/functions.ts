@@ -57,6 +57,10 @@ export const readOrder = (
   context: any,
   params: z.infer<typeof readOrderParameters>
 ) => {
+  // Prioritize as-associate when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return asAssociate.readAssociateOrder(apiRoot, context, params);
+  }
   if (context?.customerId) {
     return customer.readCustomerOrder(apiRoot, context, params);
   }
@@ -74,6 +78,10 @@ export const createOrderFromCart = (
   context: any,
   params: z.infer<typeof createOrderParameters>
 ) => {
+  // Prioritize as-associate when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return asAssociate.createAssociateOrder(apiRoot, context, params);
+  }
   if (context?.storeKey || params?.storeKey) {
     return store.createOrderInStore(apiRoot, context, {
       ...params,
@@ -88,6 +96,10 @@ export const createOrderFromQuote = (
   context: any,
   params: z.infer<typeof createOrderParameters>
 ) => {
+  // Prioritize as-associate when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return asAssociate.createAssociateOrder(apiRoot, context, params);
+  }
   if (context?.storeKey || params?.storeKey) {
     return store.createOrderInStore(apiRoot, context, {
       ...params,
@@ -111,6 +123,10 @@ export const updateOrder = (
   context: any,
   params: z.infer<typeof updateOrderParameters>
 ) => {
+  // Prioritize as-associate when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return asAssociate.updateAssociateOrder(apiRoot, context, params);
+  }
   if (context?.storeKey || params?.storeKey) {
     const storeKey = context?.storeKey || params.storeKey;
 

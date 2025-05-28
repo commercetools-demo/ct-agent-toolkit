@@ -7,6 +7,7 @@ import {
 } from '../functions';
 import {SDKError} from '../../errors/sdkError';
 import * as baseFunctions from '../base.functions';
+import * as asAssociateFunctions from '../as-associate.functions';
 
 // Mock the base functions module
 jest.mock('../base.functions', () => ({
@@ -14,6 +15,13 @@ jest.mock('../base.functions', () => ({
   readOrderByOrderNumber: jest.fn(),
   updateOrderById: jest.fn(),
   updateOrderByOrderNumber: jest.fn(),
+}));
+
+// Mock the as-associate functions module
+jest.mock('../as-associate.functions', () => ({
+  readAssociateOrder: jest.fn(),
+  createAssociateOrder: jest.fn(),
+  updateAssociateOrder: jest.fn(),
 }));
 
 // Mock the entire ApiRoot
@@ -93,6 +101,51 @@ describe('Order Functions', () => {
         'test-project',
         'order-123',
         undefined
+      );
+      expect(result).toEqual(mockOrder);
+    });
+
+    it('should route to associate functions when both customerId and businessUnitKey are present', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      // Mock the associate function
+      (
+        asAssociateFunctions.readAssociateOrder as jest.Mock
+      ).mockResolvedValueOnce(mockOrder);
+
+      // Call function with both customerId and businessUnitKey
+      const result = await readOrder(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {id: 'order-123'}
+      );
+
+      // Verify associate function was called
+      expect(asAssociateFunctions.readAssociateOrder).toHaveBeenCalledWith(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {id: 'order-123'}
       );
       expect(result).toEqual(mockOrder);
     });
@@ -235,6 +288,51 @@ describe('Order Functions', () => {
       });
       expect(result).toEqual(mockOrder);
     });
+
+    it('should route to associate functions when both customerId and businessUnitKey are present', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'new-order-123',
+        version: 1,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      // Mock the associate function
+      (
+        asAssociateFunctions.createAssociateOrder as jest.Mock
+      ).mockResolvedValueOnce(mockOrder);
+
+      // Call function with both customerId and businessUnitKey
+      const result = await createOrderFromCart(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {id: 'cart-123', version: 1} as any
+      );
+
+      // Verify associate function was called
+      expect(asAssociateFunctions.createAssociateOrder).toHaveBeenCalledWith(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {id: 'cart-123', version: 1}
+      );
+      expect(result).toEqual(mockOrder);
+    });
   });
 
   describe('createOrderFromQuote', () => {
@@ -308,6 +406,59 @@ describe('Order Functions', () => {
 
       // Verify that the base function was called correctly
       expect(baseFunctions.updateOrderById).toHaveBeenCalled();
+      expect(result).toEqual(mockOrder);
+    });
+
+    it('should route to associate functions when both customerId and businessUnitKey are present', async () => {
+      // Setup mock response
+      const mockOrder: Partial<Order> = {
+        id: 'order-123',
+        version: 2,
+        lineItems: [],
+        customLineItems: [],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 1000,
+          fractionDigits: 2,
+        },
+        orderState: 'Open',
+      };
+
+      // Mock the associate function
+      (
+        asAssociateFunctions.updateAssociateOrder as jest.Mock
+      ).mockResolvedValueOnce(mockOrder);
+
+      // Call function with both customerId and businessUnitKey
+      const result = await updateOrder(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {
+          id: 'order-123',
+          version: 1,
+          actions: [{action: 'setOrderNumber', orderNumber: 'NEW-123'}],
+        }
+      );
+
+      // Verify associate function was called
+      expect(asAssociateFunctions.updateAssociateOrder).toHaveBeenCalledWith(
+        mockApiRoot,
+        {
+          projectKey: 'test-project',
+          customerId: 'associate-123',
+          businessUnitKey: 'business-unit-456',
+        },
+        {
+          id: 'order-123',
+          version: 1,
+          actions: [{action: 'setOrderNumber', orderNumber: 'NEW-123'}],
+        }
+      );
       expect(result).toEqual(mockOrder);
     });
 

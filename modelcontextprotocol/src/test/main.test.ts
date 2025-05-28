@@ -42,6 +42,7 @@ describe('main function', () => {
           cart: {read: true, create: true, update: true},
           customer: {read: true, create: true, update: true},
           'customer-group': {read: true, create: true, update: true},
+          'quote-request': {read: true, create: true, update: true},
           'standalone-price': {read: true, create: true, update: true},
           'product-discount': {read: true, create: true, update: true},
           'cart-discount': {read: true, create: true, update: true},
