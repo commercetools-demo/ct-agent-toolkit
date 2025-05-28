@@ -83,6 +83,15 @@ const tools: Record<string, Tool> = {
 };
 
 export const contextToCartTools = (context?: Context) => {
+  // Associate cart tools when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return [
+      tools.read_cart,
+      tools.create_cart,
+      tools.update_cart,
+      tools.replicate_cart,
+    ];
+  }
   if (context?.customerId) {
     return [
       tools.read_cart,

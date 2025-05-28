@@ -95,11 +95,13 @@ describe('parseArgs function', () => {
         '--projectKey=test_project',
         '--apiUrl=https://api.commercetools.com',
         '--customerId=xxx',
+        '--businessUnitKey=yyy',
         '--isAdmin=true',
       ];
       const {options} = parseArgs(args);
       expect(options.customerId).toBe('xxx');
       expect(options.isAdmin).toBe(true);
+      expect(options.businessUnitKey).toBe('yyy');
     });
 
     it('should correctly parse isAdmin as boolean', () => {

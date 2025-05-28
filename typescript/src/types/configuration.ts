@@ -25,6 +25,7 @@ export type Context = {
   supplyChannelId?: string;
   isAdmin?: boolean;
   cartId?: string;
+  businessUnitKey?: string;
 };
 
 export type CommercetoolsFuncContext = Context & {

@@ -145,8 +145,25 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 });
 ```
 
-***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`
+#### Associate Context
 
+```typescript
+const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
+  clientId: process.env.CLIENT_ID!,
+  clientSecret: process.env.CLIENT_SECRET!,
+  projectKey: process.env.PROJECT_KEY!,
+  authUrl: process.env.AUTH_URL!,
+  apiUrl: process.env.API_URL!,
+  configuration: {
+    context: {
+      customerId: "customer-12345", // Required for associate operations
+      businessUnitKey: "business-unit-12345",
+    },
+  },
+});
+```
+
+***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`, or both `--customerId` and `--businessUnitKey` for associate operations
 
 ## Model Context Protocol
 

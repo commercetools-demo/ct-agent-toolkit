@@ -14,6 +14,7 @@ type Options = {
   cartId?: string;
   isAdmin?: boolean;
   storeKey?: string;
+  businessUnitKey?: string;
 };
 
 type EnvVars = {
@@ -34,6 +35,7 @@ const ACCEPTED_ARGS = [
   'customerId',
   'isAdmin',
   'storeKey',
+  'businessUnitKey',
 ];
 const ACCEPTED_TOOLS = [
   'business-unit.read',
@@ -118,6 +120,8 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
         options.cartId = value;
       } else if (key == 'storeKey') {
         options.storeKey = value;
+      } else if (key == 'businessUnitKey') {
+        options.businessUnitKey = value;
       } else {
         throw new Error(
           `Invalid argument: ${key}. Accepted arguments are: ${ACCEPTED_ARGS.join(
@@ -187,6 +191,7 @@ export async function main() {
       isAdmin: options.isAdmin,
       cartId: options.cartId,
       storeKey: options.storeKey,
+      businessUnitKey: options.businessUnitKey,
     },
   };
 
