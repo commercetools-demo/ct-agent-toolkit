@@ -11,6 +11,7 @@ import {createCustomerGroupParametersSchema} from '../customer-group/parameters'
 import {createStandalonePriceParameters} from '../standalone-price/parameters';
 import {createInventoryParameters} from '../inventory/parameters';
 import {createOrderParameters} from '../order/parameters';
+import {createStoreParameters} from '../store/parameters';
 
 import {updateProductParameters} from '../products/parameters';
 import {updateCustomerParameters} from '../customer/parameters';
@@ -26,6 +27,7 @@ import {updateInventoryParameters} from '../inventory/parameters';
 import {updateOrderParameters} from '../order/parameters';
 import {updateProductSelectionParameters} from '../product-selection/parameters';
 import {updateProductTypeParameters} from '../product-type/parameters';
+import {updateStoreParameters} from '../store/parameters';
 
 // Define the bulk create parameters for products
 export const bulkCreateParameters = z.object({
@@ -44,6 +46,7 @@ export const bulkCreateParameters = z.object({
         'standalone-price',
         'order',
         'inventory',
+        'store',
       ]),
       data: z.union([
         createProductParameters,
@@ -58,6 +61,7 @@ export const bulkCreateParameters = z.object({
         createStandalonePriceParameters,
         createInventoryParameters,
         createOrderParameters,
+        createStoreParameters,
       ]),
     })
   ),
@@ -82,6 +86,7 @@ export const bulkUpdateParameters = z.object({
         'order',
         'product-selection',
         'product-type',
+        'store',
       ]),
       data: z.union([
         updateProductParameters,
@@ -98,6 +103,7 @@ export const bulkUpdateParameters = z.object({
         updateOrderParameters,
         updateProductSelectionParameters,
         updateProductTypeParameters,
+        updateStoreParameters,
       ]),
     })
   ),

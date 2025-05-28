@@ -82,6 +82,9 @@ const ACCEPTED_TOOLS = [
   'inventory.read',
   'inventory.create',
   'inventory.update',
+  'store.read',
+  'store.create',
+  'store.update',
 ];
 
 export function parseArgs(args: string[]): {options: Options; env: EnvVars} {

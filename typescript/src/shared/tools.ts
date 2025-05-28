@@ -15,6 +15,7 @@ import {contextToDiscountCodeTools} from './discount-code/tools';
 import {contextToProductTypeTools} from './product-type/tools';
 import {contextToBulkTools} from './bulk/tools';
 import {contextToInventoryTools} from './inventory/tools';
+import {contextToStoreTools} from './store/tools';
 import {Context} from '../types/configuration';
 
 export const contextToTools = (context?: Context) => {
@@ -35,6 +36,7 @@ export const contextToTools = (context?: Context) => {
     ...contextToStandalonePriceTools(context),
     ...contextToProductDiscountTools(context),
     ...contextToProductTypeTools(context),
+    ...contextToStoreTools(context),
     ...contextToBulkTools(context),
   ];
 };

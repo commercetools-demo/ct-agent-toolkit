@@ -17,6 +17,7 @@ import {contextToProductTypeFunctionMapping} from './product-type/functions';
 import {contextToProductFunctionMapping} from './products/functions';
 import {contextToProjectFunctionMapping} from './project/functions';
 import {contextToStandalonePriceFunctionMapping} from './standalone-price/functions';
+import {contextToStoreFunctionMapping} from './store/functions';
 
 export const contextToFunctionMapping = (
   context?: Context
@@ -45,6 +46,7 @@ export const contextToFunctionMapping = (
     ...contextToProductFunctionMapping(context),
     ...contextToProjectFunctionMapping(context),
     ...contextToStandalonePriceFunctionMapping(context),
+    ...contextToStoreFunctionMapping(context),
     ...contextToBulkFunctionMapping(context),
   };
 };

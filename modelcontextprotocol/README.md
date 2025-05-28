@@ -104,6 +104,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `inventory.read`           | Read inventory information              |
 | `inventory.create`         | Create inventory                        |
 | `inventory.update`         | Update inventory information            |
+| `store.read`               | Read store information                  |
+| `store.create`             | Create store                            |
+| `store.update`             | Update store information                |
 
 ## Debugging locally
 

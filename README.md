@@ -248,3 +248,6 @@ const tools = commercetoolsAgentToolkit.getTools();
 - [List product types](https://docs.commercetools.com/api/projects/productTypes#query-producttypes)
 - [Create product type](https://docs.commercetools.com/api/projects/productTypes#create-producttype)
 - [Update product type](https://docs.commercetools.com/api/projects/productTypes#update-producttype)
+- [Read store](https://docs.commercetools.com/api/projects/stores#get-store-by-id)
+- [Create store](https://docs.commercetools.com/api/projects/stores#create-store)
+- [Update store](https://docs.commercetools.com/api/projects/stores#update-store)
