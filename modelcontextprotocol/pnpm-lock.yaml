@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@commercetools-demo/ct-agent-toolkit':
-        specifier: 1.13.0-beta.3
-        version: 1.13.0-beta.3(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))
+        specifier: 1.13.0-beta.4
+        version: 1.13.0-beta.4(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.0
         version: 1.11.3
@@ -257,8 +257,8 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.3':
-    resolution: {integrity: sha512-JgnLyc/629cBB9tSZSbcKv/mkaRlUT4LcqSPVeyS+W7PLk3EC6F92nX1qIPgHTu7LrdbH9JU0uwMt5ch5rM9eQ==}
+  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.4':
+    resolution: {integrity: sha512-6/AYZqLhjja5e2F0glvHcfGaDQbIEBDBMHcg5S8rh5O3c9+8rNtufRJMecCV1LIYs/TahsxzUv40vFTwv9JuTg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^0.3.6
@@ -2823,7 +2823,7 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.3(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))':
+  '@commercetools-demo/ct-agent-toolkit@1.13.0-beta.4(@langchain/core@0.3.57(openai@4.103.0(ws@8.18.2)(zod@3.24.4)))(@modelcontextprotocol/sdk@1.11.3)(ai@4.3.16(react@18.3.1)(zod@3.24.4))(openai@4.103.0(ws@8.18.2)(zod@3.24.4))':
     dependencies:
       '@commercetools/platform-sdk': 8.9.0
       '@commercetools/ts-client': 3.3.1
