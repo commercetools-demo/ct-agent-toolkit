@@ -13,6 +13,7 @@ import {createCustomerGroup} from '../customer-group/functions';
 import {createStandalonePrice} from '../standalone-price/functions';
 import {createInventory} from '../inventory/functions';
 import {createOrder} from '../order/admin.functions';
+import {createStore} from '../store/functions';
 
 // import {updateCart} from '../cart/functions';
 import {updateCartDiscount} from '../cart-discount/functions';
@@ -28,6 +29,7 @@ import {updateProductDiscount} from '../product-discount/functions';
 import {updateProductSelection} from '../product-selection/functions';
 import {updateProductType} from '../product-type/functions';
 import {updateStandalonePrice} from '../standalone-price/functions';
+import {updateStore} from '../store/functions';
 import {CommercetoolsFuncContext} from '../../types/configuration';
 
 type EntityFunctionMap = {
@@ -52,6 +54,7 @@ const entityFunctionMap: EntityFunctionMap = {
   'standalone-price': createStandalonePrice,
   inventory: createInventory,
   order: createOrder,
+  store: createStore,
 };
 
 // Map entity types to their respective update functions
@@ -70,6 +73,7 @@ const entityUpdateFunctionMap: EntityFunctionMap = {
   'product-selection': updateProductSelection,
   'product-type': updateProductType,
   'standalone-price': updateStandalonePrice,
+  store: updateStore,
 };
 
 export const bulkCreate = async (

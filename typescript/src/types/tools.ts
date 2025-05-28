@@ -17,6 +17,7 @@ export enum AvailableNamespaces {
   ProductType = 'product-type',
   Bulk = 'bulk',
   Inventory = 'inventory',
+  Store = 'store',
 }
 
 export type Tool = {

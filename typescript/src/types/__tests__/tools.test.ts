@@ -65,6 +65,10 @@ describe('types/tools.ts', () => {
     it('should have the correct string value for Inventory', () => {
       expect(AvailableNamespaces.Inventory).toBe('inventory');
     });
+
+    it('should have the correct string value for Store', () => {
+      expect(AvailableNamespaces.Store).toBe('store');
+    });
   });
 
   // Note: The 'Tool' type alias defined in '../tools.ts' is a compile-time construct.

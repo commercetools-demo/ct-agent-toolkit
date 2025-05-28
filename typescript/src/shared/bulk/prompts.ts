@@ -19,6 +19,7 @@ Supported entity types:
 - customer-group
 - standalone-price
 - inventory
+- store
 
 Parameters:
 - items: An array of objects, each containing:
@@ -99,6 +100,7 @@ The supported entity types are:
 - customer-group
 - standalone-price
 - inventory
+- store
 
 # PARAMETERS
 "items": [
@@ -190,6 +192,7 @@ Supported entity types:
 - order
 - product-selection
 - product-type
+- store
 
 Parameters:
 - items: An array of objects, each containing:
