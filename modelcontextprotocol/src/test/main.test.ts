@@ -51,6 +51,7 @@ describe('main function', () => {
           channel: {read: true, create: true, update: true},
           store: {read: true, create: true, update: true},
           bulk: {create: true, update: true},
+          'business-unit': {read: true, create: true, update: true},
         },
         context: {
           isAdmin: true,
