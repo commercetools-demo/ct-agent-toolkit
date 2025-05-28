@@ -1,6 +1,7 @@
 import {z} from 'zod';
 import {bulkCreateParameters, bulkUpdateParameters} from './parameters';
 import {ApiRoot} from '@commercetools/platform-sdk';
+import {createBusinessUnit} from '../business-unit/functions';
 import {createProduct} from '../products/functions';
 import {createCustomer} from '../customer/functions';
 // import {createCart} from '../cart/functions';
@@ -16,6 +17,7 @@ import {createOrder} from '../order/admin.functions';
 import {createStore} from '../store/functions';
 
 // import {updateCart} from '../cart/functions';
+import {updateBusinessUnit} from '../business-unit/functions';
 import {updateCartDiscount} from '../cart-discount/functions';
 import {updateCategory} from '../category/functions';
 import {updateChannel} from '../channel/functions';
@@ -42,6 +44,7 @@ type EntityFunctionMap = {
 
 // Map entity types to their respective create functions
 const entityFunctionMap: EntityFunctionMap = {
+  'business-unit': createBusinessUnit,
   // cart: createCart,
   'cart-discount': createCartDiscount,
   category: createCategory,
@@ -59,6 +62,7 @@ const entityFunctionMap: EntityFunctionMap = {
 
 // Map entity types to their respective update functions
 const entityUpdateFunctionMap: EntityFunctionMap = {
+  'business-unit': updateBusinessUnit,
   // cart: updateCart,
   'cart-discount': updateCartDiscount,
   category: updateCategory,

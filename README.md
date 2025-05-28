@@ -58,6 +58,11 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
         create: true,
         update: true,
       },
+      'business-unit': {
+        read: true,
+        create: true,
+        update: true,
+      },
     },
   },
 });
@@ -251,3 +256,6 @@ const tools = commercetoolsAgentToolkit.getTools();
 - [Read store](https://docs.commercetools.com/api/projects/stores#get-store-by-id)
 - [Create store](https://docs.commercetools.com/api/projects/stores#create-store)
 - [Update store](https://docs.commercetools.com/api/projects/stores#update-store)
+- [Read business unit](https://docs.commercetools.com/api/projects/business-units#get-businessunit-by-id)
+- [Create business unit](https://docs.commercetools.com/api/projects/business-units#create-businessunit)
+- [Update business unit](https://docs.commercetools.com/api/projects/business-units#update-businessunit)

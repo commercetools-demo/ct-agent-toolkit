@@ -36,6 +36,9 @@ const ACCEPTED_ARGS = [
   'storeKey',
 ];
 const ACCEPTED_TOOLS = [
+  'business-unit.read',
+  'business-unit.create',
+  'business-unit.update',
   'products.read',
   'products.create',
   'products.update',

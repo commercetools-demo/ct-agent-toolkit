@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {createBusinessUnitParameters} from '../business-unit/parameters';
 import {createProductParameters} from '../products/parameters';
 import {createCustomerParameters} from '../customer/parameters';
 import {createCartParameters} from '../cart/parameters';
@@ -13,6 +14,7 @@ import {createInventoryParameters} from '../inventory/parameters';
 import {createOrderParameters} from '../order/parameters';
 import {createStoreParameters} from '../store/parameters';
 
+import {updateBusinessUnitParameters} from '../business-unit/parameters';
 import {updateProductParameters} from '../products/parameters';
 import {updateCustomerParameters} from '../customer/parameters';
 import {updateCartParameters} from '../cart/parameters';
@@ -34,6 +36,7 @@ export const bulkCreateParameters = z.object({
   items: z.array(
     z.object({
       entityType: z.enum([
+        'business-unit',
         'product',
         'customer',
         'cart',
@@ -49,6 +52,7 @@ export const bulkCreateParameters = z.object({
         'store',
       ]),
       data: z.union([
+        createBusinessUnitParameters,
         createProductParameters,
         createCustomerParameters,
         createCartParameters,
@@ -72,6 +76,7 @@ export const bulkUpdateParameters = z.object({
   items: z.array(
     z.object({
       entityType: z.enum([
+        'business-unit',
         'product',
         'customer',
         'cart',
@@ -89,6 +94,7 @@ export const bulkUpdateParameters = z.object({
         'store',
       ]),
       data: z.union([
+        updateBusinessUnitParameters,
         updateProductParameters,
         updateCustomerParameters,
         updateCartParameters,

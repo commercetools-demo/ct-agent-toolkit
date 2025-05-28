@@ -1,3 +1,4 @@
+import {contextToBusinessUnitTools} from './business-unit/tools';
 import {contextToProductsTools} from './products/tools';
 import {contextToProjectTools} from './project/tools';
 import {contextToProductSearchTools} from './product-search/tools';
@@ -20,6 +21,7 @@ import {Context} from '../types/configuration';
 
 export const contextToTools = (context?: Context) => {
   return [
+    ...contextToBusinessUnitTools(context),
     ...contextToCartTools(context),
     ...contextToCartDiscountTools(context),
     ...contextToCategoryTools(context),
