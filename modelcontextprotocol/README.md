@@ -107,6 +107,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `store.read`               | Read store information                  |
 | `store.create`             | Create store                            |
 | `store.update`             | Update store information                |
+| `business-unit.read`       | Read business unit information          |
+| `business-unit.create`     | Create business unit                    |
+| `business-unit.update`     | Update business unit information        |
 
 ## Debugging locally
 

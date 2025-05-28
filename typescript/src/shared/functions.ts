@@ -1,6 +1,7 @@
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {CommercetoolsFuncContext, Context} from '../types/configuration';
 import {contextToBulkFunctionMapping} from './bulk/functions';
+import {contextToBusinessUnitFunctionMapping} from './business-unit/functions';
 import {contextToCartDiscountFunctionMapping} from './cart-discount/functions';
 import {contextToCartFunctionMapping} from './cart/functions';
 import {contextToCategoryFunctionMapping} from './category/functions';
@@ -30,6 +31,7 @@ export const contextToFunctionMapping = (
   ) => Promise<any>
 > => {
   return {
+    ...contextToBusinessUnitFunctionMapping(context),
     ...contextToOrderFunctionMapping(context),
     ...contextToCartFunctionMapping(context),
     ...contextToCartDiscountFunctionMapping(context),

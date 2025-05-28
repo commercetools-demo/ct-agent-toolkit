@@ -1,6 +1,7 @@
 import {z} from 'zod';
 
 export enum AvailableNamespaces {
+  BusinessUnit = 'business-unit',
   Products = 'products',
   Project = 'project',
   ProductSearch = 'product-search',
