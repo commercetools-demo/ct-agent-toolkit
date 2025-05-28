@@ -51,6 +51,9 @@ const tools: Record<string, Tool> = {
 };
 
 export const contextToOrderTools = (context?: Context) => {
+  if (context?.customerId && context?.businessUnitKey) {
+    return [tools.read_order, tools.create_order, tools.update_order];
+  }
   if (context?.customerId) {
     return [tools.read_order];
   }
