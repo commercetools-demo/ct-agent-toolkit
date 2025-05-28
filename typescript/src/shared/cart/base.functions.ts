@@ -276,11 +276,233 @@ export const replicateCart = async (
   key?: string,
   storeKey?: string
 ) => {
-  if (storeKey) {
-    // Using in-store endpoint
+  try {
+    const projectApiRoot = apiRoot.withProjectKey({
+      projectKey,
+    });
+
+    let apiRequest;
+    if (storeKey) {
+      apiRequest = projectApiRoot
+        .inStoreKeyWithStoreKeyValue({storeKey})
+        .carts();
+    } else {
+      apiRequest = projectApiRoot.carts();
+    }
+
+    const replicatedCart = await apiRequest
+      .replicate()
+      .post({
+        body: {
+          reference,
+          ...(key && {key}),
+        },
+      })
+      .execute();
+
+    return replicatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to replicate cart: ${error.message}`);
+  }
+};
+
+// Associate Cart Functions
+export const readAssociateCartById = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  id: string,
+  expand?: string[]
+) => {
+  const cart = await apiRoot
+    .withProjectKey({projectKey})
+    .asAssociate()
+    .withAssociateIdValue({associateId})
+    .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+    .carts()
+    .withId({ID: id})
+    .get({
+      queryArgs: {
+        ...(expand && {expand}),
+      },
+    })
+    .execute();
+  return cart.body;
+};
+
+export const readAssociateCartByKey = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  key: string,
+  expand?: string[]
+) => {
+  const cart = await apiRoot
+    .withProjectKey({projectKey})
+    .asAssociate()
+    .withAssociateIdValue({associateId})
+    .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+    .carts()
+    .withKey({key})
+    .get({
+      queryArgs: {
+        ...(expand && {expand}),
+      },
+    })
+    .execute();
+  return cart.body;
+};
+
+export const queryAssociateCarts = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  where?: string[],
+  limit?: number,
+  offset?: number,
+  sort?: string[],
+  expand?: string[]
+) => {
+  const queryArgs = {
+    ...(where && {where}),
+    limit: limit || 10,
+    ...(offset && {offset}),
+    ...(sort && {sort}),
+    ...(expand && {expand}),
+  };
+
+  const carts = await apiRoot
+    .withProjectKey({projectKey})
+    .asAssociate()
+    .withAssociateIdValue({associateId})
+    .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+    .carts()
+    .get({queryArgs})
+    .execute();
+  return carts.body;
+};
+
+export const createAssociateCart = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  cartDraft: CartDraft
+) => {
+  try {
     const cart = await apiRoot
       .withProjectKey({projectKey})
-      .inStoreKeyWithStoreKeyValue({storeKey})
+      .asAssociate()
+      .withAssociateIdValue({associateId})
+      .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+      .carts()
+      .post({
+        body: cartDraft,
+      })
+      .execute();
+    return cart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to create associate cart: ${error.message}`);
+  }
+};
+
+export const updateAssociateCartById = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  id: string,
+  actions: CartUpdateAction[]
+) => {
+  try {
+    // First fetch the cart to get the latest version
+    const cart = await readAssociateCartById(
+      apiRoot,
+      projectKey,
+      associateId,
+      businessUnitKey,
+      id
+    );
+    const currentVersion = cart.version;
+
+    const updatedCart = await apiRoot
+      .withProjectKey({projectKey})
+      .asAssociate()
+      .withAssociateIdValue({associateId})
+      .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+      .carts()
+      .withId({ID: id})
+      .post({
+        body: {
+          version: currentVersion,
+          actions,
+        },
+      })
+      .execute();
+
+    return updatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to update associate cart by ID: ${error.message}`);
+  }
+};
+
+export const updateAssociateCartByKey = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  key: string,
+  actions: CartUpdateAction[]
+) => {
+  try {
+    // First fetch the cart to get the latest version
+    const cart = await readAssociateCartByKey(
+      apiRoot,
+      projectKey,
+      associateId,
+      businessUnitKey,
+      key
+    );
+    const currentVersion = cart.version;
+
+    const updatedCart = await apiRoot
+      .withProjectKey({projectKey})
+      .asAssociate()
+      .withAssociateIdValue({associateId})
+      .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
+      .carts()
+      .withKey({key})
+      .post({
+        body: {
+          version: currentVersion,
+          actions,
+        },
+      })
+      .execute();
+
+    return updatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to update associate cart by key: ${error.message}`);
+  }
+};
+
+export const replicateAssociateCart = async (
+  apiRoot: ApiRoot,
+  projectKey: string,
+  associateId: string,
+  businessUnitKey: string,
+  reference: CartReference,
+  key?: string
+) => {
+  try {
+    const replicatedCart = await apiRoot
+      .withProjectKey({projectKey})
+      .asAssociate()
+      .withAssociateIdValue({associateId})
+      .inBusinessUnitKeyWithBusinessUnitKeyValue({businessUnitKey})
       .carts()
       .replicate()
       .post({
@@ -290,19 +512,9 @@ export const replicateCart = async (
         },
       })
       .execute();
-    return cart.body;
-  } else {
-    const cart = await apiRoot
-      .withProjectKey({projectKey})
-      .carts()
-      .replicate()
-      .post({
-        body: {
-          reference,
-          ...(key && {key}),
-        },
-      })
-      .execute();
-    return cart.body;
+
+    return replicatedCart.body;
+  } catch (error: any) {
+    throw new Error(`Failed to replicate associate cart: ${error.message}`);
   }
 };

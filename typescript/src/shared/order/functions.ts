@@ -1,6 +1,7 @@
 import * as customer from './customer.functions';
 import * as admin from './admin.functions';
 import * as store from './store.functions';
+import * as asAssociate from './as-associate.functions';
 import {ApiRoot} from '@commercetools/platform-sdk';
 import {z} from 'zod';
 import {
@@ -20,6 +21,14 @@ export const contextToOrderFunctionMapping = (
     params: any
   ) => Promise<any>
 > => {
+  // Prioritize as-associate functions when both customerId and businessUnitKey are present
+  if (context?.customerId && context?.businessUnitKey) {
+    return {
+      read_order: asAssociate.readAssociateOrder,
+      create_order: asAssociate.createAssociateOrder,
+      update_order: asAssociate.updateAssociateOrder,
+    };
+  }
   if (context?.customerId) {
     return {
       read_order: customer.readCustomerOrder,

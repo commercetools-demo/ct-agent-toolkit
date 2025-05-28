@@ -1453,6 +1453,7 @@ describe('main function', () => {
       '--apiUrl=https://api.commercetools.com',
       '--customerId=xxx',
       '--isAdmin=true',
+      '--businessUnitKey=yyy',
     ];
 
     await main();
@@ -1472,6 +1473,7 @@ describe('main function', () => {
         context: {
           customerId: 'xxx',
           isAdmin: true,
+          businessUnitKey: 'yyy',
         },
       },
     });
