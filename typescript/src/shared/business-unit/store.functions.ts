@@ -27,9 +27,7 @@ export const readBusinessUnit = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     // Case 1: Read business unit by ID
@@ -91,9 +89,7 @@ export const createBusinessUnit = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     // Ensure the business unit is associated with the store
@@ -127,9 +123,7 @@ export const updateBusinessUnit = async (
 ) => {
   try {
     if (!context.storeKey) {
-      throw new SDKError('Store key is required', {
-        statusCode: 400,
-      });
+      throw new SDKError('Store key is required', {});
     }
 
     // Verify that the business unit belongs to the store before updating
@@ -153,9 +147,7 @@ export const updateBusinessUnit = async (
       );
     }
 
-    throw new SDKError('Either id or key must be provided for update', {
-      statusCode: 400,
-    });
+    throw new SDKError('Either id or key must be provided for update', {});
   } catch (error: any) {
     throw new SDKError('Failed to update business unit', error);
   }

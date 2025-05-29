@@ -17,6 +17,9 @@ import {contextToProductSelectionFunctionMapping} from './product-selection/func
 import {contextToProductTypeFunctionMapping} from './product-type/functions';
 import {contextToProductFunctionMapping} from './products/functions';
 import {contextToProjectFunctionMapping} from './project/functions';
+import {contextToQuoteFunctionMapping} from './quote/functions';
+import {contextToQuoteRequestFunctionMapping} from './quote-request/functions';
+import {contextToStagedQuoteFunctionMapping} from './staged-quote/functions';
 import {contextToStandalonePriceFunctionMapping} from './standalone-price/functions';
 import {contextToStoreFunctionMapping} from './store/functions';
 
@@ -47,6 +50,9 @@ export const contextToFunctionMapping = (
     ...contextToProductTypeFunctionMapping(context),
     ...contextToProductFunctionMapping(context),
     ...contextToProjectFunctionMapping(context),
+    ...contextToQuoteFunctionMapping(context),
+    ...contextToQuoteRequestFunctionMapping(context),
+    ...contextToStagedQuoteFunctionMapping(context),
     ...contextToStandalonePriceFunctionMapping(context),
     ...contextToStoreFunctionMapping(context),
     ...contextToBulkFunctionMapping(context),
