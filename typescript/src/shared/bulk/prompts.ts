@@ -18,6 +18,7 @@ Supported entity types:
 - product-discount
 - customer-group
 - quote-request
+- staged-quote
 - standalone-price
 - inventory
 - store
@@ -100,6 +101,7 @@ The supported entity types are:
 - product-discount
 - customer-group
 - quote-request
+- staged-quote
 - standalone-price
 - inventory
 - store
@@ -190,6 +192,7 @@ Supported entity types:
 - product-discount
 - customer-group
 - quote-request
+- staged-quote
 - standalone-price
 - inventory
 - order
@@ -278,6 +281,7 @@ The supported entity types are:
 - product-discount
 - customer-group
 - quote-request
+- staged-quote
 - standalone-price
 - inventory
 - order

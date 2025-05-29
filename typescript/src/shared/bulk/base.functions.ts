@@ -12,6 +12,7 @@ import {createCartDiscount} from '../cart-discount/functions';
 import {createProductDiscount} from '../product-discount/functions';
 import {createCustomerGroup} from '../customer-group/functions';
 import {createQuoteRequest} from '../quote-request/functions';
+import {createStagedQuote} from '../staged-quote/functions';
 import {createStandalonePrice} from '../standalone-price/functions';
 import {createInventory} from '../inventory/functions';
 import {createOrder} from '../order/admin.functions';
@@ -32,6 +33,7 @@ import {updateProductDiscount} from '../product-discount/functions';
 import {updateProductSelection} from '../product-selection/functions';
 import {updateProductType} from '../product-type/functions';
 import {updateQuoteRequest} from '../quote-request/functions';
+import {updateStagedQuote} from '../staged-quote/functions';
 import {updateStandalonePrice} from '../standalone-price/functions';
 import {updateStore} from '../store/functions';
 import {CommercetoolsFuncContext} from '../../types/configuration';
@@ -57,6 +59,7 @@ const entityFunctionMap: EntityFunctionMap = {
   product: createProduct,
   'product-discount': createProductDiscount,
   'quote-request': createQuoteRequest,
+  'staged-quote': createStagedQuote,
   'standalone-price': createStandalonePrice,
   inventory: createInventory,
   order: createOrder,
@@ -80,6 +83,7 @@ const entityUpdateFunctionMap: EntityFunctionMap = {
   'product-selection': updateProductSelection,
   'product-type': updateProductType,
   'quote-request': updateQuoteRequest,
+  'staged-quote': updateStagedQuote,
   'standalone-price': updateStandalonePrice,
   store: updateStore,
 };

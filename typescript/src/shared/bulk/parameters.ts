@@ -10,6 +10,7 @@ import {createCartDiscountParameters} from '../cart-discount/parameters';
 import {createProductDiscountParameters} from '../product-discount/parameters';
 import {createCustomerGroupParametersSchema} from '../customer-group/parameters';
 import {createQuoteRequestParameters} from '../quote-request/parameters';
+import {createStagedQuoteParameters} from '../staged-quote/parameters';
 import {createStandalonePriceParameters} from '../standalone-price/parameters';
 import {createInventoryParameters} from '../inventory/parameters';
 import {createOrderParameters} from '../order/parameters';
@@ -26,6 +27,7 @@ import {updateCartDiscountParameters} from '../cart-discount/parameters';
 import {updateProductDiscountParameters} from '../product-discount/parameters';
 import {updateCustomerGroupByIdParametersSchema} from '../customer-group/parameters';
 import {updateQuoteRequestParameters} from '../quote-request/parameters';
+import {updateStagedQuoteParameters} from '../staged-quote/parameters';
 import {updateStandalonePriceParameters} from '../standalone-price/parameters';
 import {updateInventoryParameters} from '../inventory/parameters';
 import {updateOrderParameters} from '../order/parameters';
@@ -49,6 +51,7 @@ export const bulkCreateParameters = z.object({
         'product-discount',
         'customer-group',
         'quote-request',
+        'staged-quote',
         'standalone-price',
         'order',
         'inventory',
@@ -66,6 +69,7 @@ export const bulkCreateParameters = z.object({
         createProductDiscountParameters,
         createCustomerGroupParametersSchema,
         createQuoteRequestParameters,
+        createStagedQuoteParameters,
         createStandalonePriceParameters,
         createInventoryParameters,
         createOrderParameters,
@@ -91,6 +95,7 @@ export const bulkUpdateParameters = z.object({
         'product-discount',
         'customer-group',
         'quote-request',
+        'staged-quote',
         'standalone-price',
         'inventory',
         'order',
@@ -110,6 +115,7 @@ export const bulkUpdateParameters = z.object({
         updateProductDiscountParameters,
         updateCustomerGroupByIdParametersSchema,
         updateQuoteRequestParameters,
+        updateStagedQuoteParameters,
         updateStandalonePriceParameters,
         updateInventoryParameters,
         updateOrderParameters,
