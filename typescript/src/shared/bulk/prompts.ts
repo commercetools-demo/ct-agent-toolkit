@@ -17,6 +17,7 @@ Supported entity types:
 - cart-discount
 - product-discount
 - customer-group
+- quote
 - quote-request
 - staged-quote
 - standalone-price
@@ -100,6 +101,7 @@ The supported entity types are:
 - cart-discount
 - product-discount
 - customer-group
+- quote
 - quote-request
 - staged-quote
 - standalone-price
@@ -191,6 +193,7 @@ Supported entity types:
 - cart-discount
 - product-discount
 - customer-group
+- quote
 - quote-request
 - staged-quote
 - standalone-price
@@ -280,6 +283,7 @@ The supported entity types are:
 - cart-discount
 - product-discount
 - customer-group
+- quote
 - quote-request
 - staged-quote
 - standalone-price
@@ -355,8 +359,5 @@ Response:
 \`\`\`
 
 # OUTPUT
-Focus on providing the essential parameters needed for each entity type's update and ensure that the entity types and their data are correctly structured. Remember that all update operations require:
-1. An identifier (id or key)
-2. The current version of the entity
-3. An array of update actions specific to the entity type
+Focus on providing the essential parameters needed for each entity type update and ensure that the entity types and their data are correctly structured.
 `;

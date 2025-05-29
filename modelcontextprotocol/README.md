@@ -88,6 +88,9 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 | `customer-group.read`      | Read customer group information         |
 | `customer-group.create`    | Create customer group                   |
 | `customer-group.update`    | Update customer group information       |
+| `quote.read`               | Read quote information                  |
+| `quote.create`             | Create quote (from staged quote)        |
+| `quote.update`             | Update quote information                |
 | `quote-request.read`       | Read quote request information          |
 | `quote-request.create`     | Create quote request                    |
 | `quote-request.update`     | Update quote request information        |

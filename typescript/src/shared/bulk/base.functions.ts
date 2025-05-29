@@ -11,6 +11,7 @@ import {createDiscountCode} from '../discount-code/functions';
 import {createCartDiscount} from '../cart-discount/functions';
 import {createProductDiscount} from '../product-discount/functions';
 import {createCustomerGroup} from '../customer-group/functions';
+import {createQuote} from '../quote/admin.functions';
 import {createQuoteRequest} from '../quote-request/functions';
 import {createStagedQuote} from '../staged-quote/functions';
 import {createStandalonePrice} from '../standalone-price/functions';
@@ -32,6 +33,7 @@ import {updateProduct} from '../products/functions';
 import {updateProductDiscount} from '../product-discount/functions';
 import {updateProductSelection} from '../product-selection/functions';
 import {updateProductType} from '../product-type/functions';
+import {updateQuote} from '../quote/admin.functions';
 import {updateQuoteRequest} from '../quote-request/functions';
 import {updateStagedQuote} from '../staged-quote/functions';
 import {updateStandalonePrice} from '../standalone-price/functions';
@@ -58,6 +60,7 @@ const entityFunctionMap: EntityFunctionMap = {
   'discount-code': createDiscountCode,
   product: createProduct,
   'product-discount': createProductDiscount,
+  quote: createQuote,
   'quote-request': createQuoteRequest,
   'staged-quote': createStagedQuote,
   'standalone-price': createStandalonePrice,
@@ -82,6 +85,7 @@ const entityUpdateFunctionMap: EntityFunctionMap = {
   'product-discount': updateProductDiscount,
   'product-selection': updateProductSelection,
   'product-type': updateProductType,
+  quote: updateQuote,
   'quote-request': updateQuoteRequest,
   'staged-quote': updateStagedQuote,
   'standalone-price': updateStandalonePrice,

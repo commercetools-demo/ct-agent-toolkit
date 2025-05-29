@@ -9,6 +9,7 @@ import {contextToOrderTools} from './order/tools';
 import {contextToCartTools} from './cart/tools';
 import {contextToCustomerTools} from './customer/tools';
 import {contextToCustomerGroupTools} from './customer-group/tools';
+import {contextToQuoteTools} from './quote/tools';
 import {contextToQuoteRequestTools} from './quote-request/tools';
 import {contextToStagedQuoteTools} from './staged-quote/tools';
 import {contextToStandalonePriceTools} from './standalone-price/tools';
@@ -37,6 +38,7 @@ export const contextToTools = (context?: Context) => {
     ...contextToProjectTools(context),
     ...contextToProductSearchTools(context),
     ...contextToProductSelectionTools(context),
+    ...contextToQuoteTools(context),
     ...contextToQuoteRequestTools(context),
     ...contextToStagedQuoteTools(context),
     ...contextToStandalonePriceTools(context),

@@ -50,19 +50,6 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
       project: {
         read: true,
       },
-      'product-search': {
-        read: true,
-      },
-      cart: {
-        read: true,
-        create: true,
-        update: true,
-      },
-      'business-unit': {
-        read: true,
-        create: true,
-        update: true,
-      },
     },
   },
 });
