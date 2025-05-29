@@ -37,7 +37,7 @@ const ACCEPTED_ARGS = [
   'storeKey',
   'businessUnitKey',
 ];
-const ACCEPTED_TOOLS = [
+export const ACCEPTED_TOOLS = [
   'business-unit.read',
   'business-unit.create',
   'business-unit.update',
@@ -148,7 +148,7 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
 
   // Validate tools against accepted enum values
   options.tools.forEach((tool: string) => {
-    if (tool == 'all') {
+    if (tool == 'all' || tool == 'all.read') {
       return;
     }
     if (!ACCEPTED_TOOLS.includes(tool.trim())) {
@@ -166,6 +166,12 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
   env.authUrl = env.authUrl || process.env.AUTH_URL;
   env.projectKey = env.projectKey || process.env.PROJECT_KEY;
   env.apiUrl = env.apiUrl || process.env.API_URL;
+  options.businessUnitKey =
+    options.businessUnitKey || process.env.BUSINESS_UNIT_KEY;
+  options.storeKey = options.storeKey || process.env.STORE_KEY;
+  options.customerId = options.customerId || process.env.CUSTOMER_ID;
+  options.isAdmin = options.isAdmin || process.env.IS_ADMIN === 'true';
+  options.cartId = options.cartId || process.env.CART_ID;
 
   // Validate required commercetools credentials
   if (
@@ -204,7 +210,7 @@ export async function main() {
     },
   };
 
-  if (selectedTools.includes('all')) {
+  if (selectedTools[0] === 'all') {
     ACCEPTED_TOOLS.forEach((tool) => {
       if (!configuration.actions) {
         configuration.actions = {};
@@ -215,6 +221,19 @@ export async function main() {
         ...configuration.actions[namespace as AvailableNamespaces],
         [action]: true,
       };
+    });
+  } else if (selectedTools[0] === 'all.read') {
+    ACCEPTED_TOOLS.forEach((tool) => {
+      if (!configuration.actions) {
+        configuration.actions = {};
+      }
+      const [namespace, action] = tool.split('.');
+      if (action === 'read') {
+        configuration.actions[namespace as AvailableNamespaces] = {
+          ...configuration.actions[namespace as AvailableNamespaces],
+          [action]: true,
+        };
+      }
     });
   } else {
     selectedTools.forEach((tool: any) => {

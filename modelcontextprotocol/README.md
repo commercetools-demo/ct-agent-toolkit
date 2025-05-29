@@ -8,6 +8,9 @@ To run the commercetools MCP server using npx, use the following command:
 # To set up all available tools
 npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
 
+# To set up all read-only tools
+npx -y @commercetools-demo/mcp --tools=all.read --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
+
 ```
 
 ```bash
@@ -58,7 +61,18 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 }
 ```
 
+**Alternative: To use only read-only tools, replace `"--tools=all"` with `"--tools=all.read"`**
+
 ## Available tools
+
+### Special Tool Options
+
+| Tool       | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `all`      | Enable all available tools (read, create, and update operations) |
+| `all.read` | Enable all read-only tools (safe for read-only access)           |
+
+### Individual Tools
 
 | Tool                       | Description                             |
 | -------------------------- | --------------------------------------- |
