@@ -70,7 +70,7 @@ export const readStore = async (
   }
 };
 
-export const updateStore = (
+export const updateStore = async (
   apiRoot: ApiRoot,
   context: CommercetoolsFuncContext,
   params: z.infer<typeof updateStoreParameters>
@@ -82,12 +82,14 @@ export const updateStore = (
       });
     }
 
-    return updateStoreByKey(
+    const result = await updateStoreByKey(
       apiRoot,
       context.projectKey,
       context.storeKey,
       params.actions as StoreUpdateAction[]
     );
+
+    return result;
   } catch (error: any) {
     throw new SDKError('Failed to update store', error);
   }

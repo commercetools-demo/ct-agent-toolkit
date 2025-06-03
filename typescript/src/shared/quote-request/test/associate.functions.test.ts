@@ -234,6 +234,74 @@ describe('Associate Quote Request Functions', () => {
       });
     });
 
+    it('should create a quote request with minimal parameters', async () => {
+      const params = {
+        cart: {id: 'cart-id', typeId: 'cart' as const},
+        cartVersion: 1,
+      } as z.infer<typeof createQuoteRequestParameters>;
+
+      const mockResult = {id: 'quote-request-id', version: 1};
+      mockExecute.mockResolvedValueOnce({body: mockResult});
+
+      const result = await createQuoteRequest(
+        mockApiRoot as any,
+        context,
+        params
+      );
+
+      expect(result).toEqual(mockResult);
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          cart: {id: 'cart-id', typeId: 'cart'},
+          cartVersion: 1,
+        },
+      });
+    });
+
+    it('should create a quote request with all optional fields', async () => {
+      const params = {
+        cart: {id: 'cart-id', typeId: 'cart' as const},
+        cartVersion: 1,
+        comment: 'Test comment',
+        key: 'my-quote-request',
+        custom: {type: {key: 'custom-type'}, fields: {priority: 'high'}},
+      } as z.infer<typeof createQuoteRequestParameters>;
+
+      const mockResult = {id: 'quote-request-id', version: 1};
+      mockExecute.mockResolvedValueOnce({body: mockResult});
+
+      const result = await createQuoteRequest(
+        mockApiRoot as any,
+        context,
+        params
+      );
+
+      expect(result).toEqual(mockResult);
+      expect(mockPost).toHaveBeenCalledWith({
+        body: {
+          cart: {id: 'cart-id', typeId: 'cart'},
+          cartVersion: 1,
+          comment: 'Test comment',
+          key: 'my-quote-request',
+          custom: {type: {key: 'custom-type'}, fields: {priority: 'high'}},
+        },
+      });
+    });
+
+    it('should handle errors when creating quote request', async () => {
+      const params = {
+        cart: {id: 'cart-id', typeId: 'cart' as const},
+        cartVersion: 1,
+      } as z.infer<typeof createQuoteRequestParameters>;
+
+      const mockError = new Error('Creation failed');
+      mockExecute.mockRejectedValueOnce(mockError);
+
+      await expect(
+        createQuoteRequest(mockApiRoot as any, context, params)
+      ).rejects.toThrow('Failed to create quote request as associate');
+    });
+
     it('should throw error if customerId is missing', async () => {
       const params = {
         cart: {id: 'cart-id', typeId: 'cart' as const},
@@ -391,6 +459,23 @@ describe('Associate Quote Request Functions', () => {
       ).rejects.toThrow(
         'Business Unit key is required for associate operations'
       );
+    });
+
+    it('should handle errors when updating quote request', async () => {
+      const params = {
+        id: 'quote-request-id',
+        version: 1,
+        actions: [
+          {action: 'changeQuoteRequestState', quoteRequestState: 'Submitted'},
+        ],
+      } as z.infer<typeof updateQuoteRequestParameters>;
+
+      const mockError = new Error('Update failed');
+      mockExecute.mockRejectedValueOnce(mockError);
+
+      await expect(
+        updateQuoteRequest(mockApiRoot as any, context, params)
+      ).rejects.toThrow('Failed to update quote request as associate');
     });
   });
 });
