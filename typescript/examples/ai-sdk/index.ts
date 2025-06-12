@@ -28,7 +28,7 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 const model = openai('gpt-4o');
 
 (async () => {
-  console.log('--- Starting Commercetools AI SDK Task Sequence ---');
+  console.log('--- Starting commercetools AI SDK Task Sequence ---');
 
   // Original Task: List all products
   const initialPrompt =
@@ -147,7 +147,7 @@ I will need the ID of this newly created product AND the ID or key of the produc
     '--------------------------------------------------------------------------------'
   );
 
-  console.log('\\n--- Commercetools AI SDK Task Sequence Finished ---');
+  console.log('\\n--- commercetools AI SDK Task Sequence Finished ---');
 })().catch((error) => {
   console.error('An error occurred during the async execution:', error);
 });

@@ -1,4 +1,4 @@
-# Commercetools Model Context Protocol
+# commercetools Model Context Protocol
 
 ## Setup
 

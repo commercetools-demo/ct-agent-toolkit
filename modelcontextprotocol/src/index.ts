@@ -182,7 +182,7 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
     !env.apiUrl
   ) {
     throw new Error(
-      'Commercetools credentials missing. Please provide all required credentials either via arguments or environment variables (CLIENT_ID, CLIENT_SECRET, AUTH_URL, PROJECT_KEY, API_URL).'
+      'commercetools credentials missing. Please provide all required credentials either via arguments or environment variables (CLIENT_ID, CLIENT_SECRET, AUTH_URL, PROJECT_KEY, API_URL).'
     );
   }
 
@@ -190,7 +190,7 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
 }
 
 function handleError(error: any) {
-  console.error(red('\n🚨  Error initializing Commercetools MCP server:\n'));
+  console.error(red('\n🚨  Error initializing commercetools MCP server:\n'));
   console.error(yellow(`   ${error.message}\n`));
 }
 
