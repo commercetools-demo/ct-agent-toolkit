@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Commercetools support
+  - name: commercetools support
     url: https://support.commercetools.com/
     about: |
-      Please only file issues here that you believe represent actual bugs or feature requests for the Commercetools Agent Toolkit library.
+      Please only file issues here that you believe represent actual bugs or feature requests for the commercetools Agent Toolkit library.
 
-      If you're having general trouble with your Commercetools integration, please reach out to support.
+      If you're having general trouble with your commercetools integration, please reach out to support.

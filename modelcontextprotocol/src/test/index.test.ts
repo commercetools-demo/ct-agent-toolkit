@@ -273,7 +273,7 @@ describe('parseArgs function', () => {
     it('should throw an error if required credentials are missing', () => {
       const args = ['--tools=all'];
       expect(() => parseArgs(args)).toThrow(
-        'Commercetools credentials missing. Please provide all required credentials either via arguments or environment variables (CLIENT_ID, CLIENT_SECRET, AUTH_URL, PROJECT_KEY, API_URL).'
+        'commercetools credentials missing. Please provide all required credentials either via arguments or environment variables (CLIENT_ID, CLIENT_SECRET, AUTH_URL, PROJECT_KEY, API_URL).'
       );
     });
 

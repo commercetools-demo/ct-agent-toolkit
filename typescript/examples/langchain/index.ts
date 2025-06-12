@@ -35,7 +35,7 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
 
 (async (): Promise<void> => {
   console.log(
-    '--- Starting Commercetools Langchain Agent Task Sequence (with Chat History) ---'
+    '--- Starting commercetools Langchain Agent Task Sequence (with Chat History) ---'
   );
 
   const promptTemplate = await pull<ChatPromptTemplate>(
@@ -175,7 +175,7 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   recordAndLog(prompt5Text, result5);
 
   console.log(
-    '\n--- Commercetools Langchain Agent Task Sequence Finished (with Chat History) ---'
+    '\n--- commercetools Langchain Agent Task Sequence Finished (with Chat History) ---'
   );
 })().catch((error) => {
   console.error('An error occurred during the async execution:', error);
