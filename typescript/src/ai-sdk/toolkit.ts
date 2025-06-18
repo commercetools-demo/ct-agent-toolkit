@@ -1,6 +1,9 @@
 import type {Tool} from 'ai';
 import CommercetoolsAPI from '../shared/api';
-import {isToolAllowed, processConfigurationDefaults} from '../shared/configuration';
+import {
+  isToolAllowed,
+  processConfigurationDefaults,
+} from '../shared/configuration';
 import {contextToTools} from '../shared/tools';
 import type {Configuration} from '../types/configuration';
 import CommercetoolsTool from './tool';
@@ -26,7 +29,7 @@ class CommercetoolsAgentToolkit {
   }) {
     // Process configuration to apply smart defaults
     const processedConfiguration = processConfigurationDefaults(configuration);
-    
+
     this._commercetools = new CommercetoolsAPI(
       clientId,
       clientSecret,
@@ -37,8 +40,8 @@ class CommercetoolsAgentToolkit {
     );
     this.tools = {};
 
-    const filteredTools = contextToTools(processedConfiguration.context).filter((tool) =>
-      isToolAllowed(tool, processedConfiguration)
+    const filteredTools = contextToTools(processedConfiguration.context).filter(
+      (tool) => isToolAllowed(tool, processedConfiguration)
     );
 
     filteredTools.forEach((tool) => {

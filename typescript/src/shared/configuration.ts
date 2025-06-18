@@ -23,7 +23,7 @@ export const isToolAllowed = (
  * Processes configuration to apply smart defaults for context.
  * If no specific context (customerId, storeKey, businessUnitKey) is provided,
  * defaults to isAdmin: true to ensure maximum tool availability.
- * 
+ *
  * @param configuration - The input configuration
  * @returns Configuration with processed context defaults
  */
@@ -41,11 +41,11 @@ export const processConfigurationDefaults = (
   }
 
   // Check if any specific context keys are provided
-  const hasSpecificContext = 
-    configuration.context.customerId || 
-    configuration.context.storeKey || 
+  const hasSpecificContext =
+    configuration.context.customerId ||
+    configuration.context.storeKey ||
     configuration.context.businessUnitKey;
-  
+
   // Only apply default isAdmin if:
   // 1. No specific context is provided AND
   // 2. isAdmin is not explicitly set (undefined)

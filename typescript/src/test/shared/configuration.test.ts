@@ -1,7 +1,7 @@
 import {z} from 'zod';
 import {isToolAllowed} from '../../shared/configuration';
-import { processConfigurationDefaults } from '../../shared/configuration';
-import { Configuration } from '../../types/configuration';
+import {processConfigurationDefaults} from '../../shared/configuration';
+import {Configuration} from '../../types/configuration';
 
 describe('isToolAllowed', () => {
   it('should return true if all permissions are allowed', () => {
@@ -85,7 +85,7 @@ describe('processConfigurationDefaults', () => {
   it('should set isAdmin to true when no context is provided', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
     };
 
@@ -99,7 +99,7 @@ describe('processConfigurationDefaults', () => {
   it('should set isAdmin to true when context exists but no specific context keys are provided', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         cartId: 'some-cart-id',
@@ -117,7 +117,7 @@ describe('processConfigurationDefaults', () => {
   it('should not modify context when customerId is provided', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         customerId: 'customer-123',
@@ -136,7 +136,7 @@ describe('processConfigurationDefaults', () => {
   it('should not modify context when storeKey is provided', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         storeKey: 'store-123',
@@ -153,7 +153,7 @@ describe('processConfigurationDefaults', () => {
   it('should not modify context when businessUnitKey is provided', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         businessUnitKey: 'bu-123',
@@ -170,7 +170,7 @@ describe('processConfigurationDefaults', () => {
   it('should not modify context when isAdmin is already explicitly set to false', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         isAdmin: false,
@@ -189,7 +189,7 @@ describe('processConfigurationDefaults', () => {
   it('should not modify context when isAdmin is already explicitly set to true', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true },
+        products: {read: true},
       },
       context: {
         isAdmin: true,
@@ -208,16 +208,16 @@ describe('processConfigurationDefaults', () => {
   it('should preserve all other configuration properties', () => {
     const configuration: Configuration = {
       actions: {
-        products: { read: true, create: true },
-        cart: { read: true },
+        products: {read: true, create: true},
+        cart: {read: true},
       },
     };
 
     const result = processConfigurationDefaults(configuration);
 
     expect(result.actions).toEqual({
-      products: { read: true, create: true },
-      cart: { read: true },
+      products: {read: true, create: true},
+      cart: {read: true},
     });
     expect(result.context).toEqual({
       isAdmin: true,

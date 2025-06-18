@@ -2,7 +2,10 @@ import {BaseToolkit, DynamicStructuredTool} from '@langchain/core/tools';
 import CommercetoolsTool from './tool';
 import CommercetoolsAPI from '../shared/api';
 import {contextToTools} from '../shared/tools';
-import {isToolAllowed, processConfigurationDefaults} from '../shared/configuration';
+import {
+  isToolAllowed,
+  processConfigurationDefaults,
+} from '../shared/configuration';
 import type {Configuration} from '../types/configuration';
 import {z} from 'zod';
 
@@ -36,7 +39,7 @@ class CommercetoolsAgentToolkit implements BaseToolkit {
   }) {
     // Process configuration to apply smart defaults
     const processedConfiguration = processConfigurationDefaults(configuration);
-    
+
     this._commercetools = new CommercetoolsAPI(
       clientId,
       clientSecret,
@@ -48,7 +51,9 @@ class CommercetoolsAgentToolkit implements BaseToolkit {
 
     const filteredToolDefinitions = contextToTools(
       processedConfiguration.context
-    ).filter((tool: ToolDefinition) => isToolAllowed(tool, processedConfiguration));
+    ).filter((tool: ToolDefinition) =>
+      isToolAllowed(tool, processedConfiguration)
+    );
 
     this.tools = filteredToolDefinitions.map((toolDef: ToolDefinition) =>
       CommercetoolsTool(
