@@ -7,7 +7,10 @@ import {Configuration, Context} from '../../types/configuration';
 // Mock dependencies
 jest.mock('@modelcontextprotocol/sdk/server/mcp.js');
 jest.mock('../../shared/api');
-jest.mock('../../shared/configuration');
+jest.mock('../../shared/configuration', () => ({
+  isToolAllowed: jest.fn(),
+  processConfigurationDefaults: jest.fn((config) => config), // Pass through the configuration unchanged
+}));
 
 jest.mock('../../shared/tools', () => {
   const {z: localZ} = require('zod'); // Require z inside the factory

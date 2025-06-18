@@ -8,7 +8,10 @@ import {Configuration, Context} from '../../types/configuration';
 // Mock dependencies
 jest.mock('../../shared/api');
 jest.mock('../tool');
-jest.mock('../../shared/configuration');
+jest.mock('../../shared/configuration', () => ({
+  isToolAllowed: jest.fn(),
+  processConfigurationDefaults: jest.fn((config) => config), // Pass through the configuration unchanged
+}));
 
 // Mock the actual tools array if it's imported and used directly
 jest.mock('../../shared/tools', () => {

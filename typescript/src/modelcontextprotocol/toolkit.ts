@@ -1,6 +1,9 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import CommercetoolsAPI from '../shared/api';
-import {isToolAllowed} from '../shared/configuration';
+import {
+  isToolAllowed,
+  processConfigurationDefaults,
+} from '../shared/configuration';
 import {contextToTools} from '../shared/tools';
 import type {Configuration} from '../types/configuration';
 class CommercetoolsAgentToolkit extends McpServer {
@@ -25,16 +28,19 @@ class CommercetoolsAgentToolkit extends McpServer {
       version: '0.4.0',
     });
 
+    // Process configuration to apply smart defaults
+    const processedConfiguration = processConfigurationDefaults(configuration);
+
     this._commercetools = new CommercetoolsAPI(
       clientId,
       clientSecret,
       authUrl,
       projectKey,
       apiUrl,
-      configuration.context
+      processedConfiguration.context
     );
-    const filteredTools = contextToTools(configuration.context).filter((tool) =>
-      isToolAllowed(tool, configuration)
+    const filteredTools = contextToTools(processedConfiguration.context).filter(
+      (tool) => isToolAllowed(tool, processedConfiguration)
     );
     filteredTools.forEach((tool) => {
       this.tool(
