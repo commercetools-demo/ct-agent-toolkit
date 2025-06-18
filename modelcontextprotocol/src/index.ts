@@ -25,17 +25,25 @@ type EnvVars = {
   apiUrl?: string;
 };
 
-const ACCEPTED_ARGS = [
+const HIDDEN_ARGS = [
+  'customerId',
+  'isAdmin',
+  'storeKey',
+  'businessUnitKey',
+];
+
+const PUBLIC_ARGS = [
   'tools',
   'clientId',
   'clientSecret',
   'authUrl',
   'projectKey',
   'apiUrl',
-  'customerId',
-  'isAdmin',
-  'storeKey',
-  'businessUnitKey',
+];
+
+const ACCEPTED_ARGS = [
+  ...PUBLIC_ARGS,
+  ...HIDDEN_ARGS,
 ];
 export const ACCEPTED_TOOLS = [
   'business-unit.read',
