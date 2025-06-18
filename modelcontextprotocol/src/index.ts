@@ -45,6 +45,7 @@ const ACCEPTED_ARGS = [
   ...PUBLIC_ARGS,
   ...HIDDEN_ARGS,
 ];
+
 export const ACCEPTED_TOOLS = [
   'business-unit.read',
   'business-unit.create',
@@ -141,7 +142,7 @@ export function parseArgs(args: string[]): {options: Options; env: EnvVars} {
         options.businessUnitKey = value;
       } else {
         throw new Error(
-          `Invalid argument: ${key}. Accepted arguments are: ${ACCEPTED_ARGS.join(
+          `Invalid argument: ${key}. Accepted arguments are: ${PUBLIC_ARGS.join(
             ', '
           )}`
         );
