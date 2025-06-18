@@ -38,9 +38,6 @@ const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
   authUrl: process.env.AUTH_URL!,
   apiUrl: process.env.API_URL!,
   configuration: {
-    context: {
-      isAdmin: true,
-    },
     actions: {
       products: {
         read: true,
@@ -76,82 +73,6 @@ const agentExecutor = new AgentExecutor({
 });
 ```
 
-#### Context
-In some cases you will want to provide values that serve as defaults when making requests. Providing context is required to access the tools.
-
-#### Customer Context
-
-```typescript
-    const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-      clientId: process.env.CLIENT_ID!,
-      clientSecret: process.env.CLIENT_SECRET!,
-      projectKey: process.env.PROJECT_KEY!,
-      authUrl: process.env.AUTH_URL!,
-      apiUrl: process.env.API_URL!,
-      configuration: {
-        context: {
-          customerId: "customer-12345",
-          cartId: "cart-12345",
-        },
-      },
-    });
-```
-
-#### Admin Context
-
-```typescript
-const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  clientId: process.env.CLIENT_ID!,
-  clientSecret: process.env.CLIENT_SECRET!,
-  projectKey: process.env.PROJECT_KEY!,
-  authUrl: process.env.AUTH_URL!,
-  apiUrl: process.env.API_URL!,
-  configuration: {
-    context: {
-      isAdmin: true,
-    },
-  },
-});
-```
-
-#### Store Context
-
-```typescript
-
-const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  clientId: process.env.CLIENT_ID!,
-  clientSecret: process.env.CLIENT_SECRET!,
-  projectKey: process.env.PROJECT_KEY!,
-  authUrl: process.env.AUTH_URL!,
-  apiUrl: process.env.API_URL!,
-  configuration: {
-    context: {
-      storeKey: "store-12345",
-    },
-  },
-});
-```
-
-#### Associate Context
-
-```typescript
-const commercetoolsAgentToolkit = new CommercetoolsAgentToolkit({
-  clientId: process.env.CLIENT_ID!,
-  clientSecret: process.env.CLIENT_SECRET!,
-  projectKey: process.env.PROJECT_KEY!,
-  authUrl: process.env.AUTH_URL!,
-  apiUrl: process.env.API_URL!,
-  configuration: {
-    context: {
-      customerId: "customer-12345", // Required for associate operations
-      businessUnitKey: "business-unit-12345",
-    },
-  },
-});
-```
-
-***Note:*** Providing one of the following parameters is required: `--isAdmin`, `--customerId`, `--storeKey`, or both `--customerId` and `--businessUnitKey` for associate operations
-
 ## Model Context Protocol
 
 The commercetools Agent Toolkit also supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.com/).
@@ -166,7 +87,7 @@ Then, you might need to configure your PATH or use `npx @commercetools-demo/mcp 
 To run the commercetools MCP server directly using npx (which handles downloading the package if needed), use the following command:
 
 ```bash
-npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL --isAdmin=true
+npx -y @commercetools-demo/mcp --tools=all --clientId=CLIENT_ID --clientSecret=CLIENT_SECRET --projectKey=PROJECT_KEY --authUrl=AUTH_URL --apiUrl=API_URL
 ```
 
 Replace `CLIENT_ID`, `CLIENT_SECRET`, `PROJECT_KEY`, `AUTH_URL`, and `API_URL` with your actual values. Or, you could set the API_SECRET_KEY in your environment variables.
@@ -185,9 +106,6 @@ const server = new CommercetoolsAgentToolkit({
   authUrl: process.env.AUTH_URL!,
   apiUrl: process.env.API_URL!,
   configuration: {
-    context: {
-      isAdmin: true,
-    },
     actions: {
       products: {
         read: true,
